@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -33,6 +34,9 @@ public:
     GLWidget *widget;
     QVBoxLayout *verticalLayout;
     QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_3;
+    QLineEdit *lineEdit;
+    QPushButton *pushButton_2;
     QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindow)
@@ -40,7 +44,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->setWindowModality(Qt::ApplicationModal);
-        MainWindow->resize(479, 352);
+        MainWindow->resize(534, 335);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout_2 = new QHBoxLayout(centralWidget);
@@ -67,6 +71,28 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_3->setSizeConstraint(QLayout::SetFixedSize);
+        lineEdit = new QLineEdit(centralWidget);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        QSizePolicy sizePolicy1(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lineEdit->sizePolicy().hasHeightForWidth());
+        lineEdit->setSizePolicy(sizePolicy1);
+
+        horizontalLayout_3->addWidget(lineEdit);
+
+        pushButton_2 = new QPushButton(centralWidget);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+
+        horizontalLayout_3->addWidget(pushButton_2);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
 
@@ -92,6 +118,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Project V1", 0));
+        lineEdit->setText(QString());
+        pushButton_2->setText(QApplication::translate("MainWindow", "Load File", 0));
         pushButton->setText(QApplication::translate("MainWindow", "&Quit", 0));
     } // retranslateUi
 
