@@ -12,11 +12,6 @@ string objLoad::getFileName()
     return fileName;
 }
 
-struct Vertex
-{
-    double x,y,z;
-};
-
 int main()
 {
     string fileName;
