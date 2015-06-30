@@ -1,18 +1,19 @@
 #ifndef OBJLOAD_H
 #define OBJLOAD_H
-#include <QWidget>
-#include <QLabel>
 #include <iostream>
-#include <list>
 #include<fstream>
 #include<vector>
 #include<string>
-#include<algorithm>
+using namespace std;
 
 class objLoad
 {
-public:
-    objLoad();
+    public:
+        objLoad();
+        objLoad(string fName);
+        string getFileName(void);
+    private:
+        string fileName;
 
 };
 
