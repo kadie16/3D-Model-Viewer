@@ -13,7 +13,7 @@ class objLoad
         objLoad();
         objLoad(std::string fName);
         std::string getFileName(void);
-    private:
+    //private:
         std::string fileName;
         std::vector<Vertex> vertices;
 

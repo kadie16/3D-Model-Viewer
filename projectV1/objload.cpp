@@ -6,7 +6,7 @@ objLoad::objLoad(string fName)
     cout << "Loading object from file:  " << fName << endl;
     fileName = fName;
     /* open file stream */
-    ifstream stream(fName);
+    ifstream stream(fName.c_str());
     /* fill vertices */
     string currLine;
     while (!stream.eof())
@@ -16,9 +16,6 @@ objLoad::objLoad(string fName)
         vertices.push_back(v);
     }
     stream.close();
-
-
-
 }
 
 string objLoad::getFileName()
@@ -32,5 +29,11 @@ int main()
     cout << "Please enter a filename:  ";
     cin >> fileName;
     objLoad loader(fileName);
+    for (Vertex v : loader.vertices)
+    {
+        v.print();
+    }
+    cout << endl;
+    return 0;
 
 }

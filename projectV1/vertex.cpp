@@ -1,11 +1,6 @@
 #include "vertex.h"
 using namespace std;
 
-Vertex::Vertex()
-{
-    double x,y,z;
-}
-
 Vertex::Vertex(string input)
 {
     double x,y,z;
@@ -28,5 +23,11 @@ double Vertex::getY()
 double Vertex::getZ()
 {
     return z;
+}
+
+void print()
+{
+   // cout << x << " , " << y << " , " << z << endl;
+
 }
 

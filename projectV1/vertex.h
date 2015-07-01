@@ -1,15 +1,17 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 #include <string>
+#include <sstream>
+#include<iostream>
 
 class Vertex
 {
   public:
-    Vertex();
     Vertex(std::string input);
-    getX();
-    getY();
-    getZ();
+    void print();
+    double getX();
+    double getY();
+    double getZ();
   private:
     double x,y,z;
 };
