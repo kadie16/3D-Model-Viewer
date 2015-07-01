@@ -8,9 +8,11 @@ objLoad::objLoad(string fName)
     /* open file stream */
     ifstream stream(fName);
     /* determine length of file */
-    is.seekg(0, ios_base::end);
-    size_t size = is.tellg();
-    is.seekg(0, ios_base::begin);
+    //is.seekg(0, ios_base::end);
+    //size_t size = is.tellg();
+    //is.seekg(0, ios_base::begin);
+    /* create vector */
+    vector<Vertex> vertices;
     /* fill vector */
     string currLine;
     while (stream.peek() !=EOF) {
