@@ -1,5 +1,6 @@
 #ifndef OBJLOAD_H
 #define OBJLOAD_H
+#include "vertex.h"
 #include <iostream>
 #include<fstream>
 #include<vector>
@@ -14,6 +15,7 @@ class objLoad
         std::string getFileName(void);
     private:
         std::string fileName;
+        std::vector<Vertex> vertices;
 
 
 };

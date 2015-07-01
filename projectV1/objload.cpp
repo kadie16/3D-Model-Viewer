@@ -7,18 +7,15 @@ objLoad::objLoad(string fName)
     fileName = fName;
     /* open file stream */
     ifstream stream(fName);
-    /* determine length of file */
-    //is.seekg(0, ios_base::end);
-    //size_t size = is.tellg();
-    //is.seekg(0, ios_base::begin);
-    /* create vector */
-    vector<Vertex> vertices;
-    /* fill vector */
+    /* fill vertices */
     string currLine;
-    while (stream.peek() !=EOF) {
+    while (!stream.eof())
+    {
         getline(stream, currLine);
-
+        Vertex v(currLine);
+        vertices.push_back(v);
     }
+    stream.close();
 
 
 
