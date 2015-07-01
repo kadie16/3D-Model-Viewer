@@ -11,6 +11,7 @@ objLoad::objLoad(string fName)
     string currLine;
     while (!stream.eof())
     {
+        /* still need to implement vertices vs. facet separation */
         getline(stream, currLine);
         Vertex v(currLine);
         vertices.push_back(v);

@@ -1,9 +1,9 @@
 #include "vertex.h"
+
 using namespace std;
 
 Vertex::Vertex(string input)
 {
-    double x,y,z;
     stringstream inStream(input);
     inStream >> x;
     inStream >> y;
@@ -27,7 +27,7 @@ double Vertex::getZ()
 
 void print()
 {
-   // cout << x << " , " << y << " , " << z << endl;
+   //cout << this.x << " , " << this.y << " , " << this.z << endl;
 
 }
 
