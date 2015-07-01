@@ -4,16 +4,16 @@
 #include<fstream>
 #include<vector>
 #include<string>
-using namespace std;
+
 
 class objLoad
 {
     public:
         objLoad();
-        objLoad(string fName);
-        string getFileName(void);
+        objLoad(std::string fName);
+        std::string getFileName(void);
     private:
-        string fileName;
+        std::string fileName;
 
 
 };

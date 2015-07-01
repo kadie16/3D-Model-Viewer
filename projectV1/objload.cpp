@@ -1,5 +1,5 @@
 #include "objload.h"
-
+using namespace std;
 
 objLoad::objLoad(string fName)
 {
@@ -17,6 +17,7 @@ objLoad::objLoad(string fName)
     string currLine;
     while (stream.peek() !=EOF) {
         getline(stream, currLine);
+
     }
 
 
