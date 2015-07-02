@@ -53,9 +53,17 @@ string objLoad::getFileName()
 
 void objLoad::print()
 {
+    cout << fileName << " vertices: " << endl;
     for (unsigned i = 0 ; i < vertices.size(); i++)
     {
-        cout << vertices.at(i) << endl;
+        if ((i+1) % 3 == 0)
+        {
+            cout << vertices.at(i) << endl;
+        }
+        else
+        {
+            cout<< vertices.at(i) << " , " ;
+        }
     }
 }
 
