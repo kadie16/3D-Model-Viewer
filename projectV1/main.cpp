@@ -17,6 +17,5 @@ int main(int argc, char *argv[])
     loader.print();
     cout << endl;
     return 0;
-
     return a.exec();
 }

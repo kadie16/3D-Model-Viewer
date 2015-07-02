@@ -23,11 +23,11 @@ objLoad::objLoad(string fName)
 
             if (currLine[0] == 'v')
             {
-                float Vertex[3];
-                sscanf(currLine.c_str(), "%*s %f %f %f", &Vertex[0], &Vertex[1], &Vertex[2]);
-                vertices.push_back(Vertex[0]);
-                vertices.push_back(Vertex[1]);
-                vertices.push_back(Vertex[2]);
+                float vertexArr[3];
+                sscanf(currLine.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+                vertices.push_back(vertexArr[0]);
+                vertices.push_back(vertexArr[1]);
+                vertices.push_back(vertexArr[2]);
              }
 
             if (currLine[0] == 'f')
@@ -42,7 +42,7 @@ objLoad::objLoad(string fName)
         stream.close();
     } else
     {
-        cout << "File load failed" << endl;
+        cout << "File load failed!" << endl;
     }
 }
 
