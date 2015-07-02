@@ -4,10 +4,11 @@ using namespace std;
 
 Vertex::Vertex(string input)
 {
-    stringstream inStream(input);
-    inStream >> x;
-    inStream >> y;
-    inStream >> z;
+    float vertexArr[3];
+    sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+    x = vertexArr[0];
+    y = vertexArr[1];
+    z = vertexArr[2];
 }
 
 double Vertex::getX()
@@ -27,7 +28,7 @@ double Vertex::getZ()
 
 void Vertex::print()
 {
-   //cout << this.x << " , " << this.y << " , " << this.z << endl;
+   cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
 
 }
 

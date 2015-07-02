@@ -6,6 +6,7 @@
 #include<vector>
 #include<string>
 #include<iterator>
+#include "vertex.h"
 
 class objLoad
 {
@@ -16,8 +17,8 @@ class objLoad
         void print();
     //private:
         std::string fileName;
-        std::vector<double> vertices;
-        std::vector<int> facets;
+        std::vector<Vertex> vertices;
+        std::vector<Vertex> facets;
 
 
 };
