@@ -6,14 +6,16 @@
 
 class Vertex
 {
-  public:
+private:
+  double x,y,z;
+
+public:
     Vertex(std::string input);
     void print();
     double getX();
     double getY();
     double getZ();
-  private:
-    double x,y,z;
+
 };
 
 #endif // VERTEX_H

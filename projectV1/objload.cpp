@@ -13,8 +13,16 @@ objLoad::objLoad(string fName)
     {
         /* still need to implement vertices vs. facet separation */
         getline(stream, currLine);
-        Vertex v(currLine);
-        vertices.push_back(v);
+        if (currLine[0] == 'v')
+        {
+            Vertex v(currLine);
+            vertices.push_back(v);
+        }
+        if (currLine[0] == 'f')
+        {
+            Vertex f(currLine);
+            vertices.push_back(f);
+        }
     }
     stream.close();
 }

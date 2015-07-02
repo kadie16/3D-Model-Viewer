@@ -16,6 +16,7 @@ class objLoad
     //private:
         std::string fileName;
         std::vector<Vertex> vertices;
+        std::vector<Vertex> facets;
 
 
 };

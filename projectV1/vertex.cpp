@@ -25,7 +25,7 @@ double Vertex::getZ()
     return z;
 }
 
-void print()
+void Vertex::print()
 {
    //cout << this.x << " , " << this.y << " , " << this.z << endl;
 
