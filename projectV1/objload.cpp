@@ -13,15 +13,25 @@ objLoad::objLoad(string fName)
     {
         /* still need to implement vertices vs. facet separation */
         getline(stream, currLine);
-        if (currLine[0] == 'v')
+        int x, y, z;
+        string type;
+        stringstream ss(currLine);
+        ss >> type;
+        if (type[0] == 'v')
         {
-            Vertex v(currLine);
-            vertices.push_back(v);
+            stringstream ss(currLine);
+            ss >> x >> y >> z;
+            vertices.push_back(x);
+            vertices.push_back(y);
+            vertices.push_back(z);
         }
-        if (currLine[0] == 'f')
+        if (type[0] == 'f')
         {
-            Vertex f(currLine);
-            vertices.push_back(f);
+            stringstream ss(currLine);
+            ss >> x >> y >> z;
+            facets.push_back(x);
+            facets.push_back(y);
+            facets.push_back(z);
         }
     }
     stream.close();
@@ -38,9 +48,9 @@ int main()
     cout << "Please enter a filename:  ";
     cin >> fileName;
     objLoad loader(fileName);
-    for (Vertex v : loader.vertices)
+    for (double v : loader.vertices)
     {
-        v.print();
+        cout << v << endl;
     }
     cout << endl;
     return 0;
