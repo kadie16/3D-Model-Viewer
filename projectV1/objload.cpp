@@ -5,8 +5,9 @@ objLoad::objLoad(string fName)
 {
     cout << "Loading object from path:  " << fName << endl;
     fileName = fName;
-    /* open file stream */
+    /* open user input file stream */
     //ifstream stream(fName.c_str());
+    /* open hard coded file stream */
     ifstream stream("/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/projectV1/test.obj");
     if (stream.is_open())
     {
@@ -16,26 +17,26 @@ objLoad::objLoad(string fName)
         {
             /* still need to implement vertices vs. facet separation */
             getline(stream, currLine);
-            int x, y, z;
-            string type;
-            stringstream ss(currLine);
-            ss >> type;
-            if (type[0] == 'v')
+            //cout << currLine << endl;
+            double x, y, z;
+
+
+            if (currLine[0] == 'v')
             {
-                stringstream ss(currLine);
-                ss >> x >> y >> z;
-                //cout << x << ' , ' << y << ' , ' << z << endl;
-                vertices.push_back(x);
-                vertices.push_back(y);
-                vertices.push_back(z);
-            }
-            if (type[0] == 'f')
+                float Vertex[3];
+                sscanf(currLine.c_str(), "%*s %f %f %f", &Vertex[0], &Vertex[1], &Vertex[2]);
+                vertices.push_back(Vertex[0]);
+                vertices.push_back(Vertex[1]);
+                vertices.push_back(Vertex[2]);
+             }
+
+            if (currLine[0] == 'f')
             {
-                stringstream ss(currLine);
-                ss >> x >> y >> z;
-                facets.push_back(x);
-                facets.push_back(y);
-                facets.push_back(z);
+                float Facet[3];
+                sscanf(currLine.c_str(), "%*s %f %f %f", &Facet[0], &Facet[1], &Facet[2]);
+                facets.push_back(Facet[0]);
+                facets.push_back(Facet[1]);
+                facets.push_back(Facet[2]);
             }
         }
         stream.close();
@@ -52,9 +53,9 @@ string objLoad::getFileName()
 
 void objLoad::print()
 {
-    for (double v : vertices)
+    for (unsigned i = 0 ; i < vertices.size(); i++)
     {
-        cout << v << endl;
+        cout << vertices.at(i) << endl;
     }
 }
 
