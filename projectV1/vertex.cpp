@@ -2,13 +2,26 @@
 
 using namespace std;
 
-Vertex::Vertex(string input)
+Vertex::Vertex(string input, char type)
 {
-    float vertexArr[3];
-    sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
-    x = vertexArr[0];
-    y = vertexArr[1];
-    z = vertexArr[2];
+    if (type == 'v')
+    {
+        float vertexArr[3];
+        sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+        x = vertexArr[0];
+        y = vertexArr[1];
+        z = vertexArr[2];
+    }
+    else if (type == 'f')
+    {
+        float vertexArr[3];
+        sscanf(input.c_str(), "%*s %f %f %f / ", &vertexArr[0], &vertexArr[2], &vertexArr[4]);
+        x = vertexArr[0];
+        y = vertexArr[1];
+        z = vertexArr[2];
+
+        cout << this -> x << ' , ' << this -> y << ' , ' << this -> z << endl;
+    }
 }
 
 double Vertex::getX()

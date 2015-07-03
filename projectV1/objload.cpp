@@ -15,19 +15,19 @@ objLoad::objLoad(string fName)
         string currLine;
         while (!stream.eof())
         {
-            /* still need to implement vertices vs. facet separation */
+            /* TO DO: consider using (string?)stream instead of getline everytime */
             getline(stream, currLine);
-            //cout << currLine << endl;
 
-            if (currLine[0] == 'v')
+            if (currLine[0] == 'v' && currLine[1] == ' ')
             {
-                Vertex v(currLine);
+                Vertex v(currLine, currLine[0]);
                 vertices.push_back(v);
              }
 
-            if (currLine[0] == 'f')
+            else if (currLine[0] == 'f' && currLine[1] == ' ')
             {
-                Vertex f(currLine);
+                /* TO DO: read in first number, use slash as delimeter */
+                Vertex f(currLine, currLine[0]);
                 facets.push_back(f);
             }
         }
@@ -49,6 +49,11 @@ void objLoad::print()
     for (unsigned i = 0 ; i < vertices.size(); i++)
     {
        vertices.at(i).print();
+    }
+    cout << endl << fileName << " facets: " << endl;
+    for (unsigned i = 0 ; i < facets.size(); i++)
+    {
+       facets.at(i).print();
     }
 }
 
