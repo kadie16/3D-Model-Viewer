@@ -14,11 +14,11 @@ Vertex::Vertex(string input, char type)
     }
     else if (type == 'f')
     {
-        float vertexArr[3];
-        sscanf(input.c_str(), "%*s %f/%f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+        float vertexArr[6];
+        sscanf(input.c_str(), "%*s %f/%f %f/%f %f/%f", &vertexArr[0], &vertexArr[1], &vertexArr[2], &vertexArr[3], &vertexArr[4], &vertexArr[5]);
         x = vertexArr[0];
-        y = vertexArr[1];
-        z = vertexArr[2];
+        y = vertexArr[2];
+        z = vertexArr[4];
 
         //cout << this -> x << ' , ' << this -> y << ' , ' << this -> z << endl;
     }
