@@ -57,3 +57,12 @@ void objLoad::print()
     }
 }
 
+vector<Vertex> objLoad::getVertices()
+{
+    return vertices;
+}
+
+vector<Vertex> objLoad::getFacets()
+{
+    return facets;
+}

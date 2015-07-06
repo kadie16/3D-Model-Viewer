@@ -10,6 +10,7 @@ private:
   double x,y,z;
 
 public:
+    Vertex();
     Vertex(std::string input, char type);
     void print();
     double getX();

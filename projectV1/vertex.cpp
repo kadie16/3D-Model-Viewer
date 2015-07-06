@@ -2,6 +2,11 @@
 
 using namespace std;
 
+Vertex::Vertex()
+{
+
+}
+
 Vertex::Vertex(string input, char type)
 {
     if (type == 'v')

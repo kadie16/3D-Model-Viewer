@@ -7,6 +7,9 @@
 #include<string>
 #include<iterator>
 #include "vertex.h"
+#include <QGLWidget>
+#include <QTimer>
+
 
 class objLoad
 {
@@ -15,6 +18,8 @@ class objLoad
         objLoad(std::string fName);
         std::string getFileName(void);
         void print();
+        std::vector<Vertex> getVertices();
+        std::vector<Vertex> getFacets();
     //private:
         std::string fileName;
         std::vector<Vertex> vertices;
