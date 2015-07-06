@@ -9,6 +9,7 @@
 #include "vertex.h"
 #include <QGLWidget>
 #include <QTimer>
+#include <QString>
 
 
 class objLoad

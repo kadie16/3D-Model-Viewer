@@ -15,11 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
-    objload.cpp
+    objload.cpp \
+    vertex.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    objload.h
+    objload.h \
+    vertex.h \
+    vertex.h
 
 FORMS    += mainwindow.ui
 

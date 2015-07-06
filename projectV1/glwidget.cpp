@@ -37,11 +37,14 @@ void GLWidget::paintGL(objLoad objFile){
     /* load coordinates into triangles through loop */
     /* refer to boxes for examples on interaction */
     glBegin(GL_TRIANGLES);
+
     for (unsigned i = 0 ; i < vertices.size() ; i++)
     {
         v = vertices.at(i);
+        glColor3f(0,1,1);
         glVertex3f(v.getX(), v.getY(), v.getZ());
      }
+    std::cout << "painted";
     glEnd();
 }
 
