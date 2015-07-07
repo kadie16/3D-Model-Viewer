@@ -25,8 +25,6 @@ class objLoad
         std::string fileName;
         std::vector<Vertex> vertices;
         std::vector<Vertex> facets;
-
-
 };
 
 #endif // OBJLOAD_H

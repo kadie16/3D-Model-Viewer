@@ -19,9 +19,10 @@ void MainWindow::on_pushButton_2_clicked()
     std::string fileName = QFileDialog::getOpenFileName(
                 this,
                 tr("Open File"),
-                "C://",
+                "/Users/Kadie/Downloads/BerkeleyGarmentLibrary/Garments/",
                 "Object File (*.obj)"
                 ).toStdString();
     objLoad loader(fileName);
-    ui -> widget16 -> paintGL(loader);
+    loader.print();
+    ui->widget16->grabObj(loader);
 }

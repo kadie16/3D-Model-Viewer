@@ -12,13 +12,14 @@ public:
     explicit GLWidget(QWidget *parent = 0);
 
     void initializeGL();
-    void paintGL(objLoad objFile);
     void paintGL();
+    void grabObj(objLoad objFile);
     void resizeGL(int w, int h);
 private:
     QTimer timer;
-
-
+    // make function to set objFile
+    objLoad *objPtr;
+    std::vector<Vertex> vertices;
 };
 
 #endif // GLWIDGET_H
