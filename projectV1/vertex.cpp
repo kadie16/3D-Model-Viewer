@@ -41,7 +41,7 @@ void Vertex::parseFace(string input){
      token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
      input.erase(0, token.length() + token2.length());
      cout << input << endl;
-    }
+    } // TODO: FIX THISS!!!!!!!!
      x = vertexArr[0];
      y = vertexArr[2];
      z = vertexArr[4];
