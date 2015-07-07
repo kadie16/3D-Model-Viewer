@@ -20,6 +20,7 @@ private:
     // make function to set objFile
     objLoad *objPtr;
     std::vector<Vertex> vertices;
+    std::vector<Vertex> faces;
 };
 
 #endif // GLWIDGET_H

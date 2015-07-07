@@ -25,6 +25,7 @@ class objLoad
         std::string fileName;
         std::vector<Vertex> vertices;
         std::vector<Vertex> facets;
+        std::vector<Vertex> normals;
 };
 
 #endif // OBJLOAD_H

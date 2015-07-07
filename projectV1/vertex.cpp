@@ -17,6 +17,14 @@ Vertex::Vertex(string input, char type)
         y = vertexArr[1];
         z = vertexArr[2];
     }
+    else if (type == 'n')
+    {
+        float vertexArr[3];
+                sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+        x = vertexArr[0];
+        y = vertexArr[1];
+        z = vertexArr[2];
+    }
     else if (type == 'f')
     {
         float vertexArr[6];
@@ -24,8 +32,6 @@ Vertex::Vertex(string input, char type)
         x = vertexArr[0];
         y = vertexArr[2];
         z = vertexArr[4];
-
-        //cout << this -> x << ' , ' << this -> y << ' , ' << this -> z << endl;
     }
 }
 

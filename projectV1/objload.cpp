@@ -23,6 +23,11 @@ objLoad::objLoad(string fName)
                 Vertex v(currLine, currLine[0]);
                 vertices.push_back(v);
              }
+            else if (currLine[0] == 'v' && currLine[1] == 'n')
+            {
+                Vertex n(currLine, currLine[1]);
+                normals.push_back(n);
+            }
 
             else if (currLine[0] == 'f' && currLine[1] == ' ')
             {
