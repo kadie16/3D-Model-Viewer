@@ -11,13 +11,17 @@ void GLWidget::initializeGL(){
     glClearColor(.753, 0, .46, 0);
     glEnable (GL_LIGHTING);
     glShadeModel (GL_SMOOTH);
+    glEnable(GL_LIGHT0);
+    //glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 
-
+    glEnable(GL_CULL_FACE);
 
 }
 
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glRotatef(1,1,1,0);
     /* load coordinates into triangles through loop */
     /* refer to boxes for examples on interaction */
@@ -43,12 +47,12 @@ void GLWidget::paintGL(){
                 v3.inheritNormal(v1);
 
                 /* Open GL Stuff */
-                glColor3f(0,1,1);
+                glColor4f(0,1,1,1);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
-                glNormal3f(normal.at(0), normal.at(1), normal.at(2));
+                //glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
-                glNormal3f(normal.at(0), normal.at(1), normal.at(2));
+                //glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v3.getX(), v3.getY(), v3.getZ());
             }
     }

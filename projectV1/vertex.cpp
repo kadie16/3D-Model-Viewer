@@ -25,7 +25,7 @@ Vertex::Vertex(string input, char type)
 }
 
 void Vertex::parseFace(string input){
-    int tokenCount;
+    int tokenCount = 0;
     input.erase(0,1); // delete the f
     string delimiter = "/";
     size_t pos = 0;
@@ -46,10 +46,10 @@ void Vertex::parseFace(string input){
      y = vertexArr[2];
      z = vertexArr[4];
 
-     int xa = vertexArr[1];
+     int xa = vertexArr[0];
      int  xb = vertexArr[1];
-     int xc = vertexArr[1];
-    cout << x << " " << xa << " " << y << " " << xb << " " << z << " " << xc << endl;
+     int xc = vertexArr[2];
+    //cout << x << " " << xa << " " << y << " " << xb << " " << z << " " << xc << endl;
 }
 void Vertex::parseCoordinates(string input){
     float vertexArr[3];
@@ -105,16 +105,15 @@ void Vertex::inheritNormal(Vertex parent){
 }
 
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
-
-
-
+    /* CHECK ORDER OF VERTICES, SHOULD BE SAME AS ENTERED IN FILE */
+    /* MOVE NORMAL INTO FACE CLASS */
     /* vectors */
     float va[3], vb[3], vr[3], val;
-    va[0] = x -v2.getX();
+    va[0] = x - v2.getX();
     va[1] = y - v2.getY();
     va[2] = z - v2.getZ();
 
-    vb[1] = x - v3.getX();
+    vb[0] = x - v3.getX();
     vb[1] = y - v3.getY();
     vb[2] = z - v3.getZ();
 

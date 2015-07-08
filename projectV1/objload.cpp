@@ -31,7 +31,6 @@ objLoad::objLoad(string fName)
 
             else if (currLine[0] == 'f' && currLine[1] == ' ')
             {
-                /* TO DO: read in first number, use slash as delimeter */
                 Vertex f(currLine, currLine[0]);
                 facets.push_back(f);
             }

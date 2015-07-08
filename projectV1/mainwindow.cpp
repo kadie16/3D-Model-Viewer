@@ -23,6 +23,6 @@ void MainWindow::on_pushButton_2_clicked()
                 "Object File (*.obj)"
                 ).toStdString();
     objLoad loader(fileName);
-    loader.print();
+    //loader.print();
     ui->widget16->grabObj(loader);
 }
