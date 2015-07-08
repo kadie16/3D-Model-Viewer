@@ -7,7 +7,7 @@ Face::Face()
 Face::Face(float *v1, float *v2, float *v3)
 {
     /* vectors */
-    float va[3], vb[3], vr[3] val;
+    float va[3], vb[3], vr[3], val;
     va[0] = v1[0] - v2[0];
     va[1] = v1[1] - v2[1];
     va[2] = v1[2] - v2[2];

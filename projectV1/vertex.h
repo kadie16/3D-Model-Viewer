@@ -3,12 +3,13 @@
 #include <string>
 #include <sstream>
 #include<iostream>
-#include <QRegularExpression>
-
+#include <cmath>
+#include <vector>
 class Vertex
 {
 private:
-  double x,y,z;
+  float x,y,z;
+  std::vector<float> normal;
 
 public:
     Vertex();
@@ -16,10 +17,15 @@ public:
     void print();
     void parseCoordinates(std::string input);
     void parseFace(std::string input);
-    double getX();
-    double getY();
-    double getZ();
+    float getX();
+    float getY();
+    float getZ();
     float * toArray();
+    void assignNormal(float v1, float v2, float v3);
+    std::vector<float> findNormal(Vertex v2, Vertex v3);
+    void inheritNormal(Vertex parent);
+    std::vector<float> getNormal();
+
 
 };
 

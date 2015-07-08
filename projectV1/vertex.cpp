@@ -4,7 +4,6 @@ using namespace std;
 
 Vertex::Vertex()
 {
-
 }
 
 Vertex::Vertex(string input, char type)
@@ -60,17 +59,17 @@ void Vertex::parseCoordinates(string input){
     z = vertexArr[2];
 }
 
-double Vertex::getX()
+float Vertex::getX()
 {
     return x;
 }
 
-double Vertex::getY()
+float Vertex::getY()
 {
     return y;
 }
 
-double Vertex::getZ()
+float Vertex::getZ()
 {
     return z;
 }
@@ -89,4 +88,46 @@ void Vertex::print()
 {
    cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
 
+}
+
+void Vertex::assignNormal(float v1, float v2, float v3){
+    normal.push_back(v1);
+    normal.push_back(v2);
+    normal.push_back(v3);
+}
+
+vector<float> Vertex::getNormal(){
+    return normal;
+}
+
+void Vertex::inheritNormal(Vertex parent){
+    normal = parent.getNormal();
+}
+
+vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
+
+
+
+    /* vectors */
+    float va[3], vb[3], vr[3], val;
+    va[0] = x -v2.getX();
+    va[1] = y - v2.getY();
+    va[2] = z - v2.getZ();
+
+    vb[1] = x - v3.getX();
+    vb[1] = y - v3.getY();
+    vb[2] = z - v3.getZ();
+
+    /* cross product */
+    vr[0] = va[1] * vb[2] - vb[1] * va[2];
+    vr[1] = vb[0] * va[2] - va[0] * vb[2];
+    vr[2] = va[0] * vb[1] - vb[0] * va[1];
+
+    /* normalize */
+    val = sqrt( vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
+    normal.push_back(vr[0]/val);
+    normal.push_back(vr[1]/val);
+    normal.push_back(vr[2]/val);
+
+    return normal;
 }

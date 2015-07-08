@@ -38,17 +38,12 @@ void GLWidget::paintGL(){
                 v1 = vertices.at(f.getX() - 1);
                 v2 = vertices.at(f.getY() - 1);
                 v3 = vertices.at(f.getZ() - 1);
-                Face actualF(*v1.toArray(), *v2.toArray(), *v3.toArray());
-                normal = *actualF.getNormal();
                 /* TO DO, GIVE OPEN GL NORMALS AND ASSIGN LIGHTING */
                 glColor3f(0,1,1);
-                glNormal3f(normal[0], normal[1], normal[2]);
-                glVertex3f(v.getX(), v.getY(), v.getZ());
+                glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                // glColor3f(0,0,0);
-                v = vertices.at(v2 - 1);
-                glVertex3f(v.getX(), v.getY(), v.getZ());
-                v = vertices.at(v3 - 1);
-                glVertex3f(v.getX(), v.getY(), v.getZ());
+                glVertex3f(v2.getX(), v2.getY(), v2.getZ());
+                glVertex3f(v3.getX(), v3.getY(), v3.getZ());
             }
     }
     glEnd();
