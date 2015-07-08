@@ -9,6 +9,7 @@ GLWidget::GLWidget(QWidget *parent) :
 
 void GLWidget::initializeGL(){
     glClearColor(.753, 0, .46, 0);
+    glEnable (GL_LIGHTING);
     glShadeModel (GL_SMOOTH);
 
 
@@ -26,23 +27,28 @@ void GLWidget::paintGL(){
         Vertex v;
         Vertex f;
         Face actualF();
-        float normal[3];
-
+        std::vector<float> normal;
         Vertex v1, v2, v3;
 
             for (unsigned i = 0 ; i < faces.size() ; i++)
             {
                 /* x, y, z in face f are the indices of the vertices that make that face */
-                /* need to glVertex3f for each vertex */
                 f = faces.at(i);
                 v1 = vertices.at(f.getX() - 1);
                 v2 = vertices.at(f.getY() - 1);
                 v3 = vertices.at(f.getZ() - 1);
-                /* TO DO, GIVE OPEN GL NORMALS AND ASSIGN LIGHTING */
+                /* find normals */
+                normal = v1.findNormal(v2, v3);
+                v2.inheritNormal(v1);
+                v3.inheritNormal(v1);
+
+                /* Open GL Stuff */
                 glColor3f(0,1,1);
+                glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
-               // glColor3f(0,0,0);
+                glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
+                glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v3.getX(), v3.getY(), v3.getZ());
             }
     }
