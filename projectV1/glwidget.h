@@ -4,6 +4,7 @@
 #include <QTimer>
 #include "objload.h"
 #include "vertex.h"
+#include "face.h"
 
 class GLWidget : public QGLWidget
 {

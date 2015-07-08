@@ -1,4 +1,8 @@
 #include "face.h"
+Face::Face()
+{
+
+}
 
 Face::Face(float *v1, float *v2, float *v3)
 {

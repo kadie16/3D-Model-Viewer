@@ -11,13 +11,7 @@ void GLWidget::initializeGL(){
     glClearColor(.753, 0, .46, 0);
     glShadeModel (GL_SMOOTH);
 
-    //glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    //glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_DEPTH_TEST);
 
 }
 
@@ -31,19 +25,24 @@ void GLWidget::paintGL(){
     if (objPtr){
         Vertex v;
         Vertex f;
-        int v1, v2, v3;
+        Face actualF();
+        float normal[3];
+
+        Vertex v1, v2, v3;
 
             for (unsigned i = 0 ; i < faces.size() ; i++)
             {
                 /* x, y, z in face f are the indices of the vertices that make that face */
                 /* need to glVertex3f for each vertex */
                 f = faces.at(i);
-                v1 = f.getX();
-                v2 = f.getY();
-                v3 = f.getZ();
-
-                v = vertices.at(v1 - 1);
+                v1 = vertices.at(f.getX() - 1);
+                v2 = vertices.at(f.getY() - 1);
+                v3 = vertices.at(f.getZ() - 1);
+                Face actualF(*v1.toArray(), *v2.toArray(), *v3.toArray());
+                normal = *actualF.getNormal();
+                /* TO DO, GIVE OPEN GL NORMALS AND ASSIGN LIGHTING */
                 glColor3f(0,1,1);
+                glNormal3f(normal[0], normal[1], normal[2]);
                 glVertex3f(v.getX(), v.getY(), v.getZ());
                // glColor3f(0,0,0);
                 v = vertices.at(v2 - 1);

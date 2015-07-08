@@ -75,6 +75,16 @@ double Vertex::getZ()
     return z;
 }
 
+float * Vertex::toArray()
+{
+    float a[3];
+    a[0] = this -> x;
+    a[1] = this -> y;
+    a[2] = this -> z;
+
+    return a;
+}
+
 void Vertex::print()
 {
    cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
