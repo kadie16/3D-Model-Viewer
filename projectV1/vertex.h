@@ -19,6 +19,7 @@ public:
     double getX();
     double getY();
     double getZ();
+    float * toArray();
 
 };
 
