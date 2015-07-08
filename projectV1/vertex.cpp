@@ -26,17 +26,25 @@ Vertex::Vertex(string input, char type)
 }
 
 void Vertex::parseFace(string input){
-    int vertexArr[3];
-    QString qstr = QString::fromStdString(input);
-    QRegularExpression  rx("(?<=\ )[0-9]+(?=\/)");
-    int i = 0;
-    while (i <= rx.match(qstr).lastCapturedIndex()){
-        vertexArr[i] = atoi(rx.match(qstr).captured(i).toStdString().c_str());
-    }
-
-    x = vertexArr[0];
-    y = vertexArr[1];
-    z = vertexArr[2];
+    int tokenCount;
+    input.erase(0,1); // delete the f
+    string delimiter = "/";
+    size_t pos = 0;
+    string token;
+    string token2;
+    int vertexArr[9];
+    while ((pos = input.find(delimiter) != string::npos))
+    {
+     token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
+     istringstream(token) >> vertexArr[tokenCount];
+     tokenCount ++; //count index tokens
+     token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
+     input.erase(0, token.length() + token2.length());
+     cout << input << endl;
+    } // TODO: FIX THISS!!!!!!!!
+     x = vertexArr[0];
+     y = vertexArr[2];
+     z = vertexArr[4];
 }
 void Vertex::parseCoordinates(string input){
     float vertexArr[3];
@@ -66,4 +74,3 @@ void Vertex::print()
    cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
 
 }
-
