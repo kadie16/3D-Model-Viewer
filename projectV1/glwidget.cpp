@@ -14,9 +14,9 @@ void GLWidget::initializeGL(){
     glEnable(GL_LIGHT0);
     //glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
-
+    glDepthFunc(GL_LEQUAL);
     glEnable(GL_CULL_FACE);
-
+    glCullFace(GL_FRONT_AND_BACK);
 }
 
 void GLWidget::paintGL(){
