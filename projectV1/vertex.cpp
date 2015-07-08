@@ -16,7 +16,7 @@ Vertex::Vertex(string input, char type)
     {
         if (input.find("/") != string::npos)
         {
-            this->parseFace(input);
+          this->parseFace(input);
         } else {
           this->parseCoordinates(input);
         }
@@ -40,16 +40,13 @@ void Vertex::parseFace(string input){
      token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
      input.erase(0, token.length() + token2.length());
 
-    } // TODO: FIX THISS!!!!!!!!
-
+    }
+    /* TO DO : FIX THIS, ADJUST by tokenCount */
      x = vertexArr[0];
      y = vertexArr[2];
      z = vertexArr[4];
 
-     int xa = vertexArr[0];
-     int  xb = vertexArr[1];
-     int xc = vertexArr[2];
-    //cout << x << " " << xa << " " << y << " " << xb << " " << z << " " << xc << endl;
+     //cout << x << y << z << endl;
 }
 void Vertex::parseCoordinates(string input){
     float vertexArr[3];
@@ -108,14 +105,15 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     /* CHECK ORDER OF VERTICES, SHOULD BE SAME AS ENTERED IN FILE */
     /* MOVE NORMAL INTO FACE CLASS */
     /* vectors */
+    /***************************** CHECK ORDER  ***********************************/
     float va[3], vb[3], vr[3], val;
-    va[0] = x - v2.getX();
-    va[1] = y - v2.getY();
-    va[2] = z - v2.getZ();
+    va[0] = v2.getX() - x;
+    va[1] = v2.getY() - y;
+    va[2] = v2.getZ() - z;
 
-    vb[0] = x - v3.getX();
-    vb[1] = y - v3.getY();
-    vb[2] = z - v3.getZ();
+    vb[0] = v3.getX() - x;
+    vb[1] = v3.getY() - y;
+    vb[2] = v3.getZ() - z;
 
     /* cross product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
@@ -123,7 +121,7 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     vr[2] = va[0] * vb[1] - vb[0] * va[1];
 
     /* normalize */
-    val = sqrt( vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
+    val = sqrt(vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
     normal.push_back(vr[0]/val);
     normal.push_back(vr[1]/val);
     normal.push_back(vr[2]/val);
