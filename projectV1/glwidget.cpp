@@ -15,6 +15,8 @@ void GLWidget::initializeGL(){
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+    //glScalef (0.5, 0.5, 0.5);
+    //glTranslatef(0,0,1.0);
     //glOrtho(-1,0.02,0,2,0,1);
 
     //glDisable(GL_CULL_FACE);
@@ -74,16 +76,15 @@ void GLWidget::grabObj(objLoad objFile){
 
 
 void GLWidget::resizeGL(int w, int h){
-    // Calculate aspect ratio
-    qreal aspect = qreal(w) / qreal(h ? h : 1);
 
-    // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+}
 
-    // Reset projection
-    projection.setToIdentity();
+void GLWidget::mousePressEvent(QMouseEvent *e)
+{
 
-    // Set perspective projection
-    projection.perspective(fov, aspect, zNear, zFar);
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *e)
+{
 
 }

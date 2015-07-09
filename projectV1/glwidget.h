@@ -2,9 +2,13 @@
 #define GLWIDGET_H
 #include <QGLWidget>
 #include <QTimer>
+#include <QVector2D>
+#include <QMouseEvent>
 #include "objload.h"
 #include "vertex.h"
 #include "face.h"
+
+#include <QMatrix4x4>
 
 class GLWidget : public QGLWidget
 {
@@ -17,10 +21,13 @@ public:
     void resizeGL(int w, int h);
 private:
     QTimer timer;
-    // make function to set objFile
     objLoad *objPtr;
     std::vector<Vertex> vertices;
     std::vector<Vertex> faces;
+
+protected:
+    void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 };
 
 #endif // GLWIDGET_H
