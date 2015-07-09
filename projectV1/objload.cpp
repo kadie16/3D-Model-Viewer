@@ -68,30 +68,36 @@ vector<face> objLoad::getFacets()
 }
 
 vector<Vertex> objLoad::parseFace(string input){
-    int tokenCount = 0;
-    input.erase(0,1); // delete the f
-    string delimiter = "/";
-    size_t pos = 0;
-    string token;
-    string token2;
-    int index;
-    int prevIndex = 0;
     vector<Vertex> toReturn;
-    while ((pos = input.find(delimiter) != string::npos))
-    {
-     token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
-     istringstream(token) >> index;
-     if (index != prevIndex){
-        tokenCount ++; //count index tokens
-        cout << tokenCount << " : " << index << endl;
-        vertices.at(index -1).print();
-        toReturn.push_back(vertices.at(index - 1));
-        prevIndex = index;
-
-     }
-
-     token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
-     input.erase(0, token.length() + token2.length());
+    if (input.find("/") != string::npos) {
+        int tokenCount = 0;
+        input.erase(0,1); // delete the f
+        string delimiter = "/";
+        size_t pos = 0;
+        string token;
+        string token2;
+        int index;
+        int prevIndex = 0;
+        while ((pos = input.find(delimiter) != string::npos))
+        {
+         token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
+         istringstream(token) >> index;
+         if (index != prevIndex){
+            tokenCount ++; //count index tokens
+            cout << tokenCount << " : " << index << endl;
+            vertices.at(index -1).print();
+            toReturn.push_back(vertices.at(index - 1));
+            prevIndex = index;
+        }
+         token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
+         input.erase(0, token.length() + token2.length());
+        }
+    } else {
+        float vertexArr[3];
+        sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+        toReturn.push_back(vertices.at(vertexArr[0] - 1));
+        toReturn.push_back(vertices.at(vertexArr[1] - 1));
+        toReturn.push_back(vertices.at(vertexArr[2] - 1));
     }
     return toReturn;
 }
