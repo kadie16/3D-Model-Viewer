@@ -46,7 +46,7 @@ void Vertex::parseFace(string input){
      y = vertexArr[2];
      z = vertexArr[4];
 
-     //cout << x << y << z << endl;
+
 }
 void Vertex::parseCoordinates(string input){
     float vertexArr[3];
@@ -54,6 +54,7 @@ void Vertex::parseCoordinates(string input){
     x = vertexArr[0];
     y = vertexArr[1];
     z = vertexArr[2];
+    cout << x << " " << y << " " << z << endl;
 }
 
 float Vertex::getX()
@@ -111,9 +112,9 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     va[1] = v2.getY() - y;
     va[2] = v2.getZ() - z;
 
-    vb[0] = v3.getX() - x;
-    vb[1] = v3.getY() - y;
-    vb[2] = v3.getZ() - z;
+    vb[0] = x - v3.getX();
+    vb[1] = y - v3.getY();
+    vb[2] = z - v3.getZ();
 
     /* cross product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
@@ -122,6 +123,7 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
 
     /* normalize */
     val = sqrt(vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
+
     normal.push_back(vr[0]/val);
     normal.push_back(vr[1]/val);
     normal.push_back(vr[2]/val);

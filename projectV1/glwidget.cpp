@@ -15,9 +15,10 @@ void GLWidget::initializeGL(){
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+    //glOrtho(-1,0.02,0,2,0,1);
 
     //glDisable(GL_CULL_FACE);
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
 }
 
@@ -35,6 +36,7 @@ void GLWidget::paintGL(){
         std::vector<float> normal;
 
         Vertex v1, v2, v3;
+        //std::cout << vertices.at(0).getX() << " " << vertices.at(0).getY() << " " << vertices.at(0).getZ() << std::endl;
 
             for (unsigned i = 0 ; i < faces.size() ; i++)
             {
@@ -57,6 +59,7 @@ void GLWidget::paintGL(){
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
                 glVertex3f(v3.getX(), v3.getY(), v3.getZ());
+
             }
     }
     glEnd();
@@ -71,5 +74,16 @@ void GLWidget::grabObj(objLoad objFile){
 
 
 void GLWidget::resizeGL(int w, int h){
+    // Calculate aspect ratio
+    qreal aspect = qreal(w) / qreal(h ? h : 1);
+
+    // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
+    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+
+    // Reset projection
+    projection.setToIdentity();
+
+    // Set perspective projection
+    projection.perspective(fov, aspect, zNear, zFar);
 
 }
