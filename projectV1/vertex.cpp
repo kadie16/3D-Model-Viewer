@@ -15,47 +15,12 @@ Vertex::Vertex(string input, char type)
         this->parseCoordinates(input);
         isInitialized = true;
     }
-    else if (type == 'f')
-    {
-        if (input.find("/") != string::npos)
-        {
-          this->parseFace(input);
-          isInitialized = true;
-        } else {
-          this->parseCoordinates(input);
-          isInitialized = true;
-        }
-    }
-
 }
 
 bool Vertex::exists(){
     return isInitialized;
 }
 
-void Vertex::parseFace(string input){
-    int tokenCount = 0;
-    input.erase(0,1); // delete the f
-    string delimiter = "/";
-    size_t pos = 0;
-    string token;
-    string token2;
-    int vertexArr[9];
-    while ((pos = input.find(delimiter) != string::npos))
-    {
-     token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
-     istringstream(token) >> vertexArr[tokenCount];
-     tokenCount ++; //count index tokens
-     token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
-     input.erase(0, token.length() + token2.length());
-
-    }
-    /* TO DO : FIX THIS, ADJUST by tokenCount */
-     x = vertexArr[0];
-     y = vertexArr[2];
-     z = vertexArr[4];
-
-}
 void Vertex::parseCoordinates(string input){
     float vertexArr[3];
     sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
@@ -112,9 +77,6 @@ void Vertex::inheritNormal(Vertex parent){
 
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     /* CHECK ORDER OF VERTICES, SHOULD BE SAME AS ENTERED IN FILE */
-    /* MOVE NORMAL INTO FACE CLASS */
-    /* vectors */
-    /***************************** CHECK ORDER  ***********************************/
     float va[3], vb[3], vr[3], val;
     va[0] = v2.getX() - x;
     va[1] = v2.getY() - y;
@@ -124,12 +86,12 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     vb[1] = y - v3.getY();
     vb[2] = z - v3.getZ();
 
-    /* cross product */
+    /* Cross Product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
     vr[1] = vb[0] * va[2] - va[0] * vb[2];
     vr[2] = va[0] * vb[1] - vb[0] * va[1];
 
-    /* normalize */
+    /* Normalization Factor */
     val = sqrt(vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
 
     normal.push_back(vr[0]/val);

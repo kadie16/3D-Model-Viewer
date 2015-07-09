@@ -19,7 +19,7 @@ void MainWindow::on_pushButton_2_clicked()
     std::string fileName = QFileDialog::getOpenFileName(
                 this,
                 tr("Open File"),
-                "/Users/Kadie/Downloads/BerkeleyGarmentLibrary/testFiles/",
+                "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/projectV1/testFiles/",
                 "Object File (*.obj)"
                 ).toStdString();
     objLoad loader(fileName);

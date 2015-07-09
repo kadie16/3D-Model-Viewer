@@ -32,30 +32,24 @@ void GLWidget::paintGL(){
     glBegin(GL_TRIANGLES);
 
     if (objPtr){
-        Vertex v;
         face f;
-        //Face actualF();
         std::vector<float> normal;
-
         Vertex v1, v2, v3;
-        //std::cout << vertices.at(0).getX() << " " << vertices.at(0).getY() << " " << vertices.at(0).getZ() << std::endl;
-
-            for (unsigned i = 0 ; i < faces.size() ; i++)
+        for (unsigned i = 0 ; i < faces.size() ; i++)
             {
+                /* Getting Normal and Vertices from Face */
                 f = faces.at(i);
                 v1 = f.getVertex(1);
                 v2 = f.getVertex(2);
                 v3 = f.getVertex(3);
                 normal = f.getNormal();
 
-                /* Open GL Stuff */
+                /* Rendering Face (OpenGL Stuff) */
                 glColor4f(0,1,1,1);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
-                /***************************** CHECK ORDER  ***********************************/
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
                 glVertex3f(v3.getX(), v3.getY(), v3.getZ());
-
             }
     }
     glEnd();

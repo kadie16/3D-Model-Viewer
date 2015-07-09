@@ -18,12 +18,12 @@ class objLoad
     public:
         objLoad();
         objLoad(std::string fName);
-        std::string getFileName(void);
+        std::string getFileName();
         void print();
         std::vector<Vertex> getVertices();
         std::vector<face> getFacets();
         std::vector<Vertex> parseFace(std::string line);
-    //private:
+    private:
         std::string fileName;
         std::vector<Vertex> vertices;
         std::vector<face> facets;

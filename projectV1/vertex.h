@@ -17,7 +17,6 @@ public:
     Vertex(std::string input, char type);
     void print();
     void parseCoordinates(std::string input);
-    void parseFace(std::string input);
     bool exists();
     float getX();
     float getY();
@@ -27,8 +26,6 @@ public:
     std::vector<float> findNormal(Vertex v2, Vertex v3);
     void inheritNormal(Vertex parent);
     std::vector<float> getNormal();
-
-
 };
 
 #endif // VERTEX_H

@@ -5,19 +5,16 @@ objLoad::objLoad(string fName)
 {
     cout << "Loading object from path:  " << fName << endl;
     fileName = fName;
-    /* open user input file stream */
+    /* Open file stream */
     ifstream stream(fName.c_str());
-    /* open hard coded file stream */
-    //ifstream stream("/Users/Kadie/Downloads/BerkeleyGarmentLibrary/Garments/blouse/coarse/blouse.obj");
     if (stream.is_open())
     {
-        /* fill vertices */
         string currLine;
         while (!stream.eof())
         {
-            /* TO DO: consider using (string?)stream instead of getline everytime */
+            /* Get next line of file */
             getline(stream, currLine);
-
+            /* Determine whether it is a vertex, normal, or face line */
             if (currLine[0] == 'v' && currLine[1] == ' ')
             {
                 Vertex v(currLine, currLine[0]);
@@ -69,9 +66,10 @@ vector<face> objLoad::getFacets()
 
 vector<Vertex> objLoad::parseFace(string input){
     vector<Vertex> toReturn;
+    /* Parses differently, depending on if there are slashes in line */
     if (input.find("/") != string::npos) {
-        int tokenCount = 0;
-        input.erase(0,1); // delete the f
+        /* remove the "f" in front of the line */
+        input.erase(0,1);
         string delimiter = "/";
         size_t pos = 0;
         string token;
@@ -80,19 +78,21 @@ vector<Vertex> objLoad::parseFace(string input){
         int prevIndex = 0;
         while ((pos = input.find(delimiter) != string::npos))
         {
-         token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
-         istringstream(token) >> index;
+         /* Token is index of vertex in the face */
+         token = input.substr(0, input.find(delimiter));
+         istringstream(token) >> index; /* Only succeeds if token is an integer */
          if (index != prevIndex){
-            tokenCount ++; //count index tokens
-            cout << tokenCount << " : " << index << endl;
-            vertices.at(index -1).print();
+            /* .obj file is indexed at 1, C++ vector indexed at 0 */
             toReturn.push_back(vertices.at(index - 1));
             prevIndex = index;
         }
-         token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
+         /* Tossing out token2 until further notice */
+         token2 = input.substr(input.find(delimiter), input.find(' '));
+         /* Erases everything up until next index */
          input.erase(0, token.length() + token2.length());
         }
     } else {
+        /* If there aren't any slashes, parses like coordinates */
         float vertexArr[3];
         sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
         toReturn.push_back(vertices.at(vertexArr[0] - 1));
