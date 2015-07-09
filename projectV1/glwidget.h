@@ -7,7 +7,6 @@
 #include "objload.h"
 #include "vertex.h"
 #include "face.h"
-
 #include <QMatrix4x4>
 
 class GLWidget : public QGLWidget
@@ -18,8 +17,13 @@ public:
     void initializeGL();
     void paintGL();
     void grabObj(objLoad objFile);
+    void grabWidth(int w);
+    void grabHeight(int h);
     void resizeGL(int w, int h);
+    void perspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 private:
+    int winW;
+    int winH;
     QTimer timer;
     objLoad *objPtr;
     std::vector<Vertex> vertices;
