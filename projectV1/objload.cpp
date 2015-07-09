@@ -80,7 +80,7 @@ vector<Vertex> objLoad::parseFace(string input){
     {
      token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
      istringstream(token) >> index;
-     cout << index << endl;
+     vertices.at(index -1).print();
      toReturn.push_back(vertices.at(index - 1));
      tokenCount ++; //count index tokens
      token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
