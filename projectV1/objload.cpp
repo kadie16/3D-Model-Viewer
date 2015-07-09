@@ -32,7 +32,7 @@ objLoad::objLoad(string fName)
             else if (currLine[0] == 'f' && currLine[1] == ' ')
             {
                 vector<Vertex> v = this->parseFace(currLine);
-                face f = face(v.at(1), v.at(2), v.at(3));
+                face f = face(v.at(0), v.at(1), v.at(2));
                 facets.push_back(f);
             }
         }
@@ -75,14 +75,21 @@ vector<Vertex> objLoad::parseFace(string input){
     string token;
     string token2;
     int index;
+    int prevIndex = 0;
     vector<Vertex> toReturn;
     while ((pos = input.find(delimiter) != string::npos))
     {
      token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
      istringstream(token) >> index;
-     vertices.at(index -1).print();
-     toReturn.push_back(vertices.at(index - 1));
-     tokenCount ++; //count index tokens
+     if (index != prevIndex){
+        tokenCount ++; //count index tokens
+        cout << tokenCount << " : " << index << endl;
+        vertices.at(index -1).print();
+        toReturn.push_back(vertices.at(index - 1));
+        prevIndex = index;
+
+     }
+
      token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
      input.erase(0, token.length() + token2.length());
     }
