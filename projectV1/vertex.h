@@ -10,6 +10,7 @@ class Vertex
 private:
   float x,y,z;
   std::vector<float> normal;
+  bool isInitialized;
 
 public:
     Vertex();
@@ -17,6 +18,7 @@ public:
     void print();
     void parseCoordinates(std::string input);
     void parseFace(std::string input);
+    bool exists();
     float getX();
     float getY();
     float getZ();

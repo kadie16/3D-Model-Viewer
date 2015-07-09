@@ -31,7 +31,8 @@ objLoad::objLoad(string fName)
 
             else if (currLine[0] == 'f' && currLine[1] == ' ')
             {
-                Vertex f(currLine, currLine[0]);
+                vector<Vertex> v = this->parseFace(currLine);
+                face f = face(v.at(1), v.at(2), v.at(3));
                 facets.push_back(f);
             }
         }
@@ -54,11 +55,6 @@ void objLoad::print()
     {
        vertices.at(i).print();
     }
-    cout << endl << fileName << " facets: " << endl;
-    for (unsigned i = 0 ; i < facets.size(); i++)
-    {
-       facets.at(i).print();
-    }
 }
 
 vector<Vertex> objLoad::getVertices()
@@ -66,8 +62,30 @@ vector<Vertex> objLoad::getVertices()
     return vertices;
 }
 
-vector<Vertex> objLoad::getFacets()
+vector<face> objLoad::getFacets()
 {
     return facets;
+}
+
+vector<Vertex> objLoad::parseFace(string input){
+    int tokenCount = 0;
+    input.erase(0,1); // delete the f
+    string delimiter = "/";
+    size_t pos = 0;
+    string token;
+    string token2;
+    int index;
+    vector<Vertex> toReturn;
+    while ((pos = input.find(delimiter) != string::npos))
+    {
+     token = input.substr(0, input.find(delimiter)); // token indicates index of vertex
+     istringstream(token) >> index;
+     cout << index << endl;
+     toReturn.push_back(vertices.at(index - 1));
+     tokenCount ++; //count index tokens
+     token2 = input.substr(input.find(delimiter), input.find(' ')); //tossing token2 for now
+     input.erase(0, token.length() + token2.length());
+    }
+    return toReturn;
 }
 

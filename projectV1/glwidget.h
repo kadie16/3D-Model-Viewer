@@ -23,7 +23,7 @@ private:
     QTimer timer;
     objLoad *objPtr;
     std::vector<Vertex> vertices;
-    std::vector<Vertex> faces;
+    std::vector<face> faces;
 
 protected:
     void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;

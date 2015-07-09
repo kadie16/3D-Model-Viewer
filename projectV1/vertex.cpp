@@ -4,24 +4,33 @@ using namespace std;
 
 Vertex::Vertex()
 {
+    isInitialized = false;
 }
 
 Vertex::Vertex(string input, char type)
 {
+    isInitialized = false;
     if (type == 'v' || type == 'n')
     {
         this->parseCoordinates(input);
+        isInitialized = true;
     }
     else if (type == 'f')
     {
         if (input.find("/") != string::npos)
         {
           this->parseFace(input);
+          isInitialized = true;
         } else {
           this->parseCoordinates(input);
+          isInitialized = true;
         }
     }
 
+}
+
+bool Vertex::exists(){
+    return isInitialized;
 }
 
 void Vertex::parseFace(string input){
@@ -45,7 +54,6 @@ void Vertex::parseFace(string input){
      x = vertexArr[0];
      y = vertexArr[2];
      z = vertexArr[4];
-
 
 }
 void Vertex::parseCoordinates(string input){

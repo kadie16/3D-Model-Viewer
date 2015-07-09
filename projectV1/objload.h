@@ -10,6 +10,7 @@
 #include <QGLWidget>
 #include <QTimer>
 #include <QString>
+#include "face.h"
 
 
 class objLoad
@@ -20,11 +21,12 @@ class objLoad
         std::string getFileName(void);
         void print();
         std::vector<Vertex> getVertices();
-        std::vector<Vertex> getFacets();
+        std::vector<face> getFacets();
+        std::vector<Vertex> parseFace(std::string line);
     //private:
         std::string fileName;
         std::vector<Vertex> vertices;
-        std::vector<Vertex> facets;
+        std::vector<face> facets;
         std::vector<Vertex> normals;
 };
 

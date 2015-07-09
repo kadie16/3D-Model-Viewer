@@ -33,7 +33,7 @@ void GLWidget::paintGL(){
 
     if (objPtr){
         Vertex v;
-        Vertex f;
+        face f;
         //Face actualF();
         std::vector<float> normal;
 
@@ -42,17 +42,11 @@ void GLWidget::paintGL(){
 
             for (unsigned i = 0 ; i < faces.size() ; i++)
             {
-                /* x, y, z in face f are the indices of the vertices that make that face */
-                /***************************** CHECK ORDER  ***********************************/
                 f = faces.at(i);
-                v1 = vertices.at(f.getX() - 1);
-                v2 = vertices.at(f.getY() - 1);
-                v3 = vertices.at(f.getZ() - 1);
-                /* find normals */
-                /***************************** CHECK ORDER  ***********************************/
-                normal = v1.findNormal(v2, v3);
-                v2.inheritNormal(v1);
-                v3.inheritNormal(v1);
+                v1 = f.getVertex(1);
+                v2 = f.getVertex(2);
+                v3 = f.getVertex(3);
+                normal = f.getNormal();
 
                 /* Open GL Stuff */
                 glColor4f(0,1,1,1);

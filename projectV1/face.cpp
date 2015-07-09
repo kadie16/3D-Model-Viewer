@@ -1,36 +1,38 @@
 #include "face.h"
-Face::Face()
+using namespace std;
+
+face::face()
 {
 
 }
 
-Face::Face(float *v1, float *v2, float *v3)
+face::face(Vertex first, Vertex second, Vertex third)
 {
-    /* vectors */
-    float va[3], vb[3], vr[3], val;
-    va[0] = v1[0] - v2[0];
-    va[1] = v1[1] - v2[1];
-    va[2] = v1[2] - v2[2];
+    v1 = first;
+    v2 = second;
+    v3 = third;
+    this->findNormal();
+}
 
-    vb[1] = v1[0] - v3[0];
-    vb[1] = v1[1] - v3[1];
-    vb[2] = v1[2] - v3[2];
-
-    /* cross product */
-    vr[0] = va[1] * vb[2] - vb[1] * va[2];
-    vr[1] = vb[0] * va[2] - va[0] * vb[2];
-    vr[2] = va[0] * vb[1] - vb[0] * va[1];
-
-    /* normalize */
-    val = sqrt ( vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2] );
-    normal[0] = vr[0]/val;
-    normal[1] = vr[1]/val;
-    normal[2] = vr[2]/val;
+face::face(string line){
 
 }
 
-float * Face::getNormal()
-{
+void face::findNormal(){
+    normal = v1.findNormal(v2, v3);
+}
+
+vector<float> face::getNormal(){
     return normal;
+}
+
+Vertex face::getVertex(unsigned number){
+    if (number == 1){
+        return v1;
+    } else if (number == 2){
+        return v2;
+    } else if (number == 3){
+        return v3;
+    }
 }
 

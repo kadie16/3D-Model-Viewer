@@ -1,19 +1,26 @@
 #ifndef FACE_H
 #define FACE_H
+#include <string>
 #include "vertex.h"
-
-class Face {
-private:
-        float in1[3] ;
-        float in2[3] ;
-        float in3[3] ;
-        float normal[3];
-
+#include <vector>
+#include <string>
+class face
+{
 public:
-    Face();
-    Face(float *v1, float *v2, float *v3);
-    float * getNormal();
+    face();
+    face(Vertex first, Vertex second, Vertex third);
+    face(std::string line);
+    Vertex getVertex(unsigned number);
+    std::vector<float> getNormal();
+    bool hasNormal();
+    void findNormal();
+    void print();
 
+private:
+    Vertex v1;
+    Vertex v2;
+    Vertex v3;
+    std::vector<float> normal;
 };
 
 #endif // FACE_H
