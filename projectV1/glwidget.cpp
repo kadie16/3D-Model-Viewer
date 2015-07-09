@@ -15,10 +15,12 @@ void GLWidget::initializeGL(){
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-    //glScalef (0.5, 0.5, 0.5);
-    //glTranslatef(0,0,1.0);
-    //glOrtho(-1,0.02,0,2,0,1);
+    glScalef (.01, .01, .01);
+    /* "If you want to move the camera up, you have to move the world down instead*/
+    /* - https://open.gl/transformations */
+    glTranslatef(0,-1,0); /* Moves "camera" up one unit */
 
+    //glOrtho(-1,0.02,0,2,0,1);
     //glDisable(GL_CULL_FACE);
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
@@ -27,7 +29,8 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glRotatef(1,1,1,0);
+    glRotatef(1,0,1,0);
+
     /* refer to boxes for examples on interaction */
     glBegin(GL_TRIANGLES);
 
