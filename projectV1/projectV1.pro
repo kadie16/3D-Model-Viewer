@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui opengl
+QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,7 +18,8 @@ SOURCES += main.cpp\
     glwidget.cpp \
     objload.cpp \
     vertex.cpp \
-    face.cpp
+    face.cpp \
+    testqstring.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
