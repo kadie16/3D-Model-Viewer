@@ -5,11 +5,10 @@ GLWidget::GLWidget(QWidget *parent) :
 {
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGL()));
     timer.start(16);
-    winW = this->width();
-    winH = this->height();
 }
 
 void GLWidget::initializeGL(){
+<<<<<<< HEAD
     /*glMatrixMode(GL_PROJECTION);
     glViewport(0, 0, winW, winH); // redundant , will be useful when moving camera around
     GLfloat aspect = (GLfloat) winW / winH;
@@ -25,26 +24,16 @@ void GLWidget::initializeGL(){
     glDepthFunc( GL_LEQUAL );
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
+=======
+>>>>>>> parent of c24dff2... latest working code, viewport stuff doesn't work
     glClearColor(.753, 0, .46, 0);
-    /* Light Settings */
-    GLfloat amb_light[] = { 0.1, 0.1, 0.1, 1.0 };
-    GLfloat diffuse[] = { 0.6, 0.6, 0.6, 1 };
-    GLfloat specular[] = { 0.7, 0.7, 0.3, 1 };
-    glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse );
-    glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
-    glEnable( GL_LIGHT0 );
-    glEnable( GL_COLOR_MATERIAL );
-    glShadeModel( GL_SMOOTH );
-    glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE );
-    glDepthFunc( GL_LEQUAL );
-    glEnable( GL_DEPTH_TEST );
-    glEnable(GL_LIGHTING);
+    glEnable (GL_LIGHTING);
+    glShadeModel (GL_SMOOTH);
     glEnable(GL_LIGHT0);
-
     glEnable(GL_BLEND);
-    glScalef (1, 1, 1);
-    //perspective(10, 1, 0, 10);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glScalef (.01, .01, .01);
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
    // glTranslatef(0,-1,0); /* Moves "camera" up one unit */
@@ -59,7 +48,6 @@ void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
     //glRotatef(1,0,1,0);
-
 
     /* refer to boxes for examples on interaction */
    // glBegin(GL_TRIANGLES);
@@ -110,6 +98,7 @@ void GLWidget::grabObj(objLoad objFile){
     faces = objPtr->getFacets();
 }
 
+
 void GLWidget::resizeGL(int w, int h){
 
 }
@@ -122,17 +111,4 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
 
-}
-
-void GLWidget::perspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
-{
-    GLdouble xmin, xmax, ymin, ymax;
-
-    ymax = zNear * tan( fovy * M_PI / 360.0 );
-    ymin = -ymax;
-    xmin = ymin * aspect;
-    xmax = ymax * aspect;
-
-    glFrustum( xmin, xmax, ymin, ymax, zNear, zFar );
-    std::cout << "meow";
 }
