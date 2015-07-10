@@ -78,6 +78,10 @@ void Vertex::inheritNormal(Vertex parent){
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     /* CHECK ORDER OF VERTICES, SHOULD BE SAME AS ENTERED IN FILE */
     float va[3], vb[3], vr[3], val;
+    /*va[0] = x - v2.getX();
+    va[1] = y - v2.getY();
+    va[2] = z - v2.getZ();*/
+
     va[0] = v2.getX() - x;
     va[1] = v2.getY() - y;
     va[2] = v2.getZ() - z;

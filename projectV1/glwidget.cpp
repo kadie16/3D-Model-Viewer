@@ -11,7 +11,7 @@ GLWidget::GLWidget(QWidget *parent) :
 
 void GLWidget::initializeGL(){
     /*glMatrixMode(GL_PROJECTION);
-    glViewport(0, 0, winW, winH);
+    glViewport(0, 0, winW, winH); // redundant , will be useful when moving camera around
     GLfloat aspect = (GLfloat) winW / winH;
     std::cout << winW << "x" << winH;
     glMatrixMode(GL_PROJECTION);
@@ -47,7 +47,7 @@ void GLWidget::initializeGL(){
     //perspective(10, 1, 0, 10);
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
-    glTranslatef(0,-1,0); /* Moves "camera" up one unit */
+   // glTranslatef(0,-1,0); /* Moves "camera" up one unit */
 
     //glOrtho(-1,0.02,0,2,0,1);
     //glDisable(GL_CULL_FACE);
@@ -58,12 +58,14 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glRotatef(1,0,1,0);
+    //glRotatef(1,0,1,0);
 
 
     /* refer to boxes for examples on interaction */
-    glBegin(GL_TRIANGLES);
-
+   // glBegin(GL_TRIANGLES);
+      glBegin(GL_LINE);
+      glVertex3f(0,0,0);
+      glVertex3f(1,1,-1);
     if (objPtr){
         face f;
         std::vector<float> normal;
@@ -77,12 +79,25 @@ void GLWidget::paintGL(){
                 v3 = f.getVertex(3);
                 normal = f.getNormal();
 
+
                 /* Rendering Face (OpenGL Stuff) */
-                glColor4f(0,1,1,1);
+               /* glColor4f(0,1,1,1);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
                 glVertex3f(v3.getX(), v3.getY(), v3.getZ());
+                glEnd();*/
+                //glBegin(GL_LINE);
+                //glColor3f(1,1,1);
+                //glVertex3f(v1.getX(), v1.getY(), v1.getZ());
+                //glVertex3f(v1.getX() + normal.at(0), v1.getY() + normal.at(1), v1.getZ() + normal.at(2));
+
+                //glBegin(GL_TRIANGLES);
+                if (i == 0)
+                {
+                    std::cout << "vertex: " << v1.getX() << " " << v1.getY() << " " << v1.getZ() << std::endl;
+                    std::cout << "normal: " << normal.at(0) << " " << normal.at(1) << " " << normal.at(2) << std::endl;
+                }
             }
     }
     glEnd();
