@@ -79,17 +79,26 @@ void Vertex::inheritNormal(Vertex parent){
 }
 
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
-    /* CHECK ORDER OF VERTICES, SHOULD BE SAME AS ENTERED IN FILE */
-    float va[3], vb[3], vr[3], val;
-
-    va[0] = v2.getX() - x;
-    va[1] = v2.getY() - y;
-    va[2] = v2.getZ() - z;
-
+    float va[3], vb[3], vr[3], val, dot, alsqr, blsqr, theta;
+    /* Calculate 1st Vector */
+    va[0] = x - v2.getX();
+    va[1] = y - v2.getY();
+    va[2] = z - v2.getZ();
+    /* Calculate 2nd Vector */
     vb[0] = v3.getX() - v2.getX();
     vb[1] = v3.getY() - v2.getY();
     vb[2] = v3.getZ() - v2.getZ();
-
+    /* Calculate Angle
+    dot = va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2];
+    alsqr = va[0]*va[0] + va[1]*va[1] + va[2]*va[2];
+    blsqr = vb[0]*vb[0] + vb[1]*vb[1] + vb[2]*vb[2];
+    theta = acos(dot/sqrt(alsqr*blsqr));
+    if (theta > 90)
+    {
+        va[0] = -va[0];
+        va[1] = -va[1];
+        va[2] = -va[2];
+    } */
     /* Cross Product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
     vr[1] = vb[0] * va[2] - va[0] * vb[2];

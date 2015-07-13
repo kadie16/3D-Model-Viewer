@@ -15,28 +15,23 @@ void GLWidget::initializeGL(){
     glDepthFunc( GL_LEQUAL );
 
     /* Background Setting */
-    glClearColor(.753, 0, .46, 0);
+    glClearColor( 1, 1, 1, 1);
     /* Light Settings */
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
     GLfloat amb_light[] = { 0.1, 0.1, 0.1, 1.0 };
-    GLfloat diffuse[] = { 0.6, 0.6, 0.6, 1 };
-    GLfloat specular[] = { 0.7, 0.7, 0.3, 1 };
     glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse );
-    glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
     glEnable( GL_LIGHT0 );
     glEnable( GL_COLOR_MATERIAL );
     glShadeModel( GL_SMOOTH );
-    glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE );
-    glDepthFunc( GL_LEQUAL );
-    glEnable( GL_DEPTH_TEST );
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+
     glScalef (1, 1, 1);
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
     glTranslatef(0,-1,0); /* Moves "camera" up one unit */
     //glFrontFace(GL_CW);
     //glEnable(GL_CULL_FACE);
+    //
     //glCullFace(GL_BACK);
 
 }
@@ -45,9 +40,6 @@ void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
     glRotatef(1,0,1,0);
-
-
-    /* refer to boxes for examples on interaction */
     glBegin(GL_TRIANGLES);
 
     if (objPtr){
@@ -63,8 +55,17 @@ void GLWidget::paintGL(){
                 v3 = f.getVertex(3);
                 normal = f.getNormal();
 
+                /* finding angles between camera to point & normal */
+                float dot = normal.at(0)*v1.getX() + normal.at(1)*v1.getY() + normal.at(2)*v1.getZ();
+                float l1 = normal.at(0)*normal.at(0) + normal.at(1)*normal.at(1) + normal.at(2)*normal.at(2);
+                float l2 = v1.getX()*v1.getX() + v2.getY()*v2.getY() + v3.getZ()*v3.getZ();
+                float angle = acos(dot/sqrt(l1*l2));
+
                 /* Rendering Face (OpenGL Stuff) */
-                glColor4f(0,1,1,1);
+                if (angle < 90 && angle > - 90) /* if normal points toward camera */
+                    glColor4f(1,1,0,1);
+                else
+                    glColor3f(1,0,0);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
