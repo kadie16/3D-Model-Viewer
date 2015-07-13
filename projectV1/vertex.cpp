@@ -27,7 +27,7 @@ void Vertex::parseCoordinates(string input){
     x = vertexArr[0];
     y = vertexArr[1];
     z = vertexArr[2];
-    cout << x << " " << y << " " << z << endl;
+    //cout << x << " " << y << " " << z << endl;
 }
 
 float Vertex::getX()
@@ -59,6 +59,9 @@ void Vertex::print()
 {
    cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
 
+}
+bool Vertex::hasNormal(){
+    return !normal.empty();
 }
 
 void Vertex::assignNormal(float v1, float v2, float v3){
@@ -103,8 +106,17 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
 }
 
 bool Vertex::equalsVertex(Vertex v){
-    if (this->x == v.getX() && this->y == v.getY() && this->z == v.getZ() && this->normal == v.getNormal())
-        return true;
+    if (this->x == v.getX() && this->y == v.getY() && this->z == v.getZ()){
+        vector<float> otherNormal = v.getNormal();
+        if (normal.empty() && !v.hasNormal())
+            return true;
+        else if (normal.empty() ^ !v.hasNormal())
+            return false;
+        else if (std::equal(otherNormal.begin(), otherNormal.end(), this->normal.begin()))
+            return true;
+        else
+            cout << "the normals are not equal" << endl;
+    }
     else
         return false;
 }

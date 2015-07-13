@@ -36,3 +36,10 @@ Vertex face::getVertex(unsigned number){
     }
 }
 
+bool face::equalsFace(face f){
+    if (this->v1.equalsVertex(f.getVertex(1)) && this->v2.equalsVertex(f.getVertex(2))
+            && this->v3.equalsVertex(f.getVertex(3)) && this->normal == f.getNormal())
+        return true;
+    else
+        return false;
+}

@@ -35,8 +35,10 @@ void GLWidget::initializeGL(){
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
     glTranslatef(0,-1,0); /* Moves "camera" up one unit */
-    glEnable(GL_CULL_FACE);
+    //glFrontFace(GL_CW);
+    //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
+
 }
 
 void GLWidget::paintGL(){

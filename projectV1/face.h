@@ -13,6 +13,7 @@ public:
     Vertex getVertex(unsigned number);
     std::vector<float> getNormal();
     bool hasNormal();
+    bool equalsFace(face f);
     void findNormal();
     void print();
 

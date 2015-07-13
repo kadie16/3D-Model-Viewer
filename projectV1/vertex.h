@@ -22,6 +22,7 @@ public:
     float getY();
     float getZ();
     float * toArray();
+    bool hasNormal();
     void assignNormal(float v1, float v2, float v3);
     std::vector<float> findNormal(Vertex v2, Vertex v3);
     void inheritNormal(Vertex parent);
