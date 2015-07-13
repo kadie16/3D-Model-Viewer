@@ -26,6 +26,7 @@ public:
     std::vector<float> findNormal(Vertex v2, Vertex v3);
     void inheritNormal(Vertex parent);
     std::vector<float> getNormal();
+    bool equalsVertex(Vertex v);
 };
 
 #endif // VERTEX_H

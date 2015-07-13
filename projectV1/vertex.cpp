@@ -101,3 +101,10 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
 
     return normal;
 }
+
+bool Vertex::equalsVertex(Vertex v){
+    if (this->x == v.getX() && this->y == v.getY() && this->z == v.getZ() && this->normal == v.getNormal())
+        return true;
+    else
+        return false;
+}
