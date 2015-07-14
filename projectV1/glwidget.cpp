@@ -28,6 +28,7 @@ void GLWidget::initializeGL(){
     glFrontFace(GL_CW);
     mouseHeld = false;
     rotationOK = false;
+    translateOK = false;
     cullingOK = false;
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
@@ -43,7 +44,7 @@ void GLWidget::paintGL(){
         xRot = - dx / 10;
         yRot = - dy / 10;
         mag = sqrt(xRot*xRot + yRot* yRot)/10;
-        glRotatef(mag,0,xRot,yRot);
+        glRotatef(mag,yRot,xRot,0);
     }
     if (cullingOK)
     {
@@ -53,7 +54,9 @@ void GLWidget::paintGL(){
     if (mouseHeld && translateOK && !rotationOK)
     {
         int xT, yT;
-        glTranslatef(0,-1,0);
+        xT = - dx / 1000;
+        yT = - dy / 1000;
+        glTranslatef(dx,dy,0);
     }
 
     glBegin(GL_TRIANGLES);
@@ -118,10 +121,6 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
         dy = y - y0;
         std::cout<< dx << " , " << dy << std::endl;
     }
-}
-
-void GLWidget::leaveEvent(){
-    emit Mouse_Left();
 }
 
 bool GLWidget::toggleRotation(){

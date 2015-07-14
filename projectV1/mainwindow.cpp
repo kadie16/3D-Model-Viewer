@@ -8,8 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAutoFillBackground(true);
-    QColor backColor = QColor(14,23,27);
-    QColor buttonColor = QColor(54,63,67);
 }
 
 MainWindow::~MainWindow()
@@ -45,4 +43,11 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
     ui->widget16->toggleCulling();
+}
+
+void MainWindow::on_toolButton_3_clicked()
+{
+    bool on = ui->widget16->toggleTranslation();
+    if (on)
+        ui->toolButton_3->setDown(true);
 }

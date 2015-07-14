@@ -38,13 +38,11 @@ private:
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();
-    void Mouse_Left();
     void Mouse_Released();
 
 protected:
     void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-    void leaveEvent();
 };
 
 #endif // GLWIDGET_H
