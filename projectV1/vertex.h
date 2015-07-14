@@ -21,6 +21,7 @@ public:
     float getX();
     float getY();
     float getZ();
+    static float checkAngle(float va[], float vb[]);
     float * toArray();
     bool hasNormal();
     void assignNormal(float v1, float v2, float v3);

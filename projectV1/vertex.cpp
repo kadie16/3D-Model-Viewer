@@ -79,7 +79,7 @@ void Vertex::inheritNormal(Vertex parent){
 }
 
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
-    float va[3], vb[3], vr[3], val, dot, alsqr, blsqr, theta;
+    float va[3], vb[3], vr[3], val;
     /* Calculate 1st Vector */
     va[0] = x - v2.getX();
     va[1] = y - v2.getY();
@@ -88,30 +88,26 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     vb[0] = v3.getX() - v2.getX();
     vb[1] = v3.getY() - v2.getY();
     vb[2] = v3.getZ() - v2.getZ();
-    /* Calculate Angle
-    dot = va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2];
-    alsqr = va[0]*va[0] + va[1]*va[1] + va[2]*va[2];
-    blsqr = vb[0]*vb[0] + vb[1]*vb[1] + vb[2]*vb[2];
-    theta = acos(dot/sqrt(alsqr*blsqr));
-    if (theta > 90)
-    {
-        va[0] = -va[0];
-        va[1] = -va[1];
-        va[2] = -va[2];
-    } */
     /* Cross Product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
     vr[1] = vb[0] * va[2] - va[0] * vb[2];
     vr[2] = va[0] * vb[1] - vb[0] * va[1];
-
     /* Normalization Factor */
     val = sqrt(vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2]);
-
     normal.push_back(vr[0]/val);
     normal.push_back(vr[1]/val);
     normal.push_back(vr[2]/val);
-
     return normal;
+}
+
+float Vertex::checkAngle(float va[], float vb[]){
+    /* Angle Check */
+    float dot, alsqr, blsqr, theta;
+    dot = va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2];
+    alsqr = va[0]*va[0] + va[1]*va[1] + va[2]*va[2];
+    blsqr = vb[0]*vb[0] + vb[1]*vb[1] + vb[2]*vb[2];
+    theta = acos(dot/sqrt(alsqr*blsqr));
+    return theta;
 }
 
 bool Vertex::equalsVertex(Vertex v){

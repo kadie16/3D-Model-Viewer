@@ -1,4 +1,4 @@
-
+#include <QtWidgets>
 #include <QtTest/QtTest>
 #include "vertex.h"
 #include "face.h"
@@ -18,6 +18,9 @@ private slots:
 
     /* Obj Load Tests */
     void testObjLoad();
+
+    /* GUI event Tests */
+    void testMouseDrag();
 };
 
 void TestQString::testVertexFindNormal()
@@ -158,8 +161,9 @@ void TestQString::testObjLoad(){
    for (unsigned i = 0; i < manualVs.size(); i++){
        QVERIFY(manualVs.at(i).equalsVertex(vertices.at(i)));
    }
+}
 
-
+void TestQString::testMouseDrag(){
 
 }
 

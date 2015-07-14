@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QFileDialog>
+#include <QColor>
 #include <QMessageBox>
 #include "objload.h"
 #include <QMainWindow>
@@ -18,7 +19,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_2_clicked();
+    void on_toolButton_2_clicked();
+    void on_toolButton_clicked();
+    void on_quitButton_clicked();
+
+    void on_checkBox_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

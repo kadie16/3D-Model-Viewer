@@ -13,7 +13,6 @@ void GLWidget::initializeGL(){
     glClearDepth( 1.0f );
     glEnable( GL_DEPTH_TEST );
     glDepthFunc( GL_LEQUAL );
-
     /* Background Setting */
     glClearColor( 1, 1, 1, 1);
     /* Light Settings */
@@ -22,24 +21,41 @@ void GLWidget::initializeGL(){
     GLfloat amb_light[] = { 0.1, 0.1, 0.1, 1.0 };
     glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
     glEnable( GL_LIGHT0 );
-    glEnable( GL_COLOR_MATERIAL );
+    //glEnable( GL_COLOR_MATERIAL );
     glShadeModel( GL_SMOOTH );
-
+    glEnable(GL_NORMALIZE);
     glScalef (1, 1, 1);
+    glFrontFace(GL_CW);
+    mouseHeld = false;
+    rotationOK = false;
+    cullingOK = false;
     /* "If you want to move the camera up, you have to move the world down instead*/
     /* - https://open.gl/transformations */
     glTranslatef(0,-1,0); /* Moves "camera" up one unit */
-    //glFrontFace(GL_CW);
-    //glEnable(GL_CULL_FACE);
-    //
-    //glCullFace(GL_BACK);
-
 }
 
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glRotatef(1,0,1,0);
+    if (mouseHeld && rotationOK && !translateOK)
+    {
+        int yRot, xRot, mag;
+        xRot = - dx / 10;
+        yRot = - dy / 10;
+        mag = sqrt(xRot*xRot + yRot* yRot)/10;
+        glRotatef(mag,0,xRot,yRot);
+    }
+    if (cullingOK)
+    {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+    }
+    if (mouseHeld && translateOK && !rotationOK)
+    {
+        int xT, yT;
+        glTranslatef(0,-1,0);
+    }
+
     glBegin(GL_TRIANGLES);
 
     if (objPtr){
@@ -54,18 +70,8 @@ void GLWidget::paintGL(){
                 v2 = f.getVertex(2);
                 v3 = f.getVertex(3);
                 normal = f.getNormal();
-
-                /* finding angles between camera to point & normal */
-                float dot = normal.at(0)*v1.getX() + normal.at(1)*v1.getY() + normal.at(2)*v1.getZ();
-                float l1 = normal.at(0)*normal.at(0) + normal.at(1)*normal.at(1) + normal.at(2)*normal.at(2);
-                float l2 = v1.getX()*v1.getX() + v2.getY()*v2.getY() + v3.getZ()*v3.getZ();
-                float angle = acos(dot/sqrt(l1*l2));
-
                 /* Rendering Face (OpenGL Stuff) */
-                if (angle < 90 && angle > - 90) /* if normal points toward camera */
-                    glColor4f(1,1,0,1);
-                else
-                    glColor3f(1,0,0);
+                glColor3f(.86,.63,.75);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
                 glVertex3f(v1.getX(), v1.getY(), v1.getZ());
                 glVertex3f(v2.getX(), v2.getY(), v2.getZ());
@@ -88,13 +94,58 @@ void GLWidget::resizeGL(int w, int h){
 
 void GLWidget::mousePressEvent(QMouseEvent *e)
 {
-
+    mouseHeld = true;
+    x0 = x;
+    y0 = y;
+    emit Mouse_Pressed();
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-
+    mouseHeld = false;
+    x0 = 0;
+    y0 = 0;
+    emit Mouse_Released();
 }
 
+void GLWidget::mouseMoveEvent(QMouseEvent *e){
+    this->x = e->x();
+    this->y = e->y();
+    emit Mouse_Pos();
+    if (mouseHeld)
+    {
+        dx = x - x0;
+        dy = y - y0;
+        std::cout<< dx << " , " << dy << std::endl;
+    }
+}
 
+void GLWidget::leaveEvent(){
+    emit Mouse_Left();
+}
 
+bool GLWidget::toggleRotation(){
+    if (rotationOK)
+        rotationOK = false;
+    else
+        rotationOK = true;
+    return rotationOK;
+}
+
+bool GLWidget::toggleCulling()
+{
+    if (cullingOK)
+        cullingOK = false;
+    else
+        cullingOK = true;
+    return cullingOK;
+}
+
+bool GLWidget::toggleTranslation()
+{
+    if (translateOK)
+        translateOK = false;
+    else
+        translateOK = true;
+    return translateOK;
+}
