@@ -25,6 +25,9 @@ class objLoad
         std::vector<Vertex> parseFace(std::string line);
         Vertex parseVertex(std::string line);
         std::vector<float> static coordinateScanner(std::string line);
+        void checkMin(Vertex v);
+        void checkMax(Vertex v);
+        std::vector<float> findCenter();
     private:
         std::string fileName;
         std::vector<Vertex> vertices;

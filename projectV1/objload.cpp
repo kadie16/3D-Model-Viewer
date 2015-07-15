@@ -3,6 +3,9 @@ using namespace std;
 
 objLoad::objLoad(string fName)
 {
+    maxCoords.assign(3,0);
+    minCoords.assign(3,0);
+    center.assign(3,0);
     cout << "Loading object from path:  " << fName << endl;
     fileName = fName;
     /* Open file stream */
@@ -17,7 +20,11 @@ objLoad::objLoad(string fName)
             /* Determine whether it is a vertex, normal, or face line */
             if (currLine[0] == 'v' && currLine[1] == ' ')
             {
-                vertices.push_back(this->parseVertex(currLine));
+                Vertex newV = this->parseVertex(currLine);
+                vertices.push_back(newV);
+                this->checkMax(newV);
+                this->checkMin(newV);
+
              }
             else if (currLine[0] == 'v' && currLine[1] == 'n')
             {
@@ -117,3 +124,35 @@ vector<float> objLoad::coordinateScanner(string line)
     return toReturn;
 }
 
+void objLoad::checkMin(Vertex v)
+{
+    float x,y,z;
+    if (x < minCoords.at(0))
+        minCoords[0] = x;
+    if (y < minCoords.at(1))
+        minCoords[1] = y;
+    if (z < minCoords.at(2))
+        minCoords[2] = z;
+}
+
+void objLoad::checkMax(Vertex v)
+{
+    float x,y,z;
+    x = v.getX();
+    y = v.getY();
+    z = v.getZ();
+    if (x > maxCoords.at(0))
+        maxCoords[0] = x;
+    if (y > maxCoords.at(1))
+        maxCoords[1] = y;
+    if (z > maxCoords.at(2))
+        maxCoords[2] = z;
+}
+
+vector<float> objLoad::findCenter()
+{
+    center[0] = (minCoords.at(0) + maxCoords.at(0))/2;
+    center[1] = (minCoords.at(1) + maxCoords.at(1))/2;
+    center[2] = (minCoords.at(2) + maxCoords.at(2))/2;
+    return center;
+}

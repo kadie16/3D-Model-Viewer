@@ -35,10 +35,12 @@ void TestQString::testVertexFindNormal()
      std::vector<float> vN;
      vN.push_back(0);
      vN.push_back(0);
-     vN.push_back(-1);
+     vN.push_back(1);
      std::vector<float> actualN = v1.findNormal(v2,v3);
      std::cout << actualN.at(0) << " " << actualN.at(1) << " " << actualN.at(2) << std::endl;
-     QVERIFY(v1.findNormal(v2, v3) == vN);
+     QVERIFY(actualN.at(0) == vN.at(0));
+     QVERIFY(actualN.at(1) == vN.at(1));
+     QVERIFY(actualN.at(2) == vN.at(2));
 }
 
 void TestQString::testVertexEquals()
@@ -93,7 +95,7 @@ void TestQString::testFaceNormalFuncs()
      face f(v1,v2,v3);
      vN.push_back(0);
      vN.push_back(0);
-     vN.push_back(-1);
+     vN.push_back(1);
      QVERIFY(std::equal(vN.begin(), vN.begin() + 2, f.getNormal().begin()));
      QVERIFY(f.getVertex(1).equalsVertex(v1));
      QVERIFY(f.getVertex(2).equalsVertex(v2));
@@ -176,6 +178,10 @@ void TestQString::testObjLoad(){
     manualFs.push_back(f10);
     manualFs.push_back(f11);
     manualFs.push_back(f12);
+
+    QVERIFY(loader.findCenter().at(0) == .5);
+    QVERIFY(loader.findCenter().at(1) == .5);
+    QVERIFY(loader.findCenter().at(2) == .5);
 
    for (unsigned i = 0; i < manualFs.size(); i++){
        QVERIFY(manualFs.at(i).equalsFace(faces.at(i)));
