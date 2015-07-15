@@ -9,6 +9,7 @@
 #include "objload.h"
 #include "vertex.h"
 #include "face.h"
+#include <QQuaternion>
 
 #include <QMatrix4x4>
 

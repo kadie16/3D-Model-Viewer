@@ -44,7 +44,7 @@ void GLWidget::paintGL(){
         xRot = - dx / 10;
         yRot = - dy / 10;
         mag = sqrt(xRot*xRot + yRot* yRot)/10;
-        glRotatef(mag,0,xRot,yRot);
+        glRotatef(mag,yRot,xRot,0);
     }
     if (cullingOK)
     {
