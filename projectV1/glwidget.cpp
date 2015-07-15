@@ -38,10 +38,7 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    if (scaleOK)
-        glScaled(scale,scale,scale);
-    else
-        glScaled(1,1,1);
+    glScaled(scale,scale,scale);
     if (cullingOK)
     {
         glEnable(GL_CULL_FACE);
