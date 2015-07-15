@@ -17,8 +17,7 @@ objLoad::objLoad(string fName)
             /* Determine whether it is a vertex, normal, or face line */
             if (currLine[0] == 'v' && currLine[1] == ' ')
             {
-                Vertex v(currLine, currLine[0]);
-                vertices.push_back(v);
+                vertices.push_back(this->parseVertex(currLine));
              }
             else if (currLine[0] == 'v' && currLine[1] == 'n')
             {
@@ -115,5 +114,6 @@ vector<float> objLoad::coordinateScanner(string line)
     toReturn.push_back(vertexArr[0]);
     toReturn.push_back(vertexArr[1]);
     toReturn.push_back(vertexArr[2]);
+    return toReturn;
 }
 

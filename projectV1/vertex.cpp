@@ -12,6 +12,7 @@ Vertex::Vertex(float inX, float inY, float inZ)
     x = inX;
     y = inY;
     z = inZ;
+    isInitialized = true;
 }
 
 Vertex::Vertex(string input, char type)

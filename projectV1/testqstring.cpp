@@ -11,6 +11,7 @@ private slots:
     /* Vertex Class Tests */
     void testVertexFindNormal();
     void testVertexEquals();
+    void testVertexGetters();
 
     /* Face Class Tests */
     void testFaceNormalFuncs();
@@ -35,6 +36,8 @@ void TestQString::testVertexFindNormal()
      vN.push_back(0);
      vN.push_back(0);
      vN.push_back(-1);
+     std::vector<float> actualN = v1.findNormal(v2,v3);
+     std::cout << actualN.at(0) << " " << actualN.at(1) << " " << actualN.at(2) << std::endl;
      QVERIFY(v1.findNormal(v2, v3) == vN);
 }
 
@@ -50,6 +53,26 @@ void TestQString::testVertexEquals()
     QVERIFY(v2.equalsVertex(v1));
     QVERIFY(v3.equalsVertex(v4));
     QVERIFY(v4.equalsVertex(v3));
+}
+
+void TestQString::testVertexGetters()
+{
+    /* Initialize Vertices */
+     std::string s1 = "v 0 0 0";
+     std::string s2 = "v 1 1 0";
+     std::string s3 = "v 1 0 0";
+     Vertex v1(s1, s1[0]);
+     Vertex v2(s2, s2[0]);
+     Vertex v3(s3, s3[0]);
+     QVERIFY(v1.getX() == 0);
+     QVERIFY(v1.getY() == 0);
+     QVERIFY(v1.getZ() == 0);
+     QVERIFY(v2.getZ() == 0);
+     QVERIFY(v2.getY() == 1);
+     QVERIFY(v2.getX() == 1);
+     QVERIFY(v3.getX() == 1);
+     QVERIFY(v3.getY() == 0);
+     QVERIFY(v3.getZ() == 0);
 }
 
 void TestQString::testFaceNormalFuncs()
