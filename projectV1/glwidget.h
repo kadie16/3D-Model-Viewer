@@ -23,6 +23,7 @@ public:
     bool toggleTranslation();
     void initializeGL();
     void paintGL();
+    void drawObject();
     void grabObj(objLoad objFile);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
@@ -32,6 +33,7 @@ private:
     objLoad *objPtr;
     std::vector<Vertex> vertices;
     std::vector<face> faces;
+    std::vector<float> center;
     bool mouseHeld;
     bool rotationOK;
     bool cullingOK;

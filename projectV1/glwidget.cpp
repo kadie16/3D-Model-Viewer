@@ -38,14 +38,6 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    if (mouseHeld && rotationOK && !translateOK)
-    {
-        int yRot, xRot, mag;
-        xRot = - dx / 10;
-        yRot = - dy / 10;
-        mag = sqrt(xRot*xRot + yRot* yRot)/10;
-        glRotatef(mag,yRot,xRot,0);
-    }
     if (cullingOK)
     {
         glEnable(GL_CULL_FACE);
@@ -53,14 +45,34 @@ void GLWidget::paintGL(){
     }
     else
         glDisable(GL_CULL_FACE);
-    if (mouseHeld && translateOK && !rotationOK)
+    if (mouseHeld && rotationOK && !translateOK)
+    {
+        int yRot, xRot, mag;
+        xRot = - dx / 10;
+        yRot = - dy / 10;
+        mag = sqrt(xRot*xRot + yRot* yRot)/10;
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(center.at(0), center.at(1), center.at(2));
+        glRotatef(mag,yRot,xRot,0);
+        glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+        drawObject();
+        glPopMatrix();
+    }
+    else if (mouseHeld && translateOK && !rotationOK)
     {
         int xT, yT;
         xT = - dx / 1000;
         yT = - dy / 1000;
         glTranslatef(dx,dy,0);
+        drawObject();
     }
+    else
+        drawObject();
+}
 
+void GLWidget::drawObject()
+{
     glBegin(GL_TRIANGLES);
 
     if (objPtr){
@@ -91,6 +103,7 @@ void GLWidget::grabObj(objLoad objFile){
     objPtr = &objFile;
     vertices = objPtr->getVertices();
     faces = objPtr->getFacets();
+    center = objPtr->findCenter();
 }
 
 void GLWidget::resizeGL(int w, int h){
