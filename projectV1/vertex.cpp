@@ -80,6 +80,7 @@ void Vertex::inheritNormal(Vertex parent){
 
 vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     float va[3], vb[3], vr[3], val;
+
     /* Calculate 1st Vector */
     va[0] = x - v2.getX();
     va[1] = y - v2.getY();
@@ -88,6 +89,7 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     vb[0] = v3.getX() - v2.getX();
     vb[1] = v3.getY() - v2.getY();
     vb[2] = v3.getZ() - v2.getZ();
+
     /* Cross Product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
     vr[1] = vb[0] * va[2] - va[0] * vb[2];

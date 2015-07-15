@@ -25,7 +25,7 @@ void GLWidget::initializeGL(){
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
     glScalef (1, 1, 1);
-    glFrontFace(GL_CW);
+   //glFrontFace(GL_CW);
     mouseHeld = false;
     rotationOK = false;
     translateOK = false;
@@ -44,13 +44,15 @@ void GLWidget::paintGL(){
         xRot = - dx / 10;
         yRot = - dy / 10;
         mag = sqrt(xRot*xRot + yRot* yRot)/10;
-        glRotatef(mag,yRot,xRot,0);
+        glRotatef(mag,0,xRot,yRot);
     }
     if (cullingOK)
     {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
     }
+    else
+        glDisable(GL_CULL_FACE);
     if (mouseHeld && translateOK && !rotationOK)
     {
         int xT, yT;
