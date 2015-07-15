@@ -7,6 +7,13 @@ Vertex::Vertex()
     isInitialized = false;
 }
 
+Vertex::Vertex(float inX, float inY, float inZ)
+{
+    x = inX;
+    y = inY;
+    z = inZ;
+}
+
 Vertex::Vertex(string input, char type)
 {
     isInitialized = false;

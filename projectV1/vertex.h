@@ -14,6 +14,7 @@ private:
 
 public:
     Vertex();
+    Vertex(float inX, float inY, float inZ);
     Vertex(std::string input, char type);
     void print();
     void parseCoordinates(std::string input);

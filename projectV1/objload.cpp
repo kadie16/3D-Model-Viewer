@@ -93,12 +93,27 @@ vector<Vertex> objLoad::parseFace(string input){
         }
     } else {
         /* If there aren't any slashes, parses like coordinates */
-        float vertexArr[3];
-        sscanf(input.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
-        toReturn.push_back(vertices.at(vertexArr[0] - 1));
-        toReturn.push_back(vertices.at(vertexArr[1] - 1));
-        toReturn.push_back(vertices.at(vertexArr[2] - 1));
+        vector<float> indices = coordinateScanner(input);
+        toReturn.push_back(vertices.at(indices.at(0) - 1));
+        toReturn.push_back(vertices.at(indices.at(1) - 1));
+        toReturn.push_back(vertices.at(indices.at(2) - 1));
     }
     return toReturn;
+}
+
+Vertex objLoad::parseVertex(string input)
+{
+    vector<float> coords = coordinateScanner(input);
+    return Vertex(coords.at(0), coords.at(1), coords.at(2));
+}
+
+vector<float> objLoad::coordinateScanner(string line)
+{
+    vector<float> toReturn;
+    float vertexArr[3];
+    sscanf(line.c_str(), "%*s %f %f %f", &vertexArr[0], &vertexArr[1], &vertexArr[2]);
+    toReturn.push_back(vertexArr[0]);
+    toReturn.push_back(vertexArr[1]);
+    toReturn.push_back(vertexArr[2]);
 }
 
