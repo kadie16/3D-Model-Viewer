@@ -51,3 +51,27 @@ void MainWindow::on_toolButton_3_clicked()
     if (on)
         ui->toolButton_3->setDown(true);
 }
+
+void MainWindow::on_toolButton_4_pressed()
+{
+    ui->widget16->toggleScale();
+    ui->widget16->increaseScale();
+}
+
+void MainWindow::on_toolButton_5_pressed()
+{
+    ui->widget16->toggleScale();
+    ui->widget16->decreaseScale();
+}
+
+void MainWindow::on_toolButton_4_released()
+{
+    ui->widget16->toggleScale();
+    ui->widget16->setScale();
+}
+
+void MainWindow::on_toolButton_5_released()
+{
+    ui->widget16->toggleScale();
+    ui->widget16->setScale();
+}

@@ -19,9 +19,9 @@ public:
     void print();
     void parseCoordinates(std::string input);
     bool exists();
-    float getX();
-    float getY();
-    float getZ();
+    float X();
+    float Y();
+    float Z();
     static float checkAngle(float va[], float vb[]);
     float * toArray();
     bool hasNormal();

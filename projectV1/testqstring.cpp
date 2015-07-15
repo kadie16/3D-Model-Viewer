@@ -66,15 +66,15 @@ void TestQString::testVertexGetters()
      Vertex v1(s1, s1[0]);
      Vertex v2(s2, s2[0]);
      Vertex v3(s3, s3[0]);
-     QVERIFY(v1.getX() == 0);
-     QVERIFY(v1.getY() == 0);
-     QVERIFY(v1.getZ() == 0);
-     QVERIFY(v2.getZ() == 0);
-     QVERIFY(v2.getY() == 1);
-     QVERIFY(v2.getX() == 1);
-     QVERIFY(v3.getX() == 1);
-     QVERIFY(v3.getY() == 0);
-     QVERIFY(v3.getZ() == 0);
+     QVERIFY(v1.X() == 0);
+     QVERIFY(v1.Y() == 0);
+     QVERIFY(v1.Z() == 0);
+     QVERIFY(v2.Z() == 0);
+     QVERIFY(v2.Y() == 1);
+     QVERIFY(v2.X() == 1);
+     QVERIFY(v3.X() == 1);
+     QVERIFY(v3.Y() == 0);
+     QVERIFY(v3.Z() == 0);
 }
 
 void TestQString::testFaceNormalFuncs()

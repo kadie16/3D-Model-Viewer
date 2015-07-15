@@ -138,9 +138,9 @@ void objLoad::checkMin(Vertex v)
 void objLoad::checkMax(Vertex v)
 {
     float x,y,z;
-    x = v.getX();
-    y = v.getY();
-    z = v.getZ();
+    x = v.X();
+    y = v.Y();
+    z = v.Z();
     if (x > maxCoords.at(0))
         maxCoords[0] = x;
     if (y > maxCoords.at(1))

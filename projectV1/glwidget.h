@@ -21,6 +21,10 @@ public:
     bool toggleRotation();
     bool toggleCulling();
     bool toggleTranslation();
+    bool toggleScale();
+    double increaseScale();
+    double decreaseScale();
+    void setScale();
     void initializeGL();
     void paintGL();
     void drawObject();
@@ -38,6 +42,8 @@ private:
     bool rotationOK;
     bool cullingOK;
     bool translateOK;
+    bool scaleOK;
+    double scale;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

@@ -24,7 +24,7 @@ void GLWidget::initializeGL(){
     //glEnable( GL_COLOR_MATERIAL );
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
-    glScalef (1, 1, 1);
+    scale = 1;
    //glFrontFace(GL_CW);
     mouseHeld = false;
     rotationOK = false;
@@ -38,6 +38,10 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    if (scaleOK)
+        glScaled(scale,scale,scale);
+    else
+        glScaled(1,1,1);
     if (cullingOK)
     {
         glEnable(GL_CULL_FACE);
@@ -45,11 +49,11 @@ void GLWidget::paintGL(){
     }
     else
         glDisable(GL_CULL_FACE);
-    if (mouseHeld && rotationOK && !translateOK)
+    if (rotationOK && !translateOK)
     {
         int yRot, xRot, mag;
-        xRot = - dx / 10;
-        yRot = - dy / 10;
+        xRot = - dx;
+        yRot = - dy;
         mag = sqrt(xRot*xRot + yRot* yRot)/10;
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
@@ -58,6 +62,7 @@ void GLWidget::paintGL(){
         glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         drawObject();
         glPopMatrix();
+
     }
     else if (mouseHeld && translateOK && !rotationOK)
     {
@@ -90,9 +95,9 @@ void GLWidget::drawObject()
                 /* Rendering Face (OpenGL Stuff) */
                 glColor3f(.86,.63,.75);
                 glNormal3f(normal.at(0), normal.at(1), normal.at(2));
-                glVertex3f(v1.getX(), v1.getY(), v1.getZ());
-                glVertex3f(v2.getX(), v2.getY(), v2.getZ());
-                glVertex3f(v3.getX(), v3.getY(), v3.getZ());
+                glVertex3f(v1.X(), v1.Y(), v1.Z());
+                glVertex3f(v2.X(), v2.Y(), v2.Z());
+                glVertex3f(v3.X(), v3.Y(), v3.Z());
             }
     }
     glEnd();
@@ -113,8 +118,8 @@ void GLWidget::resizeGL(int w, int h){
 void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     mouseHeld = true;
-    x0 = x;
-    y0 = y;
+    //x0 = x;
+    //y0 = y;
     emit Mouse_Pressed();
 }
 
@@ -139,6 +144,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
 }
 
 bool GLWidget::toggleRotation(){
+    dx = 0; dy = 0;
     if (rotationOK)
         rotationOK = false;
     else
@@ -163,3 +169,24 @@ bool GLWidget::toggleTranslation()
         translateOK = true;
     return translateOK;
 }
+
+bool GLWidget::toggleScale()
+{
+    scaleOK = !scaleOK;
+}
+
+double GLWidget::increaseScale()
+{
+    scale = scale + 0.01;
+}
+
+double GLWidget::decreaseScale()
+{
+    scale = scale - 0.01;
+}
+
+void GLWidget::setScale()
+{
+    scale = 1;
+}
+

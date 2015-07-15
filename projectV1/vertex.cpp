@@ -38,17 +38,17 @@ void Vertex::parseCoordinates(string input){
     //cout << x << " " << y << " " << z << endl;
 }
 
-float Vertex::getX()
+float Vertex::X()
 {
     return x;
 }
 
-float Vertex::getY()
+float Vertex::Y()
 {
     return y;
 }
 
-float Vertex::getZ()
+float Vertex::Z()
 {
     return z;
 }
@@ -90,13 +90,13 @@ vector<float> Vertex::findNormal(Vertex v2, Vertex v3){
     float va[3], vb[3], vr[3], val;
 
     /* Calculate 1st Vector */
-    va[0] = x - v2.getX();
-    va[1] = y - v2.getY();
-    va[2] = z - v2.getZ();
+    va[0] = x - v2.X();
+    va[1] = y - v2.Y();
+    va[2] = z - v2.Z();
     /* Calculate 2nd Vector */
-    vb[0] = v3.getX() - v2.getX();
-    vb[1] = v3.getY() - v2.getY();
-    vb[2] = v3.getZ() - v2.getZ();
+    vb[0] = v3.X() - v2.X();
+    vb[1] = v3.Y() - v2.Y();
+    vb[2] = v3.Z() - v2.Z();
 
     /* Cross Product */
     vr[0] = va[1] * vb[2] - vb[1] * va[2];
@@ -121,7 +121,7 @@ float Vertex::checkAngle(float va[], float vb[]){
 }
 
 bool Vertex::equalsVertex(Vertex v){
-    if (this->x == v.getX() && this->y == v.getY() && this->z == v.getZ()){
+    if (this->x == v.X() && this->y == v.Y() && this->z == v.Z()){
         vector<float> otherNormal = v.getNormal();
         if (normal.empty() && !v.hasNormal())
             return true;
