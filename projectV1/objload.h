@@ -28,6 +28,7 @@ class objLoad
         void checkMin(Vertex v);
         void checkMax(Vertex v);
         std::vector<float> findCenter();
+        float findRadius();
     private:
         std::string fileName;
         std::vector<Vertex> vertices;
@@ -36,6 +37,7 @@ class objLoad
         std::vector<float> maxCoords;
         std::vector<float> minCoords;
         std::vector<float> center;
+        float radius;
 };
 
 #endif // OBJLOAD_H

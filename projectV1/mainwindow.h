@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QFileDialog>
+#include <QColorDialog>
 #include <QColor>
 #include <QMessageBox>
 #include "objload.h"
@@ -33,6 +34,8 @@ private slots:
     void on_toolButton_4_released();
 
     void on_toolButton_5_released();
+
+    void on_toolButton_6_clicked();
 
 private:
     Ui::MainWindow *ui;

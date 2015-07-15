@@ -29,6 +29,7 @@ public:
     void paintGL();
     void drawObject();
     void grabObj(objLoad objFile);
+    void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
     int x,y,dx,dy,x0,y0;
@@ -38,12 +39,23 @@ private:
     std::vector<Vertex> vertices;
     std::vector<face> faces;
     std::vector<float> center;
+    /* frustrum stuff */
+    float radius;
+    float fdist;
+    double dNear;
+    double dFar;
+    double viewAngle;
+    /* user control */
     bool mouseHeld;
     bool rotationOK;
     bool cullingOK;
     bool translateOK;
     bool scaleOK;
     double scale;
+    double red,green,blue;
+    bool needsReset;
+    bool first;
+
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

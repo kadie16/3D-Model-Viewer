@@ -4,4 +4,12 @@
 
 			- Model renders correctly, but glEnable(GL_CULLFACE) removes what should be the front face. In other words, object appears black when back face is culled. This is corrected when calling glFrontFace(GL_CW);
 
-			- Rotation enabled, but model does not rotate about it's center. 
+			- Rotation enabled, but model always rotates around it's original origin (Should have usered quarternions)
+
+			- When new object is loaded, it is in view, but need to refine centering (currently only works on cube)
+
+			- New bug : objects showing up before anything is loaded 0.o .............. bad 
+
+
+
+
