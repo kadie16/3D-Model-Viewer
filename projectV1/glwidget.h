@@ -33,12 +33,16 @@ public:
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
     int x,y,dx,dy,x0,y0;
+    float mag;
 private:
     QTimer timer;
+    /* .obj Information */
     objLoad *objPtr;
     std::vector<Vertex> vertices;
     std::vector<face> faces;
     std::vector<float> center;
+    std::vector<float> maxCoords;
+    std::vector<float> minCoords;
     /* frustrum stuff */
     float radius;
     float fdist;

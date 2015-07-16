@@ -124,6 +124,16 @@ vector<float> objLoad::coordinateScanner(string line)
     return toReturn;
 }
 
+std::vector<float> objLoad::getMinCoords()
+{
+    return minCoords;
+}
+
+std::vector<float> objLoad::getMaxCoords()
+{
+    return maxCoords;
+}
+
 void objLoad::checkMin(Vertex v)
 {
     float x,y,z;

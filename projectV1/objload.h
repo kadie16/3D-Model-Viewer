@@ -27,6 +27,8 @@ class objLoad
         std::vector<float> static coordinateScanner(std::string line);
         void checkMin(Vertex v);
         void checkMax(Vertex v);
+        std::vector<float> getMaxCoords();
+        std::vector<float> getMinCoords();
         std::vector<float> findCenter();
         float findRadius();
     private:

@@ -27,6 +27,7 @@ void GLWidget::initializeGL(){
     red = 0.5;
     green = 0.5;
     blue = 0.5;
+    mag = 0;
     mouseHeld = false;
     rotationOK = false;
     translateOK = false;
@@ -49,12 +50,14 @@ void GLWidget::paintGL(){
         }
         else
             glDisable(GL_CULL_FACE);
-        if (mouseHeld && rotationOK && !translateOK)
+        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-            int yRot, xRot, mag;
+            int yRot, xRot;
             xRot = - dx/10;
             yRot = - dy/10;
             mag = sqrt(xRot*xRot + yRot* yRot)/10;
+            QQuaternion q(mag,yRot,xRot,0);
+            //QMatrix3x3 mat = q.toRotationMatrix();
             glMatrixMode(GL_MODELVIEW);
             //glPushMatrix();
             glTranslatef(center.at(0), center.at(1), center.at(2));
@@ -62,15 +65,16 @@ void GLWidget::paintGL(){
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
             drawObject();
             //glPopMatrix();
-            //glPopMatrix();
-
         }
-        else if (translateOK && !rotationOK)
+        else if (mouseHeld && translateOK && !rotationOK)
         {
-            int xT, yT;
-            xT = dx / 100;
-            yT = dy / 100;
+            float xT,yT;
+            xT = (maxCoords.at(0) - minCoords.at(0))*dx/this->width(); // scale it to the object coordinates, multiply by (max - min) to match magnitude of object
+            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/this->height();
+            glPushMatrix();
+            glTranslatef(xT,yT,0);
             drawObject();
+            glPopMatrix();
         }
         else
             drawObject();
@@ -82,7 +86,7 @@ void GLWidget::resetView(){
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         float radius = radius + radius/4;
-        viewAngle = 90;
+        viewAngle = 10;
         fdist = radius/tan(viewAngle);
         dNear = fdist - radius;
         dFar = fdist + radius;
@@ -95,7 +99,6 @@ void GLWidget::resetView(){
 void GLWidget::drawObject()
 {
     if (objPtr){
-        //this->resetView();
         glBegin(GL_TRIANGLES);
         face f;
         std::vector<float> normal;
@@ -126,6 +129,8 @@ void GLWidget::grabObj(objLoad objFile){
     faces = objPtr->getFacets();
     center = objPtr->findCenter();
     radius = objPtr->findRadius();
+    maxCoords = objPtr->getMaxCoords();
+    minCoords = objPtr->getMinCoords();
     needsReset = true;
 }
 
@@ -143,8 +148,8 @@ void GLWidget::resizeGL(int w, int h){
 void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     mouseHeld = true;
-    x0 = x;
-    y0 = y;
+    x0 = e->x();
+    y0 = e->y();
     emit Mouse_Pressed();
 }
 
@@ -164,7 +169,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     {
         dx = x - x0;
         dy = y - y0;
-        std::cout<< dx << " , " << dy << std::endl;
+        //std::cout<< dx << " , " << dy << std::endl;
     }
 }
 
@@ -188,6 +193,7 @@ bool GLWidget::toggleCulling()
 
 bool GLWidget::toggleTranslation()
 {
+    dx = 0; dy = 0;
     if (translateOK)
         translateOK = false;
     else
