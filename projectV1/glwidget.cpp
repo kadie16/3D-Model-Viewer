@@ -5,7 +5,6 @@ GLWidget::GLWidget(QWidget *parent) :
 {
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGL()));
     timer.start(16);
-    needsReset = false;
 }
 
 void GLWidget::initializeGL(){
@@ -79,10 +78,10 @@ void GLWidget::paintGL(){
 }
 
 void GLWidget::resetView(){
-    if (needsReset && objPtr) {
+    if (needsReset) {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        radius = radius * 1.25;
+        float radius = radius + radius/4;
         viewAngle = 90;
         fdist = radius/tan(viewAngle);
         dNear = fdist - radius;
@@ -212,4 +211,3 @@ void GLWidget::setScale()
 {
     scale = 1;
 }
-

@@ -37,7 +37,7 @@ void MainWindow::on_toolButton_clicked()
 
 void MainWindow::on_quitButton_clicked()
 {
-     close();
+    close();
 }
 
 void MainWindow::on_checkBox_stateChanged(int arg1)
