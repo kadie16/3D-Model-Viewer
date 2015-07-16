@@ -42,6 +42,7 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
+    arg1 = arg1;
     ui->widget16->toggleCulling();
 }
 
@@ -77,3 +78,4 @@ void MainWindow::on_toolButton_6_clicked()
     QColor color = QColorDialog::getColor();
     ui->widget16->grabColor(color.red(), color.green(), color.blue());
 }
+

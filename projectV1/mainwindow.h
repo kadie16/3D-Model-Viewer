@@ -29,10 +29,9 @@ private slots:
     void on_toolButton_3_clicked();
 
     void on_toolButton_4_pressed();
-    void on_toolButton_5_pressed();
-
     void on_toolButton_4_released();
 
+    void on_toolButton_5_pressed();
     void on_toolButton_5_released();
 
     void on_toolButton_6_clicked();
