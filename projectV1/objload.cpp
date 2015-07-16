@@ -156,3 +156,11 @@ vector<float> objLoad::findCenter()
     center[2] = (minCoords.at(2) + maxCoords.at(2))/2;
     return center;
 }
+
+float objLoad::findRadius()
+{
+    radius = sqrt((maxCoords.at(0) - center.at(0))*(maxCoords.at(0) - center.at(0))
+                  +(maxCoords.at(1) - center.at(1))*(maxCoords.at(1) - center.at(1))
+                  +(maxCoords.at(2) - center.at(2))*(maxCoords.at(2) - center.at(2)));
+    return radius;
+}

@@ -71,3 +71,9 @@ void MainWindow::on_toolButton_5_released()
 {
     ui->widget16->setScale();
 }
+
+void MainWindow::on_toolButton_6_clicked()
+{
+    QColor color = QColorDialog::getColor();
+    ui->widget16->grabColor(color.red(), color.green(), color.blue());
+}
