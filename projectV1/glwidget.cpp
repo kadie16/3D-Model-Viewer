@@ -69,12 +69,12 @@ void GLWidget::paintGL(){
         else if (mouseHeld && translateOK && !rotationOK)
         {
             float xT,yT;
-            xT = (maxCoords.at(0) - minCoords.at(0))*dx/this->width(); // scale it to the object coordinates, multiply by (max - min) to match magnitude of object
-            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/this->height();
-            glPushMatrix();
+            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(10*this->width()); // scale it to the object coordinates, multiply by (max - min) to match magnitude of object
+            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(10*this->height());
+           // glPushMatrix();
             glTranslatef(xT,yT,0);
             drawObject();
-            glPopMatrix();
+           // glPopMatrix();
         }
         else
             drawObject();
