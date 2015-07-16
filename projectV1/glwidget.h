@@ -21,13 +21,13 @@ public:
     bool toggleRotation();
     bool toggleCulling();
     bool toggleTranslation();
-    bool toggleScale();
     double increaseScale();
     double decreaseScale();
     void setScale();
     void initializeGL();
     void paintGL();
     void drawObject();
+    void resetView();
     void grabObj(objLoad objFile);
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
@@ -54,8 +54,6 @@ private:
     double scale;
     double red,green,blue;
     bool needsReset;
-    bool first;
-
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

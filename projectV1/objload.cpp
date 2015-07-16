@@ -127,6 +127,9 @@ vector<float> objLoad::coordinateScanner(string line)
 void objLoad::checkMin(Vertex v)
 {
     float x,y,z;
+    x = v.X();
+    y = v.Y();
+    z = v.Z();
     if (x < minCoords.at(0))
         minCoords[0] = x;
     if (y < minCoords.at(1))
@@ -162,5 +165,6 @@ float objLoad::findRadius()
     radius = sqrt((maxCoords.at(0) - center.at(0))*(maxCoords.at(0) - center.at(0))
                   +(maxCoords.at(1) - center.at(1))*(maxCoords.at(1) - center.at(1))
                   +(maxCoords.at(2) - center.at(2))*(maxCoords.at(2) - center.at(2)));
-    return radius;
+    return (radius*2);
 }
+

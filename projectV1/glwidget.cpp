@@ -8,10 +8,11 @@ GLWidget::GLWidget(QWidget *parent) :
 }
 
 void GLWidget::initializeGL(){
+    glEnable( GL_COLOR_MATERIAL );
+    glEnable( GL_DEPTH_TEST );
     glMatrixMode(GL_MODELVIEW);
     glShadeModel( GL_SMOOTH );
     glClearDepth( 1.0f );
-    glEnable( GL_DEPTH_TEST );
     glDepthFunc( GL_LEQUAL );
     /* Background Setting */
     glClearColor( 1, 1, 1, 1);
@@ -20,30 +21,26 @@ void GLWidget::initializeGL(){
     glEnable(GL_LIGHT0);
     GLfloat amb_light[] = { 0.1, 0.1, 0.1, 1.0 };
     glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glEnable( GL_LIGHT0 );
-    glEnable( GL_COLOR_MATERIAL );
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
     scale = 1;
     red = 0.5;
     green = 0.5;
     blue = 0.5;
-   //glFrontFace(GL_CW);
     mouseHeld = false;
     rotationOK = false;
     translateOK = false;
     cullingOK = false;
-    first = true;
-    /* "If you want to move the camera up, you have to move the world down instead*/
-    /* - https://open.gl/transformations */
-    glTranslatef(0,-1,0); /* Moves "camera" up one unit */
+    glTranslatef(0,-1,0);
 }
 
 void GLWidget::paintGL(){
-   if(objPtr)
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    if(objPtr)
    {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClear(GL_DEPTH_BUFFER_BIT);
+        if (needsReset)
+            this->resetView();
         glScaled(scale,scale,scale);
         if (cullingOK)
         {
@@ -80,21 +77,25 @@ void GLWidget::paintGL(){
    }
 }
 
+void GLWidget::resetView(){
+    if (needsReset) {
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        float radius = radius + radius/4;
+        viewAngle = 90;
+        fdist = radius/tan(viewAngle);
+        dNear = fdist - radius;
+        dFar = fdist + radius;
+        glFrustum(-radius, +radius, +radius, -radius, dNear, dFar);
+        glTranslatef(-center.at(0), -center.at(1), -center.at(2) - dFar);
+        needsReset = false;
+   }
+}
+
 void GLWidget::drawObject()
 {
     if (objPtr){
-        if (needsReset){
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-            float radius = radius + radius/4;
-            viewAngle = 90;
-            fdist = radius/tan(viewAngle);
-            dNear = fdist - radius;
-            dFar = fdist + radius;
-            glFrustum(-radius, +radius, +radius, -radius, dNear, dFar);
-            glTranslatef(-center.at(0), -center.at(1), -center.at(2) - dFar);
-            needsReset = false;
-        }
+        //this->resetView();
         glBegin(GL_TRIANGLES);
         face f;
         std::vector<float> normal;
@@ -192,12 +193,6 @@ bool GLWidget::toggleTranslation()
     else
         translateOK = true;
     return translateOK;
-}
-
-bool GLWidget::toggleScale()
-{
-    scaleOK = !scaleOK;
-    return scaleOK;
 }
 
 double GLWidget::increaseScale()
