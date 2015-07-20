@@ -28,6 +28,7 @@ public:
     void initializeGL();
     void paintGL();
     void drawObject();
+    void resetAxes();
     void resetView();
     void grabObj(objLoad objFile);
     void grabColor(double r, double g, double b);
@@ -61,6 +62,8 @@ private:
     double scale;
     double red,green,blue;
     bool needsReset;
+    QVector3D xAxis;
+    QVector3D yAxis;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

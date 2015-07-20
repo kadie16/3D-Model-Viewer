@@ -32,7 +32,8 @@ void GLWidget::initializeGL(){
     rotationOK = false;
     translateOK = false;
     cullingOK = false;
-    glTranslatef(0,-1,0);
+    xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
+    yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
 }
 
 void GLWidget::paintGL(){
@@ -56,22 +57,20 @@ void GLWidget::paintGL(){
             xRot = - dx/20;
             yRot = dy/20;
             mag = sqrt(xRot*xRot + yRot* yRot)/100;
-            QQuaternion qX = QQuaternion::fromAxisAndAngle(1,0,0,yRot);
-            QQuaternion qY = QQuaternion::fromAxisAndAngle(0,1,0,xRot);
+            QQuaternion qX = QQuaternion::fromAxisAndAngle(xAxis, yRot);
+            QQuaternion qY = QQuaternion::fromAxisAndAngle(yAxis, xRot);
             QMatrix4x4 m;
             m.rotate(qX);
             m.rotate(qY);
+            //xAxis = qX.rotatedVector(xAxis);
+            xAxis = qX.rotatedVector(xAxis);
+            yAxis = qY.rotatedVector(yAxis);
+            //yAxis = qY.rotatedVector(yAxis);
             glMatrixMode(GL_MODELVIEW);
-            QVector3D c(center.at(0), center.at(1), center.at(2));
             glTranslatef(center.at(0), center.at(1), center.at(2));
             glMultMatrixf(m.constData());
             //glRotatef(mag,yRot,xRot,0);
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-            c = qX.rotatedVector(c);
-            c = qY.rotatedVector(c);
-            center[0] = c.x();
-            center[1] = c.y();
-            center[2] = c.z();
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
@@ -96,8 +95,15 @@ void GLWidget::resetView(){
         dFar = fdist + radius;
         glFrustum(-radius, +radius, +radius, -radius, dNear, dFar);
         glTranslatef(-center.at(0), -center.at(1), -center.at(2) - dFar);
+        this->resetAxes();
         needsReset = false;
    }
+}
+
+void GLWidget::resetAxes()
+{
+    this->xAxis = QVector3D(1,0,0);
+    this->yAxis = QVector3D(0,1,0);
 }
 
 void GLWidget::drawObject()
@@ -162,6 +168,8 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
     mouseHeld = false;
     x0 = 0;
     y0 = 0;
+    dx = 0;
+    dy = 0;
     emit Mouse_Released();
 }
 
@@ -174,9 +182,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
         dx = x - x0;
         dy = y - y0;
         //std::cout<< dx << " , " << dy << std::endl;
+    } else
+    {
+        dx = 0;
+        dy = 0;
     }
 }
-
 void GLWidget::rotateCenter(QQuaternion q)
 {
     QVector4D u = q.normalized().toVector4D();
