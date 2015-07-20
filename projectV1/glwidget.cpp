@@ -55,16 +55,18 @@ void GLWidget::paintGL(){
             int yRot, xRot;
             xRot = - dx/10;
             yRot = - dy/10;
-            mag = sqrt(xRot*xRot + yRot* yRot)/10;
-            QQuaternion q(mag,yRot,xRot,0);
-            //QMatrix3x3 mat = q.toRotationMatrix();
+            mag = sqrt(xRot*xRot + yRot* yRot)/100;
+            QQuaternion q(.25,0,xRot,yRot);
+            QMatrix4x4 m;
+            m.rotate(q.normalized());
             glMatrixMode(GL_MODELVIEW);
-            //glPushMatrix();
+            glPushMatrix();
             glTranslatef(center.at(0), center.at(1), center.at(2));
-            glRotatef(mag,yRot,xRot,0);
+            glMultMatrixf(m.constData());
+            //glRotatef(mag,yRot,xRot,0);
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
             drawObject();
-            //glPopMatrix();
+
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
@@ -78,6 +80,7 @@ void GLWidget::paintGL(){
         }
         else
             drawObject();
+
    }
 }
 
