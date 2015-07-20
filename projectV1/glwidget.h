@@ -9,6 +9,7 @@
 #include "objload.h"
 #include "vertex.h"
 #include "face.h"
+#include "camera.h"
 #include <QQuaternion>
 
 #include <QMatrix4x4>
@@ -32,6 +33,7 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
+    void rotateCenter(QQuaternion q);
     int x,y,dx,dy,x0,y0;
     float mag;
 private:
@@ -50,6 +52,7 @@ private:
     double dFar;
     double viewAngle;
     /* user control */
+    camera cam;
     bool mouseHeld;
     bool rotationOK;
     bool cullingOK;

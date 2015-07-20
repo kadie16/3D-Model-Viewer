@@ -53,16 +53,6 @@ float Vertex::Z()
     return z;
 }
 
-float * Vertex::toArray()
-{
-    float a[3];
-    a[0] = this -> x;
-    a[1] = this -> y;
-    a[2] = this -> z;
-
-    return a;
-}
-
 void Vertex::print()
 {
    cout << this -> x << " , " << this -> y << " , " << this -> z << endl;
@@ -120,7 +110,8 @@ float Vertex::checkAngle(float va[], float vb[]){
     return theta;
 }
 
-bool Vertex::equalsVertex(Vertex v){
+bool Vertex::equalsVertex(Vertex v)
+{
     if (this->x == v.X() && this->y == v.Y() && this->z == v.Z()){
         vector<float> otherNormal = v.getNormal();
         if (normal.empty() && !v.hasNormal())

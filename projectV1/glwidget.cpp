@@ -53,34 +53,35 @@ void GLWidget::paintGL(){
         if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
             int yRot, xRot;
-            xRot = - dx/10;
-            yRot = - dy/10;
+            xRot = - dx/20;
+            yRot = dy/20;
             mag = sqrt(xRot*xRot + yRot* yRot)/100;
-            QQuaternion q(.25,0,xRot,yRot);
+            QQuaternion qX = QQuaternion::fromAxisAndAngle(1,0,0,yRot);
+            QQuaternion qY = QQuaternion::fromAxisAndAngle(0,1,0,xRot);
             QMatrix4x4 m;
-            m.rotate(q.normalized());
+            m.rotate(qX);
+            m.rotate(qY);
             glMatrixMode(GL_MODELVIEW);
-            glPushMatrix();
+            QVector3D c(center.at(0), center.at(1), center.at(2));
             glTranslatef(center.at(0), center.at(1), center.at(2));
             glMultMatrixf(m.constData());
             //glRotatef(mag,yRot,xRot,0);
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-            drawObject();
-
+            c = qX.rotatedVector(c);
+            c = qY.rotatedVector(c);
+            center[0] = c.x();
+            center[1] = c.y();
+            center[2] = c.z();
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
             float xT,yT;
-            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(10*this->width()); // scale it to the object coordinates, multiply by (max - min) to match magnitude of object
+            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(10*this->width());
             yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(10*this->height());
-           // glPushMatrix();
-            glTranslatef(xT,yT,0);
-            drawObject();
-           // glPopMatrix();
+            cam.translate(xT,yT);
         }
-        else
-            drawObject();
-
+        glMatrixMode(GL_MODELVIEW);
+        drawObject();
    }
 }
 
@@ -176,6 +177,21 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     }
 }
 
+void GLWidget::rotateCenter(QQuaternion q)
+{
+    QVector4D u = q.normalized().toVector4D();
+    QVector3D v(center.at(0), center.at(1), center.at(0));
+    float s = u.w();
+    QVector3D u2 = u.toVector3D();
+    QVector3D vprime;
+    vprime = 2.0f * QVector3D::dotProduct(u2,v)*u2
+            + (QVector3D(s*s, s*s, s*s) - QVector3D::dotProduct(u2,u2)*v)
+            + QVector3D(2.0f*s, 2.0f*s, 2.0f*s) * QVector3D::crossProduct(u2,v);
+    center[0] = vprime.x();
+    center[1] = vprime.y();
+    center[2] = vprime.z();
+}
+
 bool GLWidget::toggleRotation(){
     dx = 0; dy = 0;
     if (rotationOK)
@@ -220,3 +236,14 @@ void GLWidget::setScale()
 {
     scale = 1;
 }
+
+static void loadMatrix(const QMatrix4x4& m)
+{
+    // static to prevent glLoadMatrixf to fail on certain drivers
+    static GLfloat mat[16];
+    const float *data = m.constData();
+    for (int index = 0; index < 16; ++index)
+        mat[index] = data[index];
+    glLoadMatrixf(mat);
+}
+

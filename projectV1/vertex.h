@@ -23,7 +23,6 @@ public:
     float Y();
     float Z();
     static float checkAngle(float va[], float vb[]);
-    float * toArray();
     bool hasNormal();
     void assignNormal(float v1, float v2, float v3);
     std::vector<float> findNormal(Vertex v2, Vertex v3);
