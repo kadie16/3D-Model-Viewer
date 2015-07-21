@@ -28,6 +28,7 @@ public:
     void initializeGL();
     void paintGL();
     void drawObject();
+    void drawAxes();
     void resetAxes();
     void resetView();
     void grabObj(objLoad objFile);

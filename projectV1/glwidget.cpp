@@ -42,10 +42,12 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    int xNow = x;
+    int yNow = y;
     if(objPtr)
    {
-        dx = x - prevPos[0];
-        dy = y - prevPos[1];
+        dx = xNow - prevPos[0];
+        dy = yNow - prevPos[1];
 
         if (needsReset)
             this->resetView();
@@ -75,8 +77,8 @@ void GLWidget::paintGL(){
             QMatrix4x4 m;
             m.rotate(qR);
             /* Try Rotating Axis by Rotation Matrix */
-            //xAxis = xAxis * m;
-            //yAxis = yAxis * m;
+            xAxis = xAxis * m;
+            yAxis = yAxis * m;
             glMatrixMode(GL_MODELVIEW);
             glTranslatef(center.at(0), center.at(1), center.at(2));
             /* Multiply Rotation Matrix */
@@ -93,6 +95,7 @@ void GLWidget::paintGL(){
         }
         glMatrixMode(GL_MODELVIEW);
         drawObject();
+        drawAxes();
         prevPos[0] = x;
         prevPos[1] = y;
    }
@@ -143,6 +146,25 @@ void GLWidget::drawObject()
             glVertex3f(v3.X(), v3.Y(), v3.Z());
          }
     }
+    glEnd();
+}
+
+void GLWidget::drawAxes()
+{
+    glBegin(GL_LINES);
+    glLineWidth(100);
+    /* Red X Axis */
+    glColor3f(1,0,0);
+    glVertex3f(0,0,0);
+    glVertex3f(2,0,0);
+    /* Green Y Axis */
+    glColor3f(0,1,0);
+    glVertex3f(0,0,0);
+    glVertex3f(0,2,0);
+    /* Blue Z Axis */
+    glColor3f(0,0,2);
+    glVertex3f(0,0,0);
+    glVertex3f(0,0,2);
     glEnd();
 }
 
