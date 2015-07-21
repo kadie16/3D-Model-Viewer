@@ -35,8 +35,8 @@ void GLWidget::initializeGL(){
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
-   // xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
-  //  yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
+    xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
+    yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
 }
 
 void GLWidget::paintGL(){
@@ -44,6 +44,9 @@ void GLWidget::paintGL(){
     glClear(GL_DEPTH_BUFFER_BIT);
     if(objPtr)
    {
+        dx = x - prevPos[0];
+        dy = y - prevPos[1];
+
         if (needsReset)
             this->resetView();
         glScaled(scale,scale,scale);
@@ -54,46 +57,30 @@ void GLWidget::paintGL(){
         }
         else
             glDisable(GL_CULL_FACE);
-        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+        if ( mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
+            axisOfRotation.setZ(0);
             if (dx == 0){
-                axisOfRotation.setX(1);
-               // axisOfRotation.setY(0);
-               // axisOfRotation = xAxis;
+                axisOfRotation = xAxis;
             } else if (dy == 0) {
-                //axisOfRotation.setX(0);
-                axisOfRotation.setY(1);
-                //axisOfRotation = yAxis;
+                axisOfRotation = yAxis;
             } else {
-                axisOfRotation.setX(-dx);
-                axisOfRotation.setY((dx*dx)/dy);
-                axisOfRotation.normalize();
+                axisOfRotation.setX(dy);
+                axisOfRotation.setY(dx);
             }
-            // axisOfRotation.setZ(0);
-            mag = sqrt(dx*dx + dy*dy)/40;
+            mag = sqrt(dx*dx + dy*dy)/5;
             /* Create Rotation Quaternion */
             QQuaternion qR = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
-                //QQuaternion qX = QQuaternion::fromAxisAndAngle(xAxis, dx);
-                //QQuaternion qY = QQuaternion::fromAxisAndAngle(yAxis, dy);
-            /* Try Rotating Axis by Respective Quaternions */
-                //xAxis = qX.rotatedVector(xAxis);
-                //yAxis = qY.rotatedVector(yAxis);
             /* Create Rotation Matrix */
             QMatrix4x4 m;
-            /* Try Rotating Axis by Quaternion */
-                //xAxis = qR.rotatedVector(xAxis);
-                //yAxis = qR.rotatedVector(yAxis);
             m.rotate(qR);
             /* Try Rotating Axis by Rotation Matrix */
-
+            //xAxis = xAxis * m;
+            //yAxis = yAxis * m;
             glMatrixMode(GL_MODELVIEW);
             glTranslatef(center.at(0), center.at(1), center.at(2));
             /* Multiply Rotation Matrix */
-            glMatrixMode(GL_PROJECTION);
             glMultMatrixf(m.constData());
-            glMatrixMode(GL_MODELVIEW);
-            //xAxis = m*xAxis;
-            //yAxis = m*yAxis;
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         }
         else if (mouseHeld && translateOK && !rotationOK)
@@ -106,6 +93,8 @@ void GLWidget::paintGL(){
         }
         glMatrixMode(GL_MODELVIEW);
         drawObject();
+        prevPos[0] = x;
+        prevPos[1] = y;
    }
 }
 
@@ -185,7 +174,6 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
     mouseHeld = true;
     x0 = e->x();
     y0 = e->y();
-    emit Mouse_Pressed();
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *e)
@@ -195,23 +183,11 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
     y0 = 0;
     dx = 0;
     dy = 0;
-    emit Mouse_Released();
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->x = e->x();
     this->y = e->y();
-    emit Mouse_Pos();
-    if (mouseHeld)
-    {
-        dx = x - x0;
-        dy = y - y0;
-        //std::cout<< dx << " , " << dy << std::endl;
-    } else
-    {
-        dx = 0;
-        dy = 0;
-    }
 }
 void GLWidget::rotateCenter(QQuaternion q)
 {

@@ -36,6 +36,7 @@ public:
     void mouseMoveEvent(QMouseEvent *e);
     void rotateCenter(QQuaternion q);
     int x,y,dx,dy,x0,y0;
+    int prevPos[2];
     float mag;
 private:
     QTimer timer;
