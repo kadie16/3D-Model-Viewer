@@ -57,24 +57,26 @@ void GLWidget::paintGL(){
             xRot = - dx/20;
             yRot = dy/20;
             mag = sqrt(xRot*xRot + yRot* yRot)/100;
+            /* Create Rotation Quaternions */
             QQuaternion qX = QQuaternion::fromAxisAndAngle(xAxis, yRot);
             QQuaternion qY = QQuaternion::fromAxisAndAngle(yAxis, xRot);
+            /* Create Rotation Matrix */
             QMatrix4x4 m;
             m.rotate(qX);
             m.rotate(qY);
-            //xAxis = qX.rotatedVector(xAxis);
+            /* Rotate Axes */
             xAxis = qX.rotatedVector(xAxis);
             yAxis = qY.rotatedVector(yAxis);
-            //yAxis = qY.rotatedVector(yAxis);
             glMatrixMode(GL_MODELVIEW);
             glTranslatef(center.at(0), center.at(1), center.at(2));
+            /* Multiply Rotation Matrix */
             glMultMatrixf(m.constData());
-            //glRotatef(mag,yRot,xRot,0);
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
             float xT,yT;
+            /* Adjust Magnitude of Translation to Dimensions of Model */
             xT = (maxCoords.at(0) - minCoords.at(0))*dx/(10*this->width());
             yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(10*this->height());
             cam.translate(xT,yT);
