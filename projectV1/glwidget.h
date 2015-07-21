@@ -48,6 +48,7 @@ private:
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
+    QQuaternion currQ;
     /* frustrum stuff */
     float radius;
     float fdist;

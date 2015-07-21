@@ -46,9 +46,9 @@ void GLWidget::paintGL(){
     int yNow = y;
     if(objPtr)
    {
-        dx = xNow - prevPos[0];
-        dy = yNow - prevPos[1];
-
+        dx = (xNow - prevPos[0])/10;
+        dy = (yNow - prevPos[1])/10;
+        QMatrix4x4 m;
         if (needsReset)
             this->resetView();
         glScaled(scale,scale,scale);
@@ -61,43 +61,54 @@ void GLWidget::paintGL(){
             glDisable(GL_CULL_FACE);
         if ( mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
+
+            axisOfRotation.setX(-dy);
+            axisOfRotation.setY(-dx);
             axisOfRotation.setZ(0);
-            if (dx == 0){
+
+            /*if (dx == 0){
                 axisOfRotation = xAxis;
             } else if (dy == 0) {
                 axisOfRotation = yAxis;
             } else {
                 axisOfRotation.setX(dy);
                 axisOfRotation.setY(dx);
-            }
-            mag = sqrt(dx*dx + dy*dy)/5;
+            }*/
+            mag = sqrt(dx*dx + dy*dy);
             /* Create Rotation Quaternion */
-            QQuaternion qR = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
+            QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
+            currQ = newQ * currQ;
+            //QVector4D vec = currQ.toVector4D();
+            //std::cout << vec.w() << " , " << vec.x() << " , " << vec.y() << " , " << vec.z() << " , " << std::endl;
             /* Create Rotation Matrix */
-            QMatrix4x4 m;
-            m.rotate(qR);
+
+
             /* Try Rotating Axis by Rotation Matrix */
-            xAxis = xAxis * m;
-            yAxis = yAxis * m;
-            glMatrixMode(GL_MODELVIEW);
-            glTranslatef(center.at(0), center.at(1), center.at(2));
-            /* Multiply Rotation Matrix */
-            glMultMatrixf(m.constData());
-            glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+           // xAxis = xAxis * m;
+           // yAxis = yAxis * m;
+
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
             float xT,yT;
             /* Adjust Magnitude of Translation to Dimensions of Model */
-            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(10*this->width());
-            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(10*this->height());
+            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
+            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
             cam.translate(xT,yT);
         }
+        m.rotate(currQ);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(center.at(0), center.at(1), center.at(2));
+        /* Multiply Rotation Matrix */
+        glMultMatrixf(m.constData());
+        glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         glMatrixMode(GL_MODELVIEW);
         drawObject();
         drawAxes();
-        prevPos[0] = x;
-        prevPos[1] = y;
+        glPopMatrix();
+        prevPos[0] = xNow;
+        prevPos[1] = yNow;
    }
 }
 
@@ -193,18 +204,16 @@ void GLWidget::resizeGL(int w, int h){
 
 void GLWidget::mousePressEvent(QMouseEvent *e)
 {
+    this->x = e->x();
+    this->y = e->y();
     mouseHeld = true;
-    x0 = e->x();
-    y0 = e->y();
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
+    this->x = e->x();
+    this->y = e->y();
     mouseHeld = false;
-    x0 = 0;
-    y0 = 0;
-    dx = 0;
-    dy = 0;
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *e){
