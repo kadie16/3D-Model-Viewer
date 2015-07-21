@@ -32,8 +32,11 @@ void GLWidget::initializeGL(){
     rotationOK = false;
     translateOK = false;
     cullingOK = false;
-    xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
-    yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
+    axisOfRotation.setX(0);
+    axisOfRotation.setY(0);
+    axisOfRotation.setZ(0);
+   // xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
+  //  yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
 }
 
 void GLWidget::paintGL(){
@@ -53,24 +56,44 @@ void GLWidget::paintGL(){
             glDisable(GL_CULL_FACE);
         if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-            int yRot, xRot;
-            xRot = - dx/20;
-            yRot = dy/20;
-            mag = sqrt(xRot*xRot + yRot* yRot)/100;
-            /* Create Rotation Quaternions */
-            QQuaternion qX = QQuaternion::fromAxisAndAngle(xAxis, yRot);
-            QQuaternion qY = QQuaternion::fromAxisAndAngle(yAxis, xRot);
+            if (dx == 0){
+                axisOfRotation.setX(1);
+               // axisOfRotation.setY(0);
+               // axisOfRotation = xAxis;
+            } else if (dy == 0) {
+                //axisOfRotation.setX(0);
+                axisOfRotation.setY(1);
+                //axisOfRotation = yAxis;
+            } else {
+                axisOfRotation.setX(-dx);
+                axisOfRotation.setY((dx*dx)/dy);
+                axisOfRotation.normalize();
+            }
+            // axisOfRotation.setZ(0);
+            mag = sqrt(dx*dx + dy*dy)/40;
+            /* Create Rotation Quaternion */
+            QQuaternion qR = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
+                //QQuaternion qX = QQuaternion::fromAxisAndAngle(xAxis, dx);
+                //QQuaternion qY = QQuaternion::fromAxisAndAngle(yAxis, dy);
+            /* Try Rotating Axis by Respective Quaternions */
+                //xAxis = qX.rotatedVector(xAxis);
+                //yAxis = qY.rotatedVector(yAxis);
             /* Create Rotation Matrix */
             QMatrix4x4 m;
-            m.rotate(qX);
-            m.rotate(qY);
-            /* Rotate Axes */
-            xAxis = qX.rotatedVector(xAxis);
-            yAxis = qY.rotatedVector(yAxis);
+            /* Try Rotating Axis by Quaternion */
+                //xAxis = qR.rotatedVector(xAxis);
+                //yAxis = qR.rotatedVector(yAxis);
+            m.rotate(qR);
+            /* Try Rotating Axis by Rotation Matrix */
+
             glMatrixMode(GL_MODELVIEW);
             glTranslatef(center.at(0), center.at(1), center.at(2));
             /* Multiply Rotation Matrix */
+            glMatrixMode(GL_PROJECTION);
             glMultMatrixf(m.constData());
+            glMatrixMode(GL_MODELVIEW);
+            //xAxis = m*xAxis;
+            //yAxis = m*yAxis;
             glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         }
         else if (mouseHeld && translateOK && !rotationOK)

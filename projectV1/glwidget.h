@@ -63,6 +63,7 @@ private:
     double red,green,blue;
     bool needsReset;
     QVector3D xAxis;
+    QVector3D axisOfRotation;
     QVector3D yAxis;
 signals:
     void Mouse_Pressed();
