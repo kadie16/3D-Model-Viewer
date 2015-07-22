@@ -13,6 +13,19 @@ public:
     camera();
     void zoom(float dz);
     void translate(float dx, float dy);
+    void findModel(objLoad *o);
+    void viewModel();
+private:
+    std::vector<float> center;
+    float radius;
+    double viewAngle;
+    double left;
+    double right;
+    double top;
+    double bottom;
+    double near;
+    double far;
+    double fdist;
 };
 
 #endif // TRACKBALL_H

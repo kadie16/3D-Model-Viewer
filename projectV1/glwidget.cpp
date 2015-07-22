@@ -102,23 +102,7 @@ void GLWidget::paintGL(){
 
 void GLWidget::resetView(){
     if (needsReset) {
-        double diameter = radius*2;
-        dNear = 1.0;
-        dFar = dNear + diameter;
-        viewAngle = 90;
-        fdist = radius/tan(viewAngle);
-        dNear = fdist - diameter;
-        dFar = fdist + diameter;
-        double left = center.at(0) - radius;
-        double right = center.at(0) + radius;
-        double bottom = center.at(1) - radius;
-        double top = center.at(1) + radius;
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glFrustum(left,right,bottom,top,dNear,dFar);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+        cam.viewModel();
         needsReset = false;
    }
 }
@@ -157,7 +141,6 @@ void GLWidget::drawObject()
 
 void GLWidget::drawAxes()
 {
-
     glLineWidth(2);
     glBegin(GL_LINES);
     /* Red X Axis */
@@ -184,6 +167,7 @@ void GLWidget::grabObj(objLoad objFile){
     radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
+    cam.findModel(objPtr);
     needsReset = true;
 }
 
