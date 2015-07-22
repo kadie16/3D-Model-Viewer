@@ -21,7 +21,6 @@ public:
 
 private slots:
     void on_toolButton_2_clicked();
-    void on_toolButton_clicked();
     void on_quitButton_clicked();
 
     void on_checkBox_stateChanged(int arg1);

@@ -24,6 +24,7 @@ void GLWidget::initializeGL(){
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
     scale = 1;
+    radius = 0;
     red = 0.75;
     green = 0.75;
     blue = 0.75;
@@ -47,8 +48,8 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(objPtr)
    {
-        dx = (xNow - prevPos[0])/10;
-        dy = (yNow - prevPos[1])/10;
+        dx = (xNow - prevPos[0])/2;
+        dy = (yNow - prevPos[1])/2;
         QMatrix4x4 m;
         if (needsReset)
             this->resetView();
@@ -78,6 +79,9 @@ void GLWidget::paintGL(){
             xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
             yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
             cam.translate(xT,yT);
+        } else if (mouseHeld && zoomOK) {
+            float zT = (maxCoords.at(2) - minCoords.at(2))*dy/(scale);
+            cam.zoom(zT);
         }
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
@@ -191,15 +195,16 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
-    if (e->button() == Qt::LeftButton)
+    if (e->button() == Qt::LeftButton && !translateOK)
     {
-        translateOK = false;
+        zoomOK = false;
         rotationOK = true;
     }
     else if (e->button() == Qt::RightButton)
     {
         rotationOK = false;
-        translateOK = true;
+        translateOK = false;
+        zoomOK = true;
     }
     mouseHeld = true;
 }
@@ -208,6 +213,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
+    rotationOK = false;
     mouseHeld = false;
 }
 

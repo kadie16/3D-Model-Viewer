@@ -27,14 +27,6 @@ void MainWindow::on_toolButton_2_clicked()
     //loader.print();
     ui->widget16->grabObj(loader);
 }
-
-void MainWindow::on_toolButton_clicked()
-{
-    bool on = ui->widget16->toggleRotation();
-    if (on)
-        ui->toolButton->setDown(true);
-}
-
 void MainWindow::on_quitButton_clicked()
 {
     close();

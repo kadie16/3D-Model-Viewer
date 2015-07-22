@@ -62,6 +62,7 @@ private:
     bool cullingOK;
     bool translateOK;
     bool scaleOK;
+    bool zoomOK;
     double scale;
     double red,green,blue;
     bool needsReset;
