@@ -1,6 +1,7 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 #include <QGLWidget>
+#include <QT>
 #include <QTimer>
 #include <QVector2D>
 #include <QMouseEvent>
@@ -36,9 +37,7 @@ public:
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
     void rotateCenter(QQuaternion q);
-    int x,y,dx,dy,x0,y0;
-    int prevPos[2];
-    float mag;
+
 private:
     QTimer timer;
     /* .obj Information */
@@ -49,14 +48,15 @@ private:
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     QQuaternion currQ;
-    /* frustrum stuff */
+    /* Frustrum Things */
     float radius;
     float fdist;
     double dNear;
     double dFar;
     double viewAngle;
-    /* user control */
+    /* User Control */
     camera cam;
+    /* Rotation */
     bool mouseHeld;
     bool rotationOK;
     bool cullingOK;
@@ -68,11 +68,13 @@ private:
     QVector3D xAxis;
     QVector3D axisOfRotation;
     QVector3D yAxis;
+    int x,y,dx,dy,x0,y0;
+    int prevPos[2];
+    float mag;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();
     void Mouse_Released();
-
 protected:
     void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;

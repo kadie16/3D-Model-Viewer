@@ -146,8 +146,9 @@ void GLWidget::drawObject()
 
 void GLWidget::drawAxes()
 {
+
+    glLineWidth(2);
     glBegin(GL_LINES);
-    glLineWidth(100);
     /* Red X Axis */
     glColor3f(1,0,0);
     glVertex3f(0,0,0);
@@ -190,6 +191,16 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
+    if (e->button() == Qt::LeftButton)
+    {
+        translateOK = false;
+        rotationOK = true;
+    }
+    else if (e->button() == Qt::RightButton)
+    {
+        rotationOK = false;
+        translateOK = true;
+    }
     mouseHeld = true;
 }
 
