@@ -24,9 +24,9 @@ void GLWidget::initializeGL(){
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
     scale = 1;
-    red = 0.5;
-    green = 0.5;
-    blue = 0.5;
+    red = 0.75;
+    green = 0.75;
+    blue = 0.75;
     mag = 0;
     mouseHeld = false;
     rotationOK = false;
@@ -44,6 +44,7 @@ void GLWidget::paintGL(){
     glClear(GL_DEPTH_BUFFER_BIT);
     int xNow = x;
     int yNow = y;
+    /* If a File is Loaded*/
     if(objPtr)
    {
         dx = (xNow - prevPos[0])/10;
@@ -61,32 +62,14 @@ void GLWidget::paintGL(){
             glDisable(GL_CULL_FACE);
         if ( mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-
+            /* Define Axis of Rotation */
             axisOfRotation.setX(-dy);
             axisOfRotation.setY(-dx);
             axisOfRotation.setZ(0);
-
-            /*if (dx == 0){
-                axisOfRotation = xAxis;
-            } else if (dy == 0) {
-                axisOfRotation = yAxis;
-            } else {
-                axisOfRotation.setX(dy);
-                axisOfRotation.setY(dx);
-            }*/
             mag = sqrt(dx*dx + dy*dy);
-            /* Create Rotation Quaternion */
+            /* Update Rotation Quaternion */
             QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
             currQ = newQ * currQ;
-            //QVector4D vec = currQ.toVector4D();
-            //std::cout << vec.w() << " , " << vec.x() << " , " << vec.y() << " , " << vec.z() << " , " << std::endl;
-            /* Create Rotation Matrix */
-
-
-            /* Try Rotating Axis by Rotation Matrix */
-           // xAxis = xAxis * m;
-           // yAxis = yAxis * m;
-
         }
         else if (mouseHeld && translateOK && !rotationOK)
         {
@@ -99,13 +82,14 @@ void GLWidget::paintGL(){
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
+        /* Translate So Rotation Occurs about Model Center and Multiply Rotation Matrix */
         glTranslatef(center.at(0), center.at(1), center.at(2));
-        /* Multiply Rotation Matrix */
         glMultMatrixf(m.constData());
         glTranslatef(-center.at(0), -center.at(1), -center.at(2));
         glMatrixMode(GL_MODELVIEW);
         drawObject();
         drawAxes();
+        /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
@@ -280,13 +264,4 @@ void GLWidget::setScale()
     scale = 1;
 }
 
-static void loadMatrix(const QMatrix4x4& m)
-{
-    // static to prevent glLoadMatrixf to fail on certain drivers
-    static GLfloat mat[16];
-    const float *data = m.constData();
-    for (int index = 0; index < 16; ++index)
-        mat[index] = data[index];
-    glLoadMatrixf(mat);
-}
 
