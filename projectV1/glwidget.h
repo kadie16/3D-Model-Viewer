@@ -30,7 +30,6 @@ public:
     void paintGL();
     void drawObject();
     void drawAxes();
-    void resetAxes();
     void resetView();
     void grabObj(objLoad objFile);
     void grabColor(double r, double g, double b);
@@ -66,9 +65,7 @@ private:
     double scale;
     double red,green,blue;
     bool needsReset;
-    QVector3D xAxis;
     QVector3D axisOfRotation;
-    QVector3D yAxis;
     int x,y,dx,dy,x0,y0;
     int prevPos[2];
     float mag;

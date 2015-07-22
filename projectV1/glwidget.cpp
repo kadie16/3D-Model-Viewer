@@ -36,8 +36,6 @@ void GLWidget::initializeGL(){
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
-    xAxis.setX(1); xAxis.setY(0); xAxis.setZ(0);
-    yAxis.setX(0); yAxis.setY(1); yAxis.setZ(0);
 }
 
 void GLWidget::paintGL(){
@@ -105,12 +103,6 @@ void GLWidget::resetView(){
         cam.viewModel();
         needsReset = false;
    }
-}
-
-void GLWidget::resetAxes()
-{
-    this->xAxis = QVector3D(1,0,0);
-    this->yAxis = QVector3D(0,1,0);
 }
 
 void GLWidget::drawObject()
