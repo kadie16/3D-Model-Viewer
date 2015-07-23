@@ -48,7 +48,6 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(objPtr)
    {
-
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 m;
@@ -86,6 +85,8 @@ void GLWidget::paintGL(){
         /* Apply Current Rotation */
         this->adjustViewPort();
         //cam.setZoom(.5);
+        //cam.moveToCenter();
+        //cam.viewModel();
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();

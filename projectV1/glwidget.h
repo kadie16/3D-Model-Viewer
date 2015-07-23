@@ -40,7 +40,7 @@ public:
 private:
     QTimer timer;
     /* .obj Information */
-    objLoad *objPtr;
+    objLoad *objPtr = 0;
     std::vector<Vertex> vertices;
     std::vector<face> faces;
     std::vector<float> center;

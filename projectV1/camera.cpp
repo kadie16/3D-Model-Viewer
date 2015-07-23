@@ -20,9 +20,9 @@ void camera::findModel(objLoad *o)
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
     far = fdist + diameter;
-    left = aspect*bottom; //center.at(0) - radius;
-    right = aspect*top; //center.at(0) + radius;
-    top = tan(fov*0.5)*near; //center.at(1) + radius;
+    left =  center.at(0) - radius; // aspect*bottom;
+    right =  center.at(0) + radius; // aspect*top;
+    top =  center.at(1) + radius; //tan(fov*0.5)*near;
     bottom = -top; //center.at(1) - radius;
 }
 
@@ -44,5 +44,4 @@ void camera::moveToCenter()
 void camera::setZoom(float factor)
 {
     zoomF = factor;
-    this->viewModel();
 }
