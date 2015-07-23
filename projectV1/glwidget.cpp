@@ -33,6 +33,7 @@ void GLWidget::initializeGL(){
     mouseHeld = false;
     rotationOK = false;
     translateOK = false;
+    needsReset = false;
     cullingOK = false;
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
@@ -47,6 +48,7 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(objPtr)
    {
+
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 m;
@@ -83,6 +85,7 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Rotation */
         this->adjustViewPort();
+        //cam.setZoom(.5);
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
@@ -102,6 +105,7 @@ void GLWidget::paintGL(){
 void GLWidget::resetView(){
     if (needsReset) {
         cam.viewModel();
+        cam.moveToCenter();
         w0 = this->width();
         h0 = this->height();
         needsReset = false;

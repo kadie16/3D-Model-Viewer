@@ -19,14 +19,17 @@ SOURCES += main.cpp\
     objload.cpp \
     vertex.cpp \
     face.cpp \
-    testqstring.cpp
+    testqstring.cpp \
+    ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
+    camera.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
     objload.h \
     vertex.h \
     vertex.h \
-    face.h
+    face.h \
+    camera.h
 
 FORMS    += mainwindow.ui
 

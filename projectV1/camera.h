@@ -15,6 +15,7 @@ public:
     void translate(float dx, float dy);
     void findModel(objLoad *o);
     void viewModel();
+    void moveToCenter();
 private:
     std::vector<float> center;
     float radius;
