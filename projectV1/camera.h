@@ -11,6 +11,7 @@ class camera
 {    
 public:
     camera();
+    void setAspect(float w, float h);
     void setZoom(float factor);
     void translate(float dx, float dy);
     void findModel(objLoad *o);

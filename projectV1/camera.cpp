@@ -5,6 +5,11 @@ camera::camera()
     zoomF = 1;
 }
 
+void camera::setAspect(float w, float h)
+{
+    aspect = w/h;
+}
+
 void camera::translate(float dx, float dy)
 {
     glMatrixMode(GL_PROJECTION);
