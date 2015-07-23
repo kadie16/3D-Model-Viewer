@@ -27,6 +27,7 @@
 			- (2) Repaired.
 
 			- (5) Repaired. 
+				objPtr needed to be initialized to 0 to prevent premature entry to if(objPtr) in paintGL. 
 
 			New: 
 
