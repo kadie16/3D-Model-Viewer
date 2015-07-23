@@ -35,7 +35,7 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
-    void rotateCenter(QQuaternion q);
+    void adjustViewPort();
 
 private:
     QTimer timer;
@@ -53,16 +53,22 @@ private:
     double dNear;
     double dFar;
     double viewAngle;
+    float w0;
+    float h0;
     /* User Control */
     camera cam;
     /* Rotation */
     bool mouseHeld;
     bool rotationOK;
+    /* Culling */
     bool cullingOK;
     bool translateOK;
     bool scaleOK;
+    /* Zoom */
     bool zoomOK;
+    float zoomF;
     double scale;
+    /* Color Pick */
     double red,green,blue;
     bool needsReset;
     QVector3D axisOfRotation;

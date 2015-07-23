@@ -11,14 +11,17 @@ class camera
 {    
 public:
     camera();
-    void zoom(float dz);
+    void setZoom(float factor);
     void translate(float dx, float dy);
     void findModel(objLoad *o);
+    void adjustAspect(float w, float h);
     void viewModel();
 private:
     std::vector<float> center;
     float radius;
-    double viewAngle;
+    float zoomF;
+    float aspect;
+    double fov;
     double left;
     double right;
     double top;
