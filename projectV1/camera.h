@@ -14,7 +14,6 @@ public:
     void setZoom(float factor);
     void translate(float dx, float dy);
     void findModel(objLoad *o);
-    void adjustAspect(float w, float h);
     void viewModel();
 private:
     std::vector<float> center;

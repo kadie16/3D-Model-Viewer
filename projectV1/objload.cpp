@@ -3,9 +3,15 @@ using namespace std;
 
 objLoad::objLoad(string fName)
 {
-    maxCoords.assign(3,0);
-    minCoords.assign(3,0);
-    center.assign(3,0);
+    maxCoords.push_back(0);
+    maxCoords.push_back(0);
+    maxCoords.push_back(0);
+    minCoords.push_back(0);
+    minCoords.push_back(0);
+    minCoords.push_back(0);
+    center.push_back(0);
+    center.push_back(0);
+    center.push_back(0);
     cout << "Loading object from path:  " << fName << endl;
     fileName = fName;
     /* Open file stream */
