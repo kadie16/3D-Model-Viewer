@@ -16,7 +16,6 @@ public:
     void findModel(objLoad *o);
     void viewModel();
     void moveToCenter();
-    void adjustZoom();
 private:
     std::vector<float> center;
     float radius;

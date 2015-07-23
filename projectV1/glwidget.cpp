@@ -40,8 +40,6 @@ void GLWidget::initializeGL(){
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
 }
 
 void GLWidget::paintGL(){
@@ -88,13 +86,11 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Rotation */
         this->adjustViewPort();
-
-        //cam.moveToCenter();
-        //cam.viewModel();
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        cam.setZoom(.1);
+        /* ZOOM!!!! */
+        cam.setZoom(.6);
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());

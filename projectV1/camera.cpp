@@ -35,23 +35,15 @@ void camera::findModel(objLoad *o)
 
 void camera::viewModel()
 {
-    //left = left*.5; right = right*.5; bottom = bottom*.5; top = top*.5;
     glMatrixMode(GL_PROJECTION);
-    //glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,near,far);
     glFrustum(left,right,bottom,top,near,far);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 }
 
 void camera::moveToCenter()
 {
     glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-}
-
-void camera::adjustZoom()
-{
-
 }
 
 void camera::setZoom(float factor)
