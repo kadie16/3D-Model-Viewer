@@ -21,16 +21,16 @@ void camera::findModel(objLoad *o)
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
     far = fdist + diameter;
-    /*
+
     left =  center.at(0) - radius;
     right =  center.at(0) + radius;
     top =   center.at(1) + radius;
-    bottom = center.at(1) - radius; */
-
+    bottom = center.at(1) - radius;
+    /*
     right =  aspect*top;
     left =  aspect*bottom;
     top =   tan(fov*0.5)*near;
-    bottom = -top;
+    bottom = -top; */
 }
 
 void camera::viewModel()
