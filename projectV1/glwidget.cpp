@@ -35,8 +35,6 @@ void GLWidget::initializeGL(){
     translateOK = false;
     needsReset = false;
     cullingOK = false;
-    w0 = this->width();
-    h0 = this->height();
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
@@ -90,7 +88,8 @@ void GLWidget::paintGL(){
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         /* ZOOM!!!! */
-        cam.setZoom(.6);
+        cam.setZoom(1);
+        cam.moveToCenter();
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
@@ -164,6 +163,8 @@ void GLWidget::drawAxes()
 
 void GLWidget::grabObj(objLoad objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
+    w0 = this->width();
+    h0 = this->height();
     objPtr = &objFile;
     vertices = objPtr->getVertices();
     faces = objPtr->getFacets();
