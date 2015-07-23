@@ -23,6 +23,7 @@ void GLWidget::initializeGL(){
     glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
     glShadeModel( GL_SMOOTH );
     glEnable(GL_NORMALIZE);
+    zoomF = 1;
     scale = 1;
     radius = 0;
     red = 0.75;
@@ -78,17 +79,17 @@ void GLWidget::paintGL(){
             yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
             cam.translate(xT,yT);
         } else if (mouseHeld && zoomOK) {
-            float zT = (maxCoords.at(2) - minCoords.at(2))*dy/(scale);
-            cam.zoom(zT);
+            zoomF = zoomF + dy/100.0;
         }
+        /* Apply Current Rotation */
+        this->adjustViewPort();
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        /* Translate So Rotation Occurs about Model Center and Multiply Rotation Matrix */
+        /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
         glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-        glMatrixMode(GL_MODELVIEW);
         drawObject();
         drawAxes();
         /* Revert to Original Matrix for Future Transformations */
@@ -101,6 +102,8 @@ void GLWidget::paintGL(){
 void GLWidget::resetView(){
     if (needsReset) {
         cam.viewModel();
+        w0 = this->width();
+        h0 = this->height();
         needsReset = false;
    }
 }
@@ -171,7 +174,6 @@ void GLWidget::grabColor(double r, double g, double b)
 }
 
 void GLWidget::resizeGL(int w, int h){
-
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *e)
@@ -204,19 +206,25 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->x = e->x();
     this->y = e->y();
 }
-void GLWidget::rotateCenter(QQuaternion q)
+
+void GLWidget::adjustViewPort()
 {
-    QVector4D u = q.normalized().toVector4D();
-    QVector3D v(center.at(0), center.at(1), center.at(0));
-    float s = u.w();
-    QVector3D u2 = u.toVector3D();
-    QVector3D vprime;
-    vprime = 2.0f * QVector3D::dotProduct(u2,v)*u2
-            + (QVector3D(s*s, s*s, s*s) - QVector3D::dotProduct(u2,u2)*v)
-            + QVector3D(2.0f*s, 2.0f*s, 2.0f*s) * QVector3D::crossProduct(u2,v);
-    center[0] = vprime.x();
-    center[1] = vprime.y();
-    center[2] = vprime.z();
+    /* Original Aspect */
+    float aspect = w0/h0;
+    /* Screen Width and Height */
+    int sW = this->width()*2;
+    int sH = this->height()*2;
+    /* Fixed ViewPort Width and Height */
+    float vW = sW;
+    float vH = sW/aspect;
+    if (vW > sH) {
+        vH = sH;
+        vW = vH * aspect;
+    }
+    /* Coordinates of Lower Left Corner of ViewPort */
+    int vpX = (sW - vW)/2;
+    int vpY = (sH - vH)/2;
+    glViewport(vpX,vpY,vW,vH);
 }
 
 bool GLWidget::toggleRotation(){
