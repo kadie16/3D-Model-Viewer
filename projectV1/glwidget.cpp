@@ -88,7 +88,6 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Rotation */
         this->adjustViewPort();
-
         //cam.moveToCenter();
         //cam.viewModel();
         m.rotate(currQ);
