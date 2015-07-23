@@ -93,7 +93,7 @@ void GLWidget::paintGL(){
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        cam.setZoom(.1);
+        cam.setZoom(2);
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
@@ -175,6 +175,7 @@ void GLWidget::grabObj(objLoad objFile){
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
     cam.findModel(objPtr);
+    cam.setAspect(w0,h0);
     needsReset = true;
 }
 

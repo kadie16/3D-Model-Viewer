@@ -5,6 +5,11 @@ camera::camera()
     zoomF = 1;
 }
 
+void camera::setAspect(float w, float h)
+{
+    aspect = w/h;
+}
+
 void camera::translate(float dx, float dy)
 {
     glMatrixMode(GL_PROJECTION);
@@ -16,7 +21,7 @@ void camera::findModel(objLoad *o)
     radius = o->findRadius();
     center = o->findCenter();
     double diameter = radius*2;
-    fov = 90;
+    fov = 50;
     //fov*= M_PI/180;
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
