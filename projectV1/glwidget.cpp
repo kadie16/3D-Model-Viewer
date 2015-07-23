@@ -35,9 +35,13 @@ void GLWidget::initializeGL(){
     translateOK = false;
     needsReset = false;
     cullingOK = false;
+    w0 = this->width();
+    h0 = this->height();
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
 }
 
 void GLWidget::paintGL(){
@@ -84,12 +88,13 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Rotation */
         this->adjustViewPort();
-        //cam.setZoom(.5);
+
         //cam.moveToCenter();
         //cam.viewModel();
         m.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
+        cam.setZoom(.1);
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
@@ -103,12 +108,15 @@ void GLWidget::paintGL(){
    }
 }
 
-void GLWidget::resetView(){
+void GLWidget::resetView()
+{
     if (needsReset) {
+        currQ.setScalar(1);
+        currQ.setX(0);
+        currQ.setY(0);
+        currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
-        w0 = this->width();
-        h0 = this->height();
         needsReset = false;
    }
 }
