@@ -37,6 +37,7 @@ void GLWidget::initializeGL(){
     cullingOK = false;
     w0 = this->width();
     h0 = this->height();
+    cam.setAspect(w0,h0);
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
@@ -175,7 +176,6 @@ void GLWidget::grabObj(objLoad objFile){
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
     cam.findModel(objPtr);
-    cam.setAspect(w0,h0);
     needsReset = true;
 }
 
