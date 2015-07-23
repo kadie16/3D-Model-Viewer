@@ -22,3 +22,20 @@
 
 			- (5) Crashes on start with message: uncaught exception std::vector out of range 
 
+
+23 July 2015: 
+			- (2) Repaired.
+
+			- (5) Repaired. 
+
+			New: 
+
+			- (2) Reset when loading new object only works before any transforms applied.
+			Repaired: Reset currQ to identity.  
+			
+
+			Remaining: 
+	
+			- (1) See 15 July 2015. 
+				
+
