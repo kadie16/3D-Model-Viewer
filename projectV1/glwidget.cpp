@@ -95,7 +95,7 @@ void GLWidget::paintGL(){
         //cam.viewModel();
         m.rotate(currQ);
         glMatrixMode(GL_PROJECTION);
-        //cam.setZoom(2);
+        cam.setZoom(1);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
 
