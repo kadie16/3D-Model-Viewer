@@ -58,7 +58,9 @@ void GLWidget::paintGL(){
         QMatrix4x4 m;
         if (needsReset)
             this->resetView();
+        glMatrixMode(GL_PROJECTION);
         glScaled(scale,scale,scale);
+        glMatrixMode(GL_MODELVIEW);
         if (cullingOK)
         {
             glEnable(GL_CULL_FACE);
@@ -92,9 +94,11 @@ void GLWidget::paintGL(){
         //cam.moveToCenter();
         //cam.viewModel();
         m.rotate(currQ);
+        glMatrixMode(GL_PROJECTION);
+        cam.setZoom(2);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        cam.setZoom(2);
+
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
