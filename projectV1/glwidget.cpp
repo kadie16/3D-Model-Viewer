@@ -240,7 +240,7 @@ void GLWidget::adjustViewPort()
     }
     /* Coordinates of Lower Left Corner of ViewPort */
     int vpX = (screenW - viewW)/2;
-    int vpY = (screenW - viewH)/2;
+    int vpY = (screenH - viewH)/2;
     glViewport(vpX,vpY,viewW,viewH);
 }
 
