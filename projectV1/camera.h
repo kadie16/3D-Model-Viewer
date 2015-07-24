@@ -11,12 +11,12 @@ class camera
 {    
 public:
     camera();
-    void setAspect(float w, float h);
     void setZoom(float factor);
     void translate(float dx, float dy);
     void findModel(objLoad *o);
     void viewModel();
     void moveToCenter();
+    void adjustZoom();
 private:
     std::vector<float> center;
     float radius;
