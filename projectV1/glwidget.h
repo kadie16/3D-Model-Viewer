@@ -12,7 +12,7 @@
 #include "face.h"
 #include "camera.h"
 #include <QQuaternion>
-
+#include <QObject>
 #include <QMatrix4x4>
 
 class GLWidget : public QGLWidget

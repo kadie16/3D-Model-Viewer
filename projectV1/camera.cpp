@@ -21,7 +21,7 @@ void camera::findModel(objLoad *o)
     radius = o->findRadius();
     center = o->findCenter();
     double diameter = radius*2;
-    fov = 50;
+    fov = 90;
     //fov*= M_PI/180;
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
@@ -57,6 +57,8 @@ void camera::moveToCenter()
 void camera::setZoom(float factor)
 {
     zoomF = factor;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
     glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,near,far);
 }
 

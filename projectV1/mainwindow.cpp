@@ -34,7 +34,6 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_checkBox_stateChanged(int arg1)
 {
-    arg1 = arg1;
     ui->widget16->toggleCulling();
 }
 
