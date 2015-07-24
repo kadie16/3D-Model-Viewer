@@ -95,7 +95,7 @@ void GLWidget::paintGL(){
         //cam.viewModel();
         m.rotate(currQ);
         glMatrixMode(GL_PROJECTION);
-        cam.setZoom(2);
+        //cam.setZoom(2);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
 
@@ -229,19 +229,19 @@ void GLWidget::adjustViewPort()
     /* Original Aspect */
     float aspect = w0/h0;
     /* Screen Width and Height */
-    int sW = this->width()*2;
-    int sH = this->height()*2;
+    int screenW = this->width()*2;
+    int screenH = this->height()*2;
     /* Fixed ViewPort Width and Height */
-    float vW = sW;
-    float vH = sW/aspect;
-    if (vW > sH) {
-        vH = sH;
-        vW = vH * aspect;
+    float viewW = screenW;
+    float viewH = screenW/aspect;
+    if (viewH > screenH) {
+        viewH = screenH;
+        viewW = viewH * aspect;
     }
     /* Coordinates of Lower Left Corner of ViewPort */
-    int vpX = (sW - vW)/2;
-    int vpY = (sH - vH)/2;
-    glViewport(vpX,vpY,vW,vH);
+    int vpX = (screenW - viewW)/2;
+    int vpY = (screenW - viewH)/2;
+    glViewport(vpX,vpY,viewW,viewH);
 }
 
 bool GLWidget::toggleRotation(){

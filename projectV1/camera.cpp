@@ -32,10 +32,10 @@ void camera::findModel(objLoad *o)
     top =   center.at(1) + radius;
     bottom = center.at(1) - radius; */
 
-    right =  aspect*top;
-    left =  aspect*bottom;
     top =   tan(fov*0.5)*near;
     bottom = -top;
+    right =  aspect*top;
+    left =  aspect*bottom;
 }
 
 void camera::viewModel()
@@ -52,11 +52,6 @@ void camera::viewModel()
 void camera::moveToCenter()
 {
     glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-}
-
-void camera::adjustZoom()
-{
-
 }
 
 void camera::setZoom(float factor)
