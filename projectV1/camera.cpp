@@ -59,7 +59,7 @@ void camera::moveToCenter()
 
 void camera::setZoom(float factor)
 {
-    zoomF = .65;
+    zoomF = factor;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,-near,-far);
