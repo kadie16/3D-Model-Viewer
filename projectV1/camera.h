@@ -18,6 +18,7 @@ public:
     void viewModel();
     void moveToCenter();
     void adjustZoom();
+    float fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin);
 private:
     std::vector<float> center;
     float radius;

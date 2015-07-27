@@ -88,6 +88,7 @@ void GLWidget::paintGL(){
             cam.translate(xT,yT);
         } else if (mouseHeld && zoomOK) {
             zoomF = zoomF + dy/100.0;
+            std::cout << zoomF << std::endl;
         }
         /* Apply Current Rotation */
         this->adjustViewPort();
@@ -119,7 +120,9 @@ void GLWidget::resetView()
         currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
-        cam.setZoom(1);
+        zoomF = cam.fitModel(maxCoords.at(0), minCoords.at(0),
+                     maxCoords.at(1), minCoords.at(1),
+                     maxCoords.at(2), minCoords.at(2));
         needsReset = false;
    }
 }

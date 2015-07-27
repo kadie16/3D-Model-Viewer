@@ -49,7 +49,6 @@ void camera::viewModel()
     glFrustum(left,right,bottom,top,near,far);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 }
 
 void camera::moveToCenter()
@@ -57,15 +56,37 @@ void camera::moveToCenter()
     glTranslatef(-center.at(0), -center.at(1), -(center.at(2)));
 }
 
+float camera::fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin)
+{
+    float dx = xMax - xMin;
+    float dy = yMax - yMin;
+    float dz = zMax - zMin;
+
+    if (dx > dy && dx > dz)
+    {
+        zoomF = .9*(right-left)/dx;
+        zoomF = 1/zoomF;
+    }
+    else
+    {
+        float dim;
+        if (dy > dz)
+            dim = dy;
+        else
+            dim = dz;
+        zoomF = .9*(top-bottom)/dim;
+        zoomF = 1/zoomF;
+    }
+    return zoomF;
+}
+
 void camera::setZoom(float factor)
 {
-    zoomF = factor;
+    if (factor > 0.01)
+        zoomF = factor;
+    else
+        zoomF = 0.01;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,-near,-far);
-    /*PRINT*/
-    std::cout << "left: " << left << " right : " << right << std::endl;
-    std::cout << "top: " << top << " bottom : " << bottom << std::endl;
-    std::cout << "near: " << near << " far : " << far << std::endl;
-    std::cout << "fov: " << fov << " fdist: " << fdist << std::endl;
 }
