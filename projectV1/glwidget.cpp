@@ -93,7 +93,7 @@ void GLWidget::paintGL(){
         this->adjustViewPort();
         m.rotate(currQ);
         glMatrixMode(GL_PROJECTION);
-        //cam.setZoom(1);
+        cam.setZoom(1);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
 
@@ -119,6 +119,7 @@ void GLWidget::resetView()
         currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
+        cam.setZoom(1);
         needsReset = false;
    }
 }
