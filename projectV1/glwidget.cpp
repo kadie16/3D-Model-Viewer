@@ -61,6 +61,7 @@ void GLWidget::paintGL(){
         glMatrixMode(GL_PROJECTION);
         glScaled(scale,scale,scale);
         glMatrixMode(GL_MODELVIEW);
+        /* CULLING */
         if (cullingOK)
         {
             glEnable(GL_CULL_FACE);
@@ -68,36 +69,26 @@ void GLWidget::paintGL(){
         }
         else
             glDisable(GL_CULL_FACE);
-        if ( mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+        /* ROTATION */
+        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-            /* Define Axis of Rotation */
-            axisOfRotation.setX(-dy);
-            axisOfRotation.setY(-dx);
-            axisOfRotation.setZ(0);
-            mag = sqrt(dx*dx + dy*dy);
-            /* Update Rotation Quaternion */
-            QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
-            currQ = newQ * currQ;
+            this->drag2Rotate(dx,dy);
         }
+        /* TRANSLATION */
         else if (mouseHeld && translateOK && !rotationOK)
         {
-            float xT,yT;
-            /* Adjust Magnitude of Translation to Dimensions of Model */
-            xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
-            yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-            cam.translate(xT,yT);
-        } else if (mouseHeld && zoomOK) {
-            zoomF = zoomF + dy/100.0;
-            std::cout << zoomF << std::endl;
+            this->drag2Translate(dx, dy);
         }
-        /* Apply Current Rotation */
-        this->adjustViewPort();
+        /* ZOOM */
+        else if (mouseHeld && zoomOK) {
+            this->drag2Zoom(dy);
+        }
+        /* Apply Current Settings */
         m.rotate(currQ);
         glMatrixMode(GL_PROJECTION);
         cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
@@ -228,24 +219,31 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->y = e->y();
 }
 
-void GLWidget::adjustViewPort()
+QQuaternion GLWidget::drag2Rotate(float dx, float dy)
 {
-    /* Original Aspect
-    float aspect = w0/h0;
-    /* Screen Width and Height
-    int screenW = this->width()*2;
-    int screenH = this->height()*2;
-    /* Fixed ViewPort Width and Height
-    float viewW = screenW;
-    float viewH = screenW/aspect;
-    if (viewH > screenH) {
-        viewH = screenH;
-        viewW = viewH * aspect;
-    }
-    /* Coordinates of Lower Left Corner of ViewPort
-    int vpX = (screenW - viewW)/2;
-    int vpY = (screenH - viewH)/2;
-    glViewport(vpX,vpY,viewW,viewH); */
+    /* Define Axis of Rotation */
+    axisOfRotation.setX(-dy);
+    axisOfRotation.setY(-dx);
+    axisOfRotation.setZ(0);
+    mag = sqrt(dx*dx + dy*dy);
+    /* Update Rotation Quaternion */
+    QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
+    currQ = newQ * currQ;
+    return currQ;
+}
+
+void GLWidget::drag2Translate(float dx, float dy)
+{
+    float xT,yT;
+    /* Adjust Magnitude of Translation to Dimensions of Model */
+    xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
+    yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
+    cam.translate(xT,yT);
+}
+
+void GLWidget::drag2Zoom(float dy)
+{
+    zoomF = zoomF + dy/100.0;
 }
 
 

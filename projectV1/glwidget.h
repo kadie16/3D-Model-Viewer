@@ -35,7 +35,9 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
-    void adjustViewPort();
+    QQuaternion drag2Rotate(float dx, float dy);
+    void drag2Translate(float dx, float dy);
+    void drag2Zoom(float dy);
 
 private:
     QTimer timer;
