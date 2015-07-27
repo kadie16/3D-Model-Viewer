@@ -12,7 +12,7 @@ void camera::setAspect(float w, float h)
 
 void camera::translate(float dx, float dy)
 {
-    glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_MODELVIEW);
     glTranslatef(dx,dy,0);
 }
 
@@ -21,9 +21,7 @@ void camera::findModel(objLoad *o)
     radius = o->findRadius();
     center = o->findCenter();
     double diameter = radius*2;
-
     fov = 30;
-    //fov*= M_PI/180;
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
     far = fdist + diameter;
@@ -31,21 +29,11 @@ void camera::findModel(objLoad *o)
     bottom = -top;
     right =  aspect*top;
     left =  aspect*bottom;
-
-    /*
-    left =  center.at(0) - radius;
-    right =  center.at(0) + radius;
-    top =   center.at(1) + radius;
-    bottom = center.at(1) - radius;
-    near = center.at(2) - radius;
-    far = center.at(2) + radius; */
 }
 
 void camera::viewModel()
 {
-    //left = left*.5; right = right*.5; bottom = bottom*.5; top = top*.5;
-    glMatrixMode(GL_PROJECTION);
-    //glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,near,far);
+    glMatrixMode(GL_PROJECTION);\
     glFrustum(left,right,bottom,top,near,far);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -53,7 +41,17 @@ void camera::viewModel()
 
 void camera::moveToCenter()
 {
-    glTranslatef(-center.at(0), -center.at(1), -(center.at(2)));
+    glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+}
+
+void camera::adjustAspect(float w, float h)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    float newAspect = w/h;
+    leftAdjust = newAspect * left;
+    rightAdjust = newAspect * right;
+    glOrtho(zoomF*leftAdjust, zoomF*rightAdjust, zoomF*bottom, zoomF*top, near, far);
 }
 
 float camera::fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin)
@@ -66,7 +64,6 @@ float camera::fitModel(float xMax, float xMin, float yMax, float yMin, float zMa
     {
         zoomF = .9*(right-left)/diam;
         zoomF = 1/zoomF;
-        std::cout << "DIAMETER " << std::endl;
     }
     else if (dx >= dy && dx >= dz)
     {
@@ -93,6 +90,6 @@ void camera::setZoom(float factor)
     else
         zoomF = 0.01;
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,-near,-far);
+    glLoadIdentity(); // make sure zoom not applied to previous state
+    glOrtho(leftAdjust*zoomF,rightAdjust*zoomF,bottom*zoomF,top*zoomF,-near,-far);
 }

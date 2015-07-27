@@ -182,6 +182,7 @@ void GLWidget::grabObj(objLoad objFile){
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
     cam.findModel(objPtr);
+    cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }
 
@@ -193,6 +194,7 @@ void GLWidget::grabColor(double r, double g, double b)
 }
 
 void GLWidget::resizeGL(int w, int h){
+    cam.adjustAspect(w,h);
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *e)
@@ -228,23 +230,24 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
 
 void GLWidget::adjustViewPort()
 {
-    /* Original Aspect */
+    /* Original Aspect
     float aspect = w0/h0;
-    /* Screen Width and Height */
+    /* Screen Width and Height
     int screenW = this->width()*2;
     int screenH = this->height()*2;
-    /* Fixed ViewPort Width and Height */
+    /* Fixed ViewPort Width and Height
     float viewW = screenW;
     float viewH = screenW/aspect;
     if (viewH > screenH) {
         viewH = screenH;
         viewW = viewH * aspect;
     }
-    /* Coordinates of Lower Left Corner of ViewPort */
+    /* Coordinates of Lower Left Corner of ViewPort
     int vpX = (screenW - viewW)/2;
     int vpY = (screenH - viewH)/2;
-    glViewport(vpX,vpY,viewW,viewH);
+    glViewport(vpX,vpY,viewW,viewH); */
 }
+
 
 bool GLWidget::toggleRotation(){
     dx = 0; dy = 0;

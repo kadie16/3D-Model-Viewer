@@ -18,15 +18,19 @@ public:
     void viewModel();
     void moveToCenter();
     void adjustZoom();
+    void adjustAspect(float w, float h);
     float fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin);
 private:
     std::vector<float> center;
     float radius;
     float zoomF;
     float aspect;
+    float w0;
     double fov;
     double left;
+    double leftAdjust;
     double right;
+    double rightAdjust;
     double top;
     double bottom;
     double near;
