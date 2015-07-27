@@ -58,10 +58,32 @@ void camera::moveToCenter()
 
 float camera::fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin)
 {
+    float dx = xMax - xMin;
+    float dy = yMax - yMin;
+    float dz = zMax - zMin;
     float diam = radius*2;
-    zoomF = .9*(right-left)/diam;
-    zoomF = 1/zoomF;
-        return zoomF;
+    if (dx == dy == dz)
+    {
+        zoomF = .9*(right-left)/diam;
+        zoomF = 1/zoomF;
+        std::cout << "DIAMETER " << std::endl;
+    }
+    else if (dx >= dy && dx >= dz)
+    {
+        zoomF = .9*(right-left)/dx;
+        zoomF = 1/zoomF;
+    }
+    else
+    {
+        float dim;
+        if (dy > dz)
+            dim = dy;
+        else
+            dim = dz;
+        zoomF = .9*(top-bottom)/dim;
+        zoomF = 1/zoomF;
+    }
+    return zoomF;
 }
 
 void camera::setZoom(float factor)
