@@ -21,21 +21,24 @@ void camera::findModel(objLoad *o)
     radius = o->findRadius();
     center = o->findCenter();
     double diameter = radius*2;
+
     fov = 30;
     //fov*= M_PI/180;
     fdist = radius/tan(fov*0.5);
     near = fdist - diameter;
     far = fdist + diameter;
-    /*
-    left =  center.at(0) - radius;
-    right =  center.at(0) + radius;
-    top =   center.at(1) + radius;
-    bottom = center.at(1) - radius; */
-
     top =   tan(fov*0.5)*near;
     bottom = -top;
     right =  aspect*top;
     left =  aspect*bottom;
+
+    /*
+    left =  center.at(0) - radius;
+    right =  center.at(0) + radius;
+    top =   center.at(1) + radius;
+    bottom = center.at(1) - radius;
+    near = center.at(2) - radius;
+    far = center.at(2) + radius; */
 }
 
 void camera::viewModel()
@@ -51,16 +54,15 @@ void camera::viewModel()
 
 void camera::moveToCenter()
 {
-    glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+    glTranslatef(-center.at(0), -center.at(1), -(center.at(2)));
 }
 
 void camera::setZoom(float factor)
 {
-    zoomF = factor;
+    zoomF = .65;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,0,far);
-
     /*PRINT*/
     std::cout << "left: " << left << " right : " << right << std::endl;
     std::cout << "top: " << top << " bottom : " << bottom << std::endl;
