@@ -62,7 +62,7 @@ void camera::setZoom(float factor)
     zoomF = .65;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,0,far);
+    glOrtho(left*zoomF,right*zoomF,bottom*zoomF,top*zoomF,-near,-far);
     /*PRINT*/
     std::cout << "left: " << left << " right : " << right << std::endl;
     std::cout << "top: " << top << " bottom : " << bottom << std::endl;
