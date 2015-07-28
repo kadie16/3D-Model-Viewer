@@ -14,6 +14,7 @@
 #include <QQuaternion>
 #include <QObject>
 #include <QMatrix4x4>
+#include <CGAL/Simple_cartesian.h>
 
 class GLWidget : public QGLWidget
 {

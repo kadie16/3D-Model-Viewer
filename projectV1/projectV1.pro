@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     face.cpp \
     testqstring.cpp \
     ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
-    camera.cpp
+    camera.cpp \
+    points_and_segment.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
@@ -33,4 +34,21 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-#LIBS    += -L/usr/local/Cellar/cgal/4.5 -cgal
+#LIBS    += -L/usr/local/Cellar/cgal/4.5/include/ -cgal
+
+macx: LIBS += -L$$PWD/../../4.5/lib/ -lCGAL.10.0.4
+
+INCLUDEPATH += $$PWD/../../4.5/include
+DEPENDPATH += $$PWD/../../4.5/include
+
+
+
+macx: LIBS += -L$$PWD/../../1.57.0/lib/ -lboost_thread-mt
+
+INCLUDEPATH += $$PWD/../../1.57.0/include
+DEPENDPATH += $$PWD/../../1.57.0/include
+
+macx: LIBS += -L$$PWD/../../1.57.0/lib/ -lboost_system
+
+INCLUDEPATH += $$PWD/../../1.57.0/include
+DEPENDPATH += $$PWD/../../1.57.0/include
