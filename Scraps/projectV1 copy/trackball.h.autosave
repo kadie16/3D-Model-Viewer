@@ -1,0 +1,22 @@
+#ifndef TRACKBALL_H
+#define TRACKBALL_H
+#include <QVector3D>
+#include <QMouseEvent>
+
+
+class trackball
+{
+public:
+    trackball(float angVel, QVector3D ax);
+    move()
+private:
+    float angularV;
+    QVector3D axis;
+    float x0,y0,x,y;
+protected:
+    void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *e);
+};
+
+#endif // TRACKBALL_H
