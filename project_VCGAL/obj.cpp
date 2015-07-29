@@ -1,7 +1,12 @@
 #include "obj.h"
 using namespace std;
 
-obj::build(string fName)
+obj::obj()
+{
+
+}
+
+void obj::build(string fName)
 {
     CGAL::Polyhedron_incremental_builder_3<HDS> builder(hds, true);
     typedef typename HDS::Vertex   Vertex;
@@ -21,28 +26,29 @@ obj::build(string fName)
         {
             /* Get next line of file */
             getline(stream, currLine);
-            /* Determine whether it is a vertex, normal, or face line */
-            if (currLine[0] == 'v' && currLine[1] == ' ')
-            {
-                Vertex newV = this->parseVertex(currLine);
-                builder.add_vertex(newV);
-                this->checkMax(newV);
-                this->checkMin(newV);
-
-             }
-            else if (currLine[0] == 'v' && currLine[1] == 'n')
-            {
-                Vertex n(currLine, currLine[1]);
-                normals.push_back(n);
-            }
-
-            else if (currLine[0] == 'f' && currLine[1] == ' ')
-            {
-                vector<Vertex> v = this->parseFace(currLine);
-                face f = face(v.at(0), v.at(1), v.at(2));
-                facets.push_back(f);
+            if (currLine.size() > 2) {
+                /* Determine whether it is a vertex, normal, or face line */
+                if (currLine[0] == 'v' && currLine[1] == ' ') {
+                    Vertex newV = this->parseVertex(currLine);
+                    builder.add_vertex(newV);
+                    this->checkMax(newV);
+                    this->checkMin(newV);
+                 } else if (currLine[0] == 'v' && currLine[1] == 'n') {
+                    Vertex n(currLine, currLine[1]);
+                    normals.push_back(n);
+                } else if (currLine[0] == 'f' && currLine[1] == ' ') {
+                    builder.begin_facet();
+                    vector<Vertex> v = this->parseFace(currLine);
+                    builder.add_vertex_to_facet(v.at(0));
+                    builder.add_vertex_to_facet(v.at(1));
+                    builder.add_vertex_to_facet(v.at(2));
+                    if (v.size() > 3)
+                        builder.add_vertex_to_facet(v.at(3));
+                    builder.end_facet();
+                }
             }
         }
+        poly.delegate(builder);
         stream.close();
     } else
     {
@@ -58,24 +64,29 @@ string obj::getFileName()
 void obj::print()
 {
     cout << fileName << " vertices: " << endl;
-    for (unsigned i = 0 ; i < vertices.size(); i++)
-    {
-       vertices.at(i).print();
+    CGAL::Polyhedron_3::Vertex_iterator vIter = this->getVertices();
+    for ( vIter ; vIter != poly.vertices_end() ; vIter++ ) {
+       std::cout << poly.vertex(vIter) << std::endl;
     }
+    CGAL::Polyhedron_3::Facet_iterator fIter = this->getFacets();
+    for (fIter; fIter != poly.facets_end() ; fIter++) {
+        std::cout << poly.facet(fIter) << std::endl;
+    }
+
 }
 
-vector<Vertex> obj::getVertices()
+typename Polyhedron::Vertex_iterator obj::getVertices()
 {
-    return vertices;
+    return poly.vertices_begin();
 }
 
-vector<face> obj::getFacets()
+typename Polyhedron::Facet_iterator obj::getFacets()
 {
-    return facets;
+    return poly.facets_begin();
 }
 
-vector<Vertex> obj::parseFace(string input){
-    vector<Vertex> toReturn;
+vector<int> obj::parseFace(string input){
+    vector<int> toReturn;
     /* Parses differently, depending on if there are slashes in line */
     if (input.find("/") != string::npos) {
         /* remove the "f" in front of the line */
@@ -86,14 +97,12 @@ vector<Vertex> obj::parseFace(string input){
         string token2;
         int index;
         int prevIndex = 0;
-        while ((pos = input.find(delimiter) != string::npos))
-        {
+        while ((pos = input.find(delimiter) != string::npos)) {
          /* Token is index of vertex in the face */
          token = input.substr(0, input.find(delimiter));
          istringstream(token) >> index; /* Only succeeds if token is an integer */
          if (index != prevIndex){
-            /* .obj file is indexed at 1, C++ vector indexed at 0 */
-            toReturn.push_back(vertices.at(index - 1));
+            toReturn.push_back(index);
             prevIndex = index;
         }
          /* Tossing out token2 until further notice */
@@ -103,10 +112,7 @@ vector<Vertex> obj::parseFace(string input){
         }
     } else {
         /* If there aren't any slashes, parses like coordinates */
-        vector<float> indices = coordinateScanner(input);
-        toReturn.push_back(vertices.at(indices.at(0) - 1));
-        toReturn.push_back(vertices.at(indices.at(1) - 1));
-        toReturn.push_back(vertices.at(indices.at(2) - 1));
+        return coordinateScanner(input);
     }
     return toReturn;
 }
