@@ -121,27 +121,52 @@ void GLWidget::resetView()
 void GLWidget::drawObject()
 {
     if (objPtr){
-        glBegin(GL_TRIANGLES);
-        face f;
-        std::vector<float> normal;
-        Vertex v1, v2, v3;
-        for (unsigned i = 0 ; i < faces.size() ; i++)
-        {
-            /* Getting Normal and Vertices from Face */
-            f = faces.at(i);
-            v1 = f.getVertex(1);
-            v2 = f.getVertex(2);
-            v3 = f.getVertex(3);
-            normal = f.getNormal();
-            /* Rendering Face (OpenGL Stuff) */
-            glColor3f(red,green,blue);
-            glNormal3f(normal.at(0), normal.at(1), normal.at(2));
-            glVertex3f(v1.X(), v1.Y(), v1.Z());
-            glVertex3f(v2.X(), v2.Y(), v2.Z());
-            glVertex3f(v3.X(), v3.Y(), v3.Z());
-         }
+       for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin; faceIter != mesh.facets_end(); ++faceIter) {
+           Polyhedron::Halfedge_around_facet_const_circulator halfEdgeCirc = faceIter->facet_begin();
+           if (faceIter->is_triangle())
+               drawTriangle(halfEdgeCirc);
+           else if (faceIter->is_quad())
+               drawQuad(halfEdgeCirc);
+       }
     }
     glEnd();
+}
+
+void GLWidget::drawTriangle(CGAL::Polyhedron_3::Halfedge_around_facet_const_circulator circulator)
+{
+    Point_3 p1,p2,p3;
+    p1 = circulator->vertex()->point();
+    ++ circulator;
+    p2 = circulator->vertex()->point();
+    ++ circulator;
+    p3 = circulator->vertex()->point();
+    CGAL::Vector_3<Kernel> normal = CGAL::normal(p1, p2, p3);
+    glBegin(GL_TRIANGLES);
+    glColor3f(red, green, blue);
+    glNormal3f(normal.hx(), normal.hy(), normal.hz());
+    glVertex3f(p1.hx(), p1.hy(), p1.hz());
+    glVertex3f(p2.hx(), p2.hy(), p2.hz());
+    glVertex3f(p3.hx(), p3.hy(), p3.hz());
+}
+
+void GLWidget::drawQuad(CGAL::Polyhedron_3::Halfedge_around_facet_const_circulator circulator)
+{
+    Point_3 p1,p2,p3,p4;
+    p1 = circulator->vertex()->point();
+    ++circulator;
+    p2 = circulator->vertex()->point();
+    ++circulator;
+    p3 = circulator->vertex()->point();
+    ++circulator;
+    p4 = circulator->vertex()->point();
+    CGAL::Vector_3<Kernel> normal = CGAL::normal(p1, p2, p3);
+    glBegin(GL_QUADS);
+    glColor3f(red, green, blue);
+    glNormal3f(normal.hx(), normal.hy(), normal.hz());
+    glVertex3f(p1.hx(), p1.hy(), p1.hz());
+    glVertex3f(p2.hx(), p2.hy(), p2.hz());
+    glVertex3f(p3.hx(), p3.hy(), p3.hz());
+    glVertex3f(p4.hx(), p4.hy(), p4.hz());
 }
 
 void GLWidget::drawAxes()
@@ -163,11 +188,10 @@ void GLWidget::drawAxes()
     glEnd();
 }
 
-void GLWidget::grabObj(objLoad objFile){
+void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     objPtr = &objFile;
-    vertices = objPtr->getVertices();
-    faces = objPtr->getFacets();
+    mesh.delegate(objFile);
     center = objPtr->findCenter();
     radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();

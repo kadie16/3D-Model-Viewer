@@ -6,15 +6,18 @@
 #include <math.h>
 #include <QTime>
 #include "objload.h"
+#include <CGAL/HalfedgeDS_default.h>
+#include <CGAL/HalfedgeDS_min_items.h>
 
 class camera
 {    
 public:
+    typedef CGAL::HalfedgeDS_default HDS<int, CGAL::HalfedgeDS_min_items>;
     camera();
     void setAspect(float w, float h);
     void setZoom(float factor);
     void translate(float dx, float dy);
-    void findModel(objLoad *o);
+    void findModel(objLoad<HDS> *o);
     void viewModel();
     void moveToCenter();
     void adjustZoom();

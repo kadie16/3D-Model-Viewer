@@ -20,6 +20,7 @@ class GLWidget : public QGLWidget
 {
     Q_OBJECT
 public:
+    typedef CGAL::HalfedgeDS_default HDS<int, CGAL::HalfedgeDS_min_items>;
     explicit GLWidget(QWidget *parent = 0);
     bool toggleRotation();
     bool toggleCulling();
@@ -32,7 +33,7 @@ public:
     void drawObject();
     void drawAxes();
     void resetView();
-    void grabObj(objLoad objFile);
+    void grabObj(objLoad<HDS> objFile);
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
@@ -43,7 +44,7 @@ public:
 private:
     QTimer timer;
     /* .obj Information */
-    objLoad *objPtr = 0;
+    objLoad<HDS> *objPtr = 0;
     std::vector<Vertex> vertices;
     std::vector<face> faces;
     std::vector<float> center;

@@ -1,49 +1,8 @@
 #include "objload.h"
 using namespace std;
 
-objLoad::objLoad(string fName)
+objLoad::objLoad()
 {
-    maxCoords.assign(3, 0);
-    minCoords.assign(3,0);
-    center.assign(3,0);
-    cout << "Loading object from path:  " << fName << endl;
-    fileName = fName;
-    /* Open file stream */
-    ifstream stream(fName.c_str());
-    if (stream.is_open())
-    {
-        string currLine;
-        while (!stream.eof())
-        {
-            /* Get next line of file */
-            getline(stream, currLine);
-            /* Determine whether it is a vertex, normal, or face line */
-            if (currLine[0] == 'v' && currLine[1] == ' ')
-            {
-                Vertex newV = this->parseVertex(currLine);
-                vertices.push_back(newV);
-                this->checkMax(newV);
-                this->checkMin(newV);
-
-             }
-            else if (currLine[0] == 'v' && currLine[1] == 'n')
-            {
-                Vertex n(currLine, currLine[1]);
-                normals.push_back(n);
-            }
-
-            else if (currLine[0] == 'f' && currLine[1] == ' ')
-            {
-                vector<Vertex> v = this->parseFace(currLine);
-                face f = face(v.at(0), v.at(1), v.at(2));
-                facets.push_back(f);
-            }
-        }
-        stream.close();
-    } else
-    {
-        cout << "File load failed!" << endl;
-    }
 }
 
 string objLoad::getFileName()
@@ -51,27 +10,67 @@ string objLoad::getFileName()
     return fileName;
 }
 
-void objLoad::print()
+objLoad::objLoad(string Path)
 {
-    cout << fileName << " vertices: " << endl;
-    for (unsigned i = 0 ; i < vertices.size(); i++)
-    {
-       vertices.at(i).print();
+    path = Path;
+}
+
+void objLoad::setFilePath(string Path)
+{
+    path = Path;
+}
+
+string objLoad::getPath()
+{
+    return path;
+}
+
+void objLoad::operator()(HDS &hds)
+{
+    /* Empty Mesh */
+    hds.clear();
+    CGAL::Polyhedron_incremental_builder_3<HDS> builder(hds, true);
+    builder.begin_surface(0,0);
+    maxCoords.assign(3, 0);
+    minCoords.assign(3,0);
+    center.assign(3,0);
+    /* Open File */
+    cout << "Loading object from path:  " << path << endl;
+    ifstream stream(fName.c_str());
+    if (stream.is_open()) {
+        string currLine;
+        while (!stream.eof()) {
+            /* Get next line of file */
+            getline(stream, currLine);
+            if (currLine.size() > 2) {
+                /* Determine whether it is a vertex, normal, or face line */
+                if (currLine[0] == 'v' && currLine[1] == ' ') {
+                    Vertex newV = this->parseVertex(currLine);
+                    builder.add_vertex(newV);
+                    this->checkMax(newV);
+                    this->checkMin(newV);
+                 } else if (currLine[0] == 'v' && currLine[1] == 'n') {
+                   /* Not Storing Normals */
+                } else if (currLine[0] == 'f' && currLine[1] == ' ') {
+                    builder.begin_facet();
+                    vector<Vertex> v = this->parseFace(currLine);
+                    builder.add_vertex_to_facet(v.at(0));
+                    builder.add_vertex_to_facet(v.at(1));
+                    builder.add_vertex_to_facet(v.at(2));
+                    if (v.size() > 3)
+                        builder.add_vertex_to_facet(v.at(3));
+                    builder.end_facet();
+                }
+            }
+        }
+        builder.end_surface();
+        stream.close();
+    } else {
+        cout << "File load failed!" << endl;
     }
 }
-
-vector<Vertex> objLoad::getVertices()
-{
-    return vertices;
-}
-
-vector<face> objLoad::getFacets()
-{
-    return facets;
-}
-
 vector<Vertex> objLoad::parseFace(string input){
-    vector<Vertex> toReturn;
+    vector<int> toReturn;
     /* Parses differently, depending on if there are slashes in line */
     if (input.find("/") != string::npos) {
         /* remove the "f" in front of the line */
@@ -82,14 +81,12 @@ vector<Vertex> objLoad::parseFace(string input){
         string token2;
         int index;
         int prevIndex = 0;
-        while ((pos = input.find(delimiter) != string::npos))
-        {
+        while ((pos = input.find(delimiter) != string::npos)) {
          /* Token is index of vertex in the face */
          token = input.substr(0, input.find(delimiter));
          istringstream(token) >> index; /* Only succeeds if token is an integer */
          if (index != prevIndex){
-            /* .obj file is indexed at 1, C++ vector indexed at 0 */
-            toReturn.push_back(vertices.at(index - 1));
+            toReturn.push_back(index);
             prevIndex = index;
         }
          /* Tossing out token2 until further notice */
@@ -99,18 +96,16 @@ vector<Vertex> objLoad::parseFace(string input){
         }
     } else {
         /* If there aren't any slashes, parses like coordinates */
-        vector<float> indices = coordinateScanner(input);
-        toReturn.push_back(vertices.at(indices.at(0) - 1));
-        toReturn.push_back(vertices.at(indices.at(1) - 1));
-        toReturn.push_back(vertices.at(indices.at(2) - 1));
+        return coordinateScanner(input);
     }
     return toReturn;
 }
 
-Vertex objLoad::parseVertex(string input)
+vertex objLoad::parseVertex(string input)
 {
     vector<float> coords = coordinateScanner(input);
-    return Vertex(coords.at(0), coords.at(1), coords.at(2));
+    Vertex newVertex(Point(coords.at(0), coords.at(1), coords.at(2)));
+    return newVertex;
 }
 
 vector<float> objLoad::coordinateScanner(string line)
@@ -134,12 +129,12 @@ std::vector<float> objLoad::getMaxCoords()
     return maxCoords;
 }
 
-void objLoad::checkMin(Vertex v)
+void objLoad::checkMin(Polyhedron::Vertex v)
 {
     float x,y,z;
-    x = v.X();
-    y = v.Y();
-    z = v.Z();
+    x = v.point().hx();
+    y = v.point().hy();
+    z = v.point().hz();
     if (x < minCoords.at(0))
         minCoords[0] = x;
     if (y < minCoords.at(1))
@@ -148,12 +143,12 @@ void objLoad::checkMin(Vertex v)
         minCoords[2] = z;
 }
 
-void objLoad::checkMax(Vertex v)
+void objLoad::checkMax(Polyhedron::Vertex v)
 {
     float x,y,z;
-    x = v.X();
-    y = v.Y();
-    z = v.Z();
+    x = v.point().hx();
+    y = v.point().hy();
+    z = v.point().hz();
     if (x > maxCoords.at(0))
         maxCoords[0] = x;
     if (y > maxCoords.at(1))
