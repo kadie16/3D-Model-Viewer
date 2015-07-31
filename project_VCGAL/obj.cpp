@@ -1,4 +1,5 @@
 #include "obj.h"
+
 using namespace std;
 
 obj::obj()
@@ -117,7 +118,7 @@ vector<int> obj::parseFace(string input){
     return toReturn;
 }
 
-Vertex obj::parseVertex(string input)
+obj::vertex obj::parseVertex(string input)
 {
     vector<float> coords = coordinateScanner(input);
     Vertex newVertex(Point(coords.at(0), coords.at(1), coords.at(2)));
@@ -188,5 +189,4 @@ float obj::findRadius()
                   +(maxCoords.at(2) - center.at(2))*(maxCoords.at(2) - center.at(2)));
     return (radius);
 }
-
 

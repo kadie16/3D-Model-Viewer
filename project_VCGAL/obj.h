@@ -1,26 +1,16 @@
 #ifndef OBJ_H
 #define OBJ_H
-#include<CGAL/Modifier_base.h>
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_incremental_builder_3.h>
-#include <CGAL/Polyhedron_3.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <string>
-#include <iterator>
-#include "vertex.h"
-#include <QGLWidget>
-#include <QTimer>
-#include <QString>
-#include "face.h"
 
+#include<CGAL/Modifier_base.h>
+#include<CGAL/Polyhedron_3.h>
+#include <CGAL/HalfedgeDS_default.h>
 
 template <class HDS>
 class obj : public CGAL::Modifier_base<HDS>{
 public:
     typedef CGAL::Polyhedron_3<HDS> Polyhedron;
+    typename CGAL::Polyhedron_3<HDS>::Vertex vertex;
+
     obj();
     void build(std::string fName);
     std::string getFileName();
@@ -28,10 +18,10 @@ public:
     typename Polyhedron::Vertex_iterator getVertices();
     typename Polyhedron::Facet_iterator getFacets();
     std::vector<int> parseFace(std::string line);
-    Vertex parseVertex(std::string line);
+    vertex parseVertex(std::string line);
     std::vector<float> static coordinateScanner(std::string line);
-    void checkMin(Vertex v);
-    void checkMax(Vertex v);
+    void checkMin(vertex v);
+    void checkMax(vertex v);
     std::vector<float> getMaxCoords();
     std::vector<float> getMinCoords();
     std::vector<float> findCenter();
@@ -39,7 +29,7 @@ public:
 
 private:
     std::string fileName;
-    std::vector<Vertex> normals;
+    std::vector<vertex> normals;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     std::vector<float> center;
