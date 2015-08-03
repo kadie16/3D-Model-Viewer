@@ -34,8 +34,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-#LIBS    += -L/usr/local/Cellar/cgal/4.5/include/ -cgal
-
 macx: LIBS += -L$$PWD/../../4.5/lib/ -lCGAL.10.0.4
 
 INCLUDEPATH += $$PWD/../../4.5/include

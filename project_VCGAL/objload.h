@@ -51,7 +51,7 @@ class objLoad : public CGAL::Modifier_base<HDS>
                     if (currLine.size() > 2) {
                         /* Determine whether it is a vertex, normal, or face line */
                         if (currLine[0] == 'v' && currLine[1] == ' ') {
-                            Vertex newV = this->parseVertex(currLine);
+                            Point newV = this->parseVertex(currLine);
                             builder.add_vertex(newV);
                             this->checkMax(newV);
                             this->checkMin(newV);
@@ -59,10 +59,10 @@ class objLoad : public CGAL::Modifier_base<HDS>
                            /* Not Storing Normals */
                         } else if (currLine[0] == 'f' && currLine[1] == ' ') {
                             builder.begin_facet();
-                            vector<Vertex> v = this->parseFace(currLine);
-                            builder.add_vertex_to_facet(v.at(0));
-                            builder.add_vertex_to_facet(v.at(1));
-                            builder.add_vertex_to_facet(v.at(2));
+                            vector<float> v = this->parseFace(currLine);
+                            builder.add_vertex_to_facet(v.at(0) - 1);
+                            builder.add_vertex_to_facet(v.at(1) - 1);
+                            builder.add_vertex_to_facet(v.at(2) - 1);
                             if (v.size() > 3)
                                 builder.add_vertex_to_facet(v.at(3));
                             builder.end_facet();
@@ -112,9 +112,9 @@ class objLoad : public CGAL::Modifier_base<HDS>
             }
             return toReturn;
         }
-        typename Polyhedron::Vertex parseVertex(std::string line) {
+        typename Vertex::Point parseVertex(std::string line) {
             vector<float> coords = coordinateScanner(line);
-            Vertex newVertex(Point(coords.at(0), coords.at(1), coords.at(2)));
+            Point newVertex(coords.at(0), coords.at(1), coords.at(2));
             return newVertex;
         }
         std::vector<float> static coordinateScanner(std::string line) {
@@ -127,11 +127,11 @@ class objLoad : public CGAL::Modifier_base<HDS>
             return toReturn;
         }
         /* Determine Model Dimensions */
-        void checkMin(typename Polyhedron::Vertex v) {
+        void checkMin(Point v) {
             float x,y,z;
-            x = v.point().hx();
-            y = v.point().hy();
-            z = v.point().hz();
+            x = v.hx();
+            y = v.hy();
+            z = v.hz();
             if (x < minCoords.at(0))
                 minCoords[0] = x;
             if (y < minCoords.at(1))
@@ -139,11 +139,11 @@ class objLoad : public CGAL::Modifier_base<HDS>
             if (z < minCoords.at(2))
                 minCoords[2] = z;
         }
-        void checkMax(typename Polyhedron::Vertex v) {
+        void checkMax(Point v) {
             float x,y,z;
-            x = v.point().hx();
-            y = v.point().hy();
-            z = v.point().hz();
+            x = v.hx();
+            y = v.hy();
+            z = v.hz();
             if (x > maxCoords.at(0))
                 maxCoords[0] = x;
             if (y > maxCoords.at(1))
