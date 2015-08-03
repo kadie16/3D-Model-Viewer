@@ -120,19 +120,12 @@ void GLWidget::resetView()
 
 void GLWidget::drawObject()
 {
-    if (objPtr){
-        std::cout << "Drawing Object" << std::endl;
-       for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
-           Polyhedron::Halfedge_around_facet_const_circulator halfEdgeCirc = faceIter->facet_begin();
-           if (faceIter->is_triangle()) {
-               drawTriangle(halfEdgeCirc);
-               std::cout << "Drew Triangles" << std::endl;
-           }
-           else if (faceIter->is_quad()) {
+    for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
+         Polyhedron::Halfedge_around_facet_const_circulator halfEdgeCirc = faceIter->facet_begin();
+         if (faceIter->is_triangle())
+            drawTriangle(halfEdgeCirc);
+         else if (faceIter->is_quad())
                drawQuad(halfEdgeCirc);
-               std::cout << "Drew Quads" << std::endl;
-           }
-       }
     }
     glEnd();
 }
@@ -145,7 +138,7 @@ void GLWidget::drawTriangle(Polyhedron::Halfedge_around_facet_const_circulator c
     p2 = circulator->vertex()->point();
     ++ circulator;
     p3 = circulator->vertex()->point();
-    CGAL::Vector_3<Kernel> normal = CGAL::normal(p1, p2, p3);
+    CGAL::Vector_3<Kernel> normal = CGAL::normal(p2, p1, p3);
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
     glNormal3f(normal.hx(), normal.hy(), normal.hz());
