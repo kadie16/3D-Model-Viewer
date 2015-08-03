@@ -6,15 +6,7 @@
 #include <math.h>
 #include <QTime>
 #include "objload.h"
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/HalfedgeDS_default.h>
-#include <CGAL/HalfedgeDS_min_items.h>
 
-typedef double Real;
-typedef CGAL::Simple_cartesian<Real> Kernel;
-typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
-typedef Polyhedron::HalfedgeDS HalfedgeDS;
 
 class camera
 {    

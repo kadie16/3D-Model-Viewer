@@ -190,7 +190,7 @@ void GLWidget::drawAxes()
 
 void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
-    objPtr = &objFile;
+    /*objPtr = &objFile;
     mesh.delegate(objFile);
     center = objPtr->findCenter();
     radius = objPtr->findRadius();
@@ -198,7 +198,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     minCoords = objPtr->getMinCoords();
     cam.findModel(objPtr);
     cam.adjustAspect(this->width(), this->height());
-    needsReset = true;
+    needsReset = true;*/
 }
 
 void GLWidget::grabColor(double r, double g, double b)

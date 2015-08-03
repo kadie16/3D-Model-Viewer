@@ -23,22 +23,22 @@ typedef Polyhedron::HalfedgeDS HalfedgeDS;
 template <class HDS>
 class objLoad : public CGAL::Modifier_base<HDS>
 {
-    public:
+    /* public:
         typedef typename HDS::Vertex Vertex;
         typedef typename Vertex::Point Point;
         /* Constructors */
-        objLoad() { }
+        objLoad() { } /*
         objLoad(std::string Path);
-        /* Functor */
+        /* Functor
         void operator()(HDS& hds);
-        /* Path Functions */
+        /* Path Functions
         void setFilePath(std::string Path);
         std::string getPath();
-        /* Parsing */
+        /* Parsing
         std::vector<int> parseFace(std::string line);
         typename Polyhedron::Vertex parseVertex(std::string line);
         std::vector<float> static coordinateScanner(std::string line);
-        /* Determine Model Dimensions */
+        /* Determine Model Dimensions
         void checkMin(typename Polyhedron::Vertex v);
         void checkMax(typename Polyhedron::Vertex v);
         std::vector<float> getMaxCoords();
@@ -50,7 +50,7 @@ class objLoad : public CGAL::Modifier_base<HDS>
         std::vector<float> maxCoords;
         std::vector<float> minCoords;
         std::vector<float> center;
-        float radius;
+        float radius; */
 };
 
 #endif // OBJLOAD_H

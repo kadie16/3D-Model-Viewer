@@ -7,13 +7,10 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QDebug>
-#include "objload.h"
 #include "camera.h"
 #include <QQuaternion>
 #include <QObject>
 #include <QMatrix4x4>
-#include <CGAL/Simple_cartesian.h>
-#include <CGAL/HalfedgeDS_default.h>
 
 typedef Polyhedron::HalfedgeDS HDS;
 

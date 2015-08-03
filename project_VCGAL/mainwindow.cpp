@@ -23,9 +23,9 @@ void MainWindow::on_toolButton_2_clicked()
                 "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/projectV1/testFiles/",
                 "Object File (*.obj)"
                 ).toStdString();
-    objLoad<HDS> loader(fileName);
+   // objLoad<HDS> loader(fileName);
     //loader.print();
-    ui->widget16->grabObj(loader);
+    //ui->widget16->grabObj(loader);
 }
 void MainWindow::on_quitButton_clicked()
 {

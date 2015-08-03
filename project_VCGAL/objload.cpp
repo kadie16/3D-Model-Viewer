@@ -4,12 +4,7 @@ using namespace std;
 objLoad::objLoad()
 {
 }
-
-string objLoad::getFileName()
-{
-    return fileName;
-}
-
+/*
 objLoad::objLoad(string Path)
 {
     path = Path;
@@ -27,30 +22,30 @@ string objLoad::getPath()
 
 void objLoad::operator()(HDS &hds)
 {
-    /* Empty Mesh */
+    /* Empty Mesh
     hds.clear();
     CGAL::Polyhedron_incremental_builder_3<HDS> builder(hds, true);
     builder.begin_surface(0,0);
     maxCoords.assign(3, 0);
     minCoords.assign(3,0);
     center.assign(3,0);
-    /* Open File */
+    /* Open File
     cout << "Loading object from path:  " << path << endl;
     ifstream stream(fName.c_str());
     if (stream.is_open()) {
         string currLine;
         while (!stream.eof()) {
-            /* Get next line of file */
+            /* Get next line of file
             getline(stream, currLine);
             if (currLine.size() > 2) {
-                /* Determine whether it is a vertex, normal, or face line */
+                /* Determine whether it is a vertex, normal, or face line
                 if (currLine[0] == 'v' && currLine[1] == ' ') {
                     Vertex newV = this->parseVertex(currLine);
                     builder.add_vertex(newV);
                     this->checkMax(newV);
                     this->checkMin(newV);
                  } else if (currLine[0] == 'v' && currLine[1] == 'n') {
-                   /* Not Storing Normals */
+                   /* Not Storing Normals
                 } else if (currLine[0] == 'f' && currLine[1] == ' ') {
                     builder.begin_facet();
                     vector<Vertex> v = this->parseFace(currLine);
@@ -71,9 +66,9 @@ void objLoad::operator()(HDS &hds)
 }
 vector<Vertex> objLoad::parseFace(string input){
     vector<int> toReturn;
-    /* Parses differently, depending on if there are slashes in line */
+    /* Parses differently, depending on if there are slashes in line
     if (input.find("/") != string::npos) {
-        /* remove the "f" in front of the line */
+        /* remove the "f" in front of the line
         input.erase(0,1);
         string delimiter = "/";
         size_t pos = 0;
@@ -82,26 +77,26 @@ vector<Vertex> objLoad::parseFace(string input){
         int index;
         int prevIndex = 0;
         while ((pos = input.find(delimiter) != string::npos)) {
-         /* Token is index of vertex in the face */
+         /* Token is index of vertex in the face
          token = input.substr(0, input.find(delimiter));
-         istringstream(token) >> index; /* Only succeeds if token is an integer */
+         istringstream(token) >> index; /* Only succeeds if token is an integer
          if (index != prevIndex){
             toReturn.push_back(index);
             prevIndex = index;
         }
-         /* Tossing out token2 until further notice */
+         /* Tossing out token2 until further notice
          token2 = input.substr(input.find(delimiter), input.find(' '));
-         /* Erases everything up until next index */
+         /* Erases everything up until next index
          input.erase(0, token.length() + token2.length());
         }
     } else {
-        /* If there aren't any slashes, parses like coordinates */
+        /* If there aren't any slashes, parses like coordinates
         return coordinateScanner(input);
     }
     return toReturn;
 }
 
-vertex objLoad::parseVertex(string input)
+Vertex objLoad::parseVertex(string input)
 {
     vector<float> coords = coordinateScanner(input);
     Vertex newVertex(Point(coords.at(0), coords.at(1), coords.at(2)));
@@ -172,3 +167,4 @@ float objLoad::findRadius()
                   +(maxCoords.at(2) - center.at(2))*(maxCoords.at(2) - center.at(2)));
     return (radius);
 }
+*/
