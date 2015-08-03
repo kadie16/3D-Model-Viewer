@@ -16,21 +16,21 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
-    objload.cpp \
     vertex.cpp \
     face.cpp \
     testqstring.cpp \
     ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
     camera.cpp \
-    points_and_segment.cpp
+    points_and_segment.cpp \
+    objload.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    objload.h \
     vertex.h \
     vertex.h \
     face.h \
-    camera.h
+    camera.h \
+    objload.h
 
 FORMS    += mainwindow.ui
 

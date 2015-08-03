@@ -1,7 +1,3 @@
 #include "objload.h"
-
-objLoad::objLoad()
-{
-
-}
+using namespace std;
 
