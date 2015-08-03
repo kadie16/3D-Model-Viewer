@@ -8,19 +8,19 @@
 #include <QEvent>
 #include <QDebug>
 #include "objload.h"
-#include "vertex.h"
-#include "face.h"
 #include "camera.h"
 #include <QQuaternion>
 #include <QObject>
 #include <QMatrix4x4>
 #include <CGAL/Simple_cartesian.h>
+#include <CGAL/HalfedgeDS_default.h>
+
+typedef Polyhedron::HalfedgeDS HDS;
 
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
 public:
-    typedef CGAL::HalfedgeDS_default HDS<int, CGAL::HalfedgeDS_min_items>;
     explicit GLWidget(QWidget *parent = 0);
     bool toggleRotation();
     bool toggleCulling();
@@ -31,6 +31,8 @@ public:
     void initializeGL();
     void paintGL();
     void drawObject();
+    void drawTriangle(Polyhedron::Halfedge_around_facet_const_circulator circulator);
+    void drawQuad(Polyhedron::Halfedge_around_facet_const_circulator circulator);
     void drawAxes();
     void resetView();
     void grabObj(objLoad<HDS> objFile);
@@ -45,8 +47,7 @@ private:
     QTimer timer;
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;
-    std::vector<Vertex> vertices;
-    std::vector<face> faces;
+    Polyhedron mesh;
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;

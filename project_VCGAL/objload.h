@@ -9,6 +9,8 @@
 #include <QGLWidget>
 #include <QTimer>
 #include <QString>
+#include<CGAL/HalfedgeDS_default.h>
+#include<CGAL/Simple_cartesian.h>
 #include<CGAL/Modifier_base.h>
 #include<CGAL/Polyhedron_3.h>
 #include<CGAL/Polyhedron_incremental_builder_3.h>
@@ -30,7 +32,7 @@ class objLoad : public CGAL::Modifier_base<HDS>
         /* Functor */
         void operator()(HDS& hds);
         /* Path Functions */
-        void setFilePath(string Path);
+        void setFilePath(std::string Path);
         std::string getPath();
         /* Parsing */
         std::vector<int> parseFace(std::string line);

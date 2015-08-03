@@ -6,18 +6,24 @@
 #include <math.h>
 #include <QTime>
 #include "objload.h"
+#include <CGAL/Simple_cartesian.h>
+#include <CGAL/Polyhedron_3.h>
 #include <CGAL/HalfedgeDS_default.h>
 #include <CGAL/HalfedgeDS_min_items.h>
+
+typedef double Real;
+typedef CGAL::Simple_cartesian<Real> Kernel;
+typedef CGAL::Polyhedron_3<Kernel> Polyhedron;
+typedef Polyhedron::HalfedgeDS HalfedgeDS;
 
 class camera
 {    
 public:
-    typedef CGAL::HalfedgeDS_default HDS<int, CGAL::HalfedgeDS_min_items>;
     camera();
     void setAspect(float w, float h);
     void setZoom(float factor);
     void translate(float dx, float dy);
-    void findModel(objLoad<HDS> *o);
+    void findModel(objLoad<HalfedgeDS> *o);
     void viewModel();
     void moveToCenter();
     void adjustZoom();

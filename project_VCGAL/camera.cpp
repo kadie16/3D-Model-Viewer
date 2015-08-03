@@ -16,7 +16,7 @@ void camera::translate(float dx, float dy)
     glTranslatef(dx,dy,0);
 }
 
-void camera::findModel(objLoad<HDS> *o)
+void camera::findModel(objLoad<HalfedgeDS> *o)
 {
     radius = o->findRadius();
     center = o->findCenter();

@@ -121,7 +121,7 @@ void GLWidget::resetView()
 void GLWidget::drawObject()
 {
     if (objPtr){
-       for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin; faceIter != mesh.facets_end(); ++faceIter) {
+       for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
            Polyhedron::Halfedge_around_facet_const_circulator halfEdgeCirc = faceIter->facet_begin();
            if (faceIter->is_triangle())
                drawTriangle(halfEdgeCirc);
@@ -132,9 +132,9 @@ void GLWidget::drawObject()
     glEnd();
 }
 
-void GLWidget::drawTriangle(CGAL::Polyhedron_3::Halfedge_around_facet_const_circulator circulator)
+void GLWidget::drawTriangle(Polyhedron::Halfedge_around_facet_const_circulator circulator)
 {
-    Point_3 p1,p2,p3;
+    CGAL::Point_3<Kernel> p1,p2,p3;
     p1 = circulator->vertex()->point();
     ++ circulator;
     p2 = circulator->vertex()->point();
@@ -149,9 +149,9 @@ void GLWidget::drawTriangle(CGAL::Polyhedron_3::Halfedge_around_facet_const_circ
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
 
-void GLWidget::drawQuad(CGAL::Polyhedron_3::Halfedge_around_facet_const_circulator circulator)
+void GLWidget::drawQuad(Polyhedron::Halfedge_around_facet_const_circulator circulator)
 {
-    Point_3 p1,p2,p3,p4;
+    CGAL::Point_3<Kernel> p1,p2,p3,p4;
     p1 = circulator->vertex()->point();
     ++circulator;
     p2 = circulator->vertex()->point();
