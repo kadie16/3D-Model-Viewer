@@ -121,12 +121,17 @@ void GLWidget::resetView()
 void GLWidget::drawObject()
 {
     if (objPtr){
+        std::cout << "Drawing Object" << std::endl;
        for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
            Polyhedron::Halfedge_around_facet_const_circulator halfEdgeCirc = faceIter->facet_begin();
-           if (faceIter->is_triangle())
+           if (faceIter->is_triangle()) {
                drawTriangle(halfEdgeCirc);
-           else if (faceIter->is_quad())
+               std::cout << "Drew Triangles" << std::endl;
+           }
+           else if (faceIter->is_quad()) {
                drawQuad(halfEdgeCirc);
+               std::cout << "Drew Quads" << std::endl;
+           }
        }
     }
     glEnd();
@@ -190,7 +195,7 @@ void GLWidget::drawAxes()
 
 void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
-    /*objPtr = &objFile;
+    objPtr = &objFile;
     mesh.delegate(objFile);
     center = objPtr->findCenter();
     radius = objPtr->findRadius();
@@ -198,7 +203,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     minCoords = objPtr->getMinCoords();
     cam.findModel(objPtr);
     cam.adjustAspect(this->width(), this->height());
-    needsReset = true;*/
+    needsReset = true;
 }
 
 void GLWidget::grabColor(double r, double g, double b)

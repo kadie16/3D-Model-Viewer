@@ -18,7 +18,7 @@ void camera::translate(float dx, float dy)
 
 void camera::findModel(objLoad<HalfedgeDS> *o)
 {
-    /*radius = o->findRadius();
+    radius = o->findRadius();
     center = o->findCenter();
     double diameter = radius*2;
     fov = 30;
@@ -28,7 +28,7 @@ void camera::findModel(objLoad<HalfedgeDS> *o)
     top =   tan(fov*0.5)*near;
     bottom = -top;
     right =  aspect*top;
-    left =  aspect*bottom;*/
+    left =  aspect*bottom;
 }
 
 void camera::viewModel()
