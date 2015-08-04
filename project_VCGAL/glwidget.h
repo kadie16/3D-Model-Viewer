@@ -10,6 +10,7 @@
 #include "camera.h"
 #include <QQuaternion>
 #include <QObject>
+#include <QLabel>
 #include <QMatrix4x4>
 
 typedef Polyhedron::HalfedgeDS HDS;

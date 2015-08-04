@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAutoFillBackground(true);
+    ui_fps = findChild<QLabel*>("fps");
+    ui_fps->setText("meep");
 }
 
 MainWindow::~MainWindow()

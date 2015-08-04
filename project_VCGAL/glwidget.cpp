@@ -133,17 +133,15 @@ void GLWidget::drawObject()
 
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
 {
-    Polyhedron::Halfedge_const_handle h = f->halfedge();
     CGAL::Vector_3<Kernel> n1, n2, n3;
+    CGAL::Point_3<Kernel> p1,p2,p3;
+    Polyhedron::Halfedge_const_handle h = f->halfedge();
     n1 = h->vertex()->normal();
     n2 = h->next()->vertex()->normal();
     n3 = h->prev()->vertex()->normal();
-    CGAL::Point_3<Kernel> p1,p2,p3;
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
-    //CGAL::Vector_3<Kernel> n = normals[f];
-    //glNormal3f(n.hx(), n.hy(), n.hz());
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glNormal3f(n2.hx(), n2.hy(), n2.hz());

@@ -36,7 +36,8 @@ private slots:
     void on_toolButton_6_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui; 
+    QLabel *ui_fps;
 };
 
 #endif // MAINWINDOW_H
