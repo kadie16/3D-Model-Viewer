@@ -37,6 +37,25 @@
 
 			Remaining: 
 	
-			- (1) See 15 July 2015. 
-				
+			- (1) See 15 July 2015.
+
+28 July 2015: 		New: 
+			
+			- (2) I think I need to handle cases in obj files where initial lines have some other random text. 
+			
+			Remaining: 
+			
+			- (1) See 15 July 2015.
+
+29 July 2015: 		Remaining: 
+
+			- (2) Something wrong with objLoad when loading certain files such as “Brilliant.obj”
+			I suspect it has to do with the way I am parsing the file because sometimes there are random lines in these obj files.
+			
+			REPAIRED? The problem was negative indices in the .obj file. This prevents crashing but “Brilliant.obj” still doesn’t render correctly
+
+ 
+04 August 2015: 	- (1) See 15 July 2015. 
+			- (2) Only typical .obj files load, others crash CGAL 
+			- (3) Need to fix so if “load object” action canceled, program doesn’t crash 				
 
