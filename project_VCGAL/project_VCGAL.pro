@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     testqstring.cpp \
     ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
     camera.cpp \
-    points_and_segment.cpp \
     objload.cpp
 
 HEADERS  += mainwindow.h \

@@ -134,14 +134,21 @@ void GLWidget::drawObject()
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
 {
     Polyhedron::Halfedge_const_handle h = f->halfedge();
+    CGAL::Vector_3<Kernel> n1, n2, n3;
+    n1 = h->vertex()->normal();
+    n2 = h->next()->vertex()->normal();
+    n3 = h->prev()->vertex()->normal();
     CGAL::Point_3<Kernel> p1,p2,p3;
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
-    CGAL::Vector_3<Kernel> n = normals[f];
-    glNormal3f(n.hx(), n.hy(), n.hz());
+    //CGAL::Vector_3<Kernel> n = normals[f];
+    //glNormal3f(n.hx(), n.hy(), n.hz());
+    glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
+    glNormal3f(n2.hx(), n2.hy(), n2.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
+    glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
 
@@ -167,14 +174,8 @@ void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
 
 void GLWidget::computeNormals()
 {
-    for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
-         Polyhedron::Halfedge_const_handle h = faceIter->halfedge();
-         CGAL::Point_3<Kernel> p1,p2,p3;
-         p1 = h->vertex()->point();
-         p2 = h->next()->vertex()->point();
-         p3 = h->prev()->vertex()->point();
-         normals[faceIter] = CGAL::normal(p2,p1,p3);
-    }
+    std::for_each(mesh.facets_begin(), mesh.facets_end(), Facet_normal());
+    std::for_each(mesh.vertices_begin(), mesh.vertices_end(), Vertex_normal());
 }
 
 void GLWidget::drawAxes()
