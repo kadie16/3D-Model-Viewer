@@ -41,8 +41,11 @@ public:
     QQuaternion drag2Rotate(float dx, float dy);
     void drag2Translate(float dx, float dy);
     void drag2Zoom(float dy);
+    int giveFPS();
 
 private:
+    QTime frameTimer;
+    int frameCount;
     QTimer timer;
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;

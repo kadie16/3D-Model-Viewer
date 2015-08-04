@@ -5,6 +5,7 @@ GLWidget::GLWidget(QWidget *parent) :
 {
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGL()));
     timer.start(16);
+    frameTimer.start();
 }
 
 void GLWidget::initializeGL(){
@@ -129,6 +130,7 @@ void GLWidget::drawObject()
          //      drawQuad(faceIter);
     }
     glEnd();
+    frameCount++;
 }
 
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
@@ -197,6 +199,8 @@ void GLWidget::drawAxes()
 
 void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
+    frameTimer.restart();
+    frameCount = 0;
     objPtr = &objFile;
     mesh.delegate(objFile);
     center = objPtr->findCenter();
@@ -276,6 +280,15 @@ void GLWidget::drag2Translate(float dx, float dy)
 void GLWidget::drag2Zoom(float dy)
 {
     zoomF = zoomF + dy/100.0;
+}
+
+int GLWidget::giveFPS()
+{
+    int num = frameCount/(double)(frameTimer.elapsed()/1000);
+    if (objPtr)
+        return num;
+    else
+        return 0;
 }
 
 

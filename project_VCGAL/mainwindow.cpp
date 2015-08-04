@@ -9,12 +9,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setAutoFillBackground(true);
     ui_fps = findChild<QLabel*>("fps");
-    ui_fps->setText("meep");
+    connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
+    timer.start(2000);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::repaint() {
+    ui_fps->setNum(ui->widget16->giveFPS());
 }
 
 void MainWindow::on_toolButton_2_clicked()

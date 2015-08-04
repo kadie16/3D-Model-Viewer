@@ -34,8 +34,10 @@ private slots:
     void on_toolButton_5_released();
 
     void on_toolButton_6_clicked();
+    void repaint();
 
 private:
+    QTimer timer;
     Ui::MainWindow *ui; 
     QLabel *ui_fps;
 };
