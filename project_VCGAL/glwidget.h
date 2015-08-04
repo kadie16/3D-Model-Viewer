@@ -23,9 +23,6 @@ public:
     bool toggleRotation();
     bool toggleCulling();
     bool toggleTranslation();
-    double increaseScale();
-    double decreaseScale();
-    void setScale();
     void initializeGL();
     void paintGL();
     void drawObject();
@@ -83,6 +80,10 @@ private:
     int x,y,dx,dy,x0,y0;
     int prevPos[2];
     float mag;
+    /* Drawing */
+    CGAL::Vector_3<Kernel> n1, n2, n3;
+    CGAL::Point_3<Kernel> p1,p2,p3;
+    Polyhedron::Halfedge_const_handle h;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

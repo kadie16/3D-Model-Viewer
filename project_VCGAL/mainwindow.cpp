@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setAutoFillBackground(true);
     ui_fps = findChild<QLabel*>("fps");
     connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
-    timer.start(2000);
+    timer.start(100);
 }
 
 MainWindow::~MainWindow()
@@ -39,7 +39,7 @@ void MainWindow::on_quitButton_clicked()
     close();
 }
 
-void MainWindow::on_checkBox_stateChanged(int arg1)
+void MainWindow::on_checkBox_stateChanged()
 {
     ui->widget16->toggleCulling();
 }
@@ -49,26 +49,6 @@ void MainWindow::on_toolButton_3_clicked()
     bool on = ui->widget16->toggleTranslation();
     if (on)
         ui->toolButton_3->setDown(true);
-}
-
-void MainWindow::on_toolButton_4_pressed()
-{
-    ui->widget16->increaseScale();
-}
-
-void MainWindow::on_toolButton_5_pressed()
-{
-    ui->widget16->decreaseScale();
-}
-
-void MainWindow::on_toolButton_4_released()
-{
-    ui->widget16->setScale();
-}
-
-void MainWindow::on_toolButton_5_released()
-{
-    ui->widget16->setScale();
 }
 
 void MainWindow::on_toolButton_6_clicked()

@@ -23,15 +23,9 @@ private slots:
     void on_toolButton_2_clicked();
     void on_quitButton_clicked();
 
-    void on_checkBox_stateChanged(int arg1);
+    void on_checkBox_stateChanged();
 
     void on_toolButton_3_clicked();
-
-    void on_toolButton_4_pressed();
-    void on_toolButton_4_released();
-
-    void on_toolButton_5_pressed();
-    void on_toolButton_5_released();
 
     void on_toolButton_6_clicked();
     void repaint();

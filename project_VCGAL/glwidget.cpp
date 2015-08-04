@@ -60,7 +60,6 @@ void GLWidget::paintGL(){
         if (needsReset)
             this->resetView();
         glMatrixMode(GL_PROJECTION);
-        glScaled(scale,scale,scale);
         glMatrixMode(GL_MODELVIEW);
         /* CULLING */
         if (cullingOK)
@@ -135,9 +134,7 @@ void GLWidget::drawObject()
 
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
 {
-    CGAL::Vector_3<Kernel> n1, n2, n3;
-    CGAL::Point_3<Kernel> p1,p2,p3;
-    Polyhedron::Halfedge_const_handle h = f->halfedge();
+    h = f->halfedge();
     n1 = h->vertex()->normal();
     n2 = h->next()->vertex()->normal();
     n3 = h->prev()->vertex()->normal();
@@ -284,7 +281,7 @@ void GLWidget::drag2Zoom(float dy)
 
 int GLWidget::giveFPS()
 {
-    int num = frameCount/(double)(frameTimer.elapsed()/1000);
+    unsigned num = frameCount/(double)(frameTimer.elapsed()/1000);
     if (objPtr)
         return num;
     else
@@ -318,23 +315,6 @@ bool GLWidget::toggleTranslation()
     else
         translateOK = true;
     return translateOK;
-}
-
-double GLWidget::increaseScale()
-{
-    scale = scale + 0.01;
-    return scale;
-}
-
-double GLWidget::decreaseScale()
-{
-    scale = scale - 0.01;
-    return scale;
-}
-
-void GLWidget::setScale()
-{
-    scale = 1;
 }
 
 
