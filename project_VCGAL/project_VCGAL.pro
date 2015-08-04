@@ -12,7 +12,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = projectV1
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \

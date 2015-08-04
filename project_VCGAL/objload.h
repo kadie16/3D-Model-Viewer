@@ -26,12 +26,12 @@ class objLoad : public CGAL::Modifier_base<HDS>
     public:
         typedef typename HDS::Vertex Vertex;
         typedef typename Vertex::Point Point;
-        /* Constructors */
+        /****************** Constructors ******************/
         objLoad(){}
         objLoad(std::string Path) {
             path = Path;
         }
-        /* Functor */
+        /****************** Functor ******************/
         void operator()(HDS &hds) {
             /* Empty Mesh */
             hds.clear();
@@ -75,12 +75,12 @@ class objLoad : public CGAL::Modifier_base<HDS>
                 cout << "File load failed!" << endl;
             }
         }
-        /* Path Functions */
+        /****************** Path Functions ******************/
         void setFilePath(std::string Path) {
             path = Path;
         }
         std::string getPath();
-        /* Parsing */
+        /******************* Parsing *******************/
         std::vector<float> parseFace(std::string input) {
             vector<float> toReturn;
             /* Parses differently, depending on if there are slashes in line */
@@ -126,7 +126,7 @@ class objLoad : public CGAL::Modifier_base<HDS>
             toReturn.push_back(vertexArr[2]);
             return toReturn;
         }
-        /* Determine Model Dimensions */
+        /******************* Determine Model Dimensions *******************/
         void checkMin(Point v) {
             float x,y,z;
             x = v.hx();
@@ -170,6 +170,7 @@ class objLoad : public CGAL::Modifier_base<HDS>
                           +(maxCoords.at(2) - center.at(2))*(maxCoords.at(2) - center.at(2)));
             return (radius);
         }
+
     private:
         std::string path;
         std::vector<float> maxCoords;

@@ -13,7 +13,7 @@
 #include <QMatrix4x4>
 
 typedef Polyhedron::HalfedgeDS HDS;
-
+typedef map<Polyhedron::Facet_const_handle, CGAL::Vector_3<Kernel> > facetNormals;
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -28,8 +28,9 @@ public:
     void initializeGL();
     void paintGL();
     void drawObject();
-    void drawTriangle(Polyhedron::Halfedge_around_facet_const_circulator circulator);
-    void drawQuad(Polyhedron::Halfedge_around_facet_const_circulator circulator);
+    void drawTriangle(Polyhedron::Facet_const_handle f);
+    void drawQuad(Polyhedron::Facet_const_handle f);
+    void computeNormals();
     void drawAxes();
     void resetView();
     void grabObj(objLoad<HDS> objFile);
@@ -45,6 +46,7 @@ private:
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;
     Polyhedron mesh;
+    facetNormals normals;
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
