@@ -112,6 +112,11 @@
         </item>
         <item>
          <widget class="QLabel" name="fps">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>FPS</string>
           </property>
