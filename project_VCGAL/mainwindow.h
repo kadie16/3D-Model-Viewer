@@ -30,6 +30,8 @@ private slots:
     void on_toolButton_6_clicked();
     void repaint();
 
+    void on_toolButton_clicked();
+
 private:
     QTimer timer;
     Ui::MainWindow *ui; 

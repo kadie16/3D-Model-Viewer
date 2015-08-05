@@ -132,6 +132,18 @@ void GLWidget::drawObject()
     frameCount++;
 }
 
+void GLWidget::drawVolume()
+{
+    Tr t;
+    t = c3t3.triangulation();
+    glBegin(GL_TRIANGLES);
+    glColor3f(1,0,0);
+    for (Tr::Point_iterator it = t.points_begin(); it != t.points_end(); ++it) {
+        glVertex3f(it->hx(), it->hy(), it->hz());
+    }
+    glEnd();
+}
+
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
 {
     h = f->halfedge();
@@ -286,6 +298,16 @@ int GLWidget::giveFPS()
         return num;
     else
         return 0;
+}
+
+C3T3 GLWidget::generateVolumeMesh()
+{
+    using namespace CGAL::parameters;
+    MeshDomain domain(mesh);
+    MeshCriteria criteria(facet_angle=25, facet_size=0.15, facet_distance=0.008,
+                          cell_radius_edge_ratio=3);
+    c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria, no_perturb(), no_exude());
+    return c3t3;
 }
 
 

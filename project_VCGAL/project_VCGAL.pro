@@ -44,3 +44,15 @@ macx: LIBS += -L$$PWD/../../1.57.0/lib/ -lboost_system
 
 INCLUDEPATH += $$PWD/../../1.57.0/include
 DEPENDPATH += $$PWD/../../1.57.0/include
+
+
+
+macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/lib/ -lgmp.10
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/include
+
+macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/lib/ -lmpfr.4
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include
+DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include

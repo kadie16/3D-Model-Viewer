@@ -26,6 +26,7 @@ public:
     void initializeGL();
     void paintGL();
     void drawObject();
+    void drawVolume();
     void drawTriangle(Polyhedron::Facet_const_handle f);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void computeNormals();
@@ -39,6 +40,7 @@ public:
     void drag2Translate(float dx, float dy);
     void drag2Zoom(float dy);
     int giveFPS();
+    C3T3 generateVolumeMesh();
 
 private:
     QTime frameTimer;
@@ -84,6 +86,9 @@ private:
     CGAL::Vector_3<Kernel> n1, n2, n3;
     CGAL::Point_3<Kernel> p1,p2,p3;
     Polyhedron::Halfedge_const_handle h;
+    /* Volume Mesh */
+    C3T3 c3t3;
+    Tr t;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

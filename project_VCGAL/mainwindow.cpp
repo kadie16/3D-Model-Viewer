@@ -57,3 +57,8 @@ void MainWindow::on_toolButton_6_clicked()
     ui->widget16->grabColor(color.red(), color.green(), color.blue());
 }
 
+
+void MainWindow::on_toolButton_clicked()
+{
+    ui->widget16->generateVolumeMesh();
+}
