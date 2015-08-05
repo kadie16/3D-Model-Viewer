@@ -62,3 +62,13 @@ void MainWindow::on_toolButton_clicked()
 {
     ui->widget16->generateVolumeMesh();
 }
+
+void MainWindow::on_radioButton_2_stateChanged()
+{
+
+}
+
+void MainWindow::on_radioButton_2_toggled(bool checked)
+{
+    ui->widget16->toggleVolume();
+}

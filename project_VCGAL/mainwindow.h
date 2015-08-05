@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QFileDialog>
 #include <QColorDialog>
@@ -31,6 +31,10 @@ private slots:
     void repaint();
 
     void on_toolButton_clicked();
+
+    void on_radioButton_2_stateChanged();
+
+    void on_radioButton_2_toggled(bool checked);
 
 private:
     QTimer timer;

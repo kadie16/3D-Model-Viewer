@@ -22,6 +22,7 @@ public:
     explicit GLWidget(QWidget *parent = 0);
     bool toggleRotation();
     bool toggleCulling();
+    bool toggleVolume();
     bool toggleTranslation();
     void initializeGL();
     void paintGL();
@@ -87,6 +88,7 @@ private:
     CGAL::Point_3<Kernel> p1,p2,p3;
     Polyhedron::Halfedge_const_handle h;
     /* Volume Mesh */
+    bool volumeOK;
     C3T3 c3t3;
     Tr t;
 signals:

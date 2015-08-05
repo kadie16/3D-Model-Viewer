@@ -36,6 +36,7 @@ void GLWidget::initializeGL(){
     translateOK = false;
     needsReset = false;
     cullingOK = false;
+    volumeOK = false;
     w0 = this->width();
     h0 = this->height();
     cam.setAspect(w0,h0);
@@ -93,7 +94,10 @@ void GLWidget::paintGL(){
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
         glTranslatef(-center.at(0), -center.at(1), -center.at(2));
-        drawObject();
+        if (volumeOK)
+            drawVolume();
+        else
+            drawObject();
         drawAxes();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
@@ -327,6 +331,13 @@ bool GLWidget::toggleCulling()
     else
         cullingOK = true;
     return cullingOK;
+}
+
+bool GLWidget::toggleVolume()
+{
+    volumeOK = !volumeOK;
+    std::cout << volumeOK << std::endl;
+    return volumeOK;
 }
 
 bool GLWidget::toggleTranslation()
