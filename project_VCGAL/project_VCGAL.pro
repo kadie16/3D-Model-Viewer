@@ -15,8 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
-    vertex.cpp \
-    face.cpp \
     testqstring.cpp \
     ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
     camera.cpp \
@@ -24,11 +22,9 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    vertex.h \
-    vertex.h \
-    face.h \
     camera.h \
-    objload.h
+    objload.h \
+    myitems.h
 
 FORMS    += mainwindow.ui
 

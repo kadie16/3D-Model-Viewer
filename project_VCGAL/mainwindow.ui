@@ -13,6 +13,12 @@
     <height>335</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Project V1</string>
   </property>
@@ -46,46 +52,215 @@
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
+        <zorder></zorder>
+        <zorder></zorder>
+        <zorder></zorder>
+        <zorder>toolButton_3</zorder>
+        <zorder></zorder>
+        <zorder>toolBox</zorder>
+        <zorder></zorder>
+        <zorder></zorder>
        </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
         <item>
-         <widget class="QToolButton" name="toolButton_3">
+         <widget class="QToolBox" name="toolBox">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="text">
-           <string>Move</string>
+          <property name="minimumSize">
+           <size>
+            <width>105</width>
+            <height>150</height>
+           </size>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="tabSpacing">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="page">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>105</width>
+             <height>104</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Interact</string>
+           </attribute>
+           <widget class="QToolButton" name="toolButton_3">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>91</width>
+              <height>19</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Move</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="toolButton_6">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>40</y>
+              <width>91</width>
+              <height>19</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Pick Color</string>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="page_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>105</width>
+             <height>104</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Options</string>
+           </attribute>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>252</width>
+              <height>61</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Mode:</string>
+            </property>
+            <widget class="QRadioButton" name="radioButton">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>102</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Surface</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="radioButton_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>40</y>
+               <width>102</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Volume</string>
+             </property>
+            </widget>
+           </widget>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>70</y>
+              <width>252</width>
+              <height>18</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Cull Back Face</string>
+            </property>
+           </widget>
+           <zorder>groupBox</zorder>
+           <zorder>checkBox</zorder>
+           <zorder>label</zorder>
+           <zorder>fps</zorder>
+           <zorder>verticalSpacer_2</zorder>
+           <zorder>label</zorder>
+           <zorder>fps</zorder>
+          </widget>
          </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButton_6">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Pick Color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3"/>
         </item>
         <item>
          <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -95,22 +270,10 @@
           </property>
          </spacer>
         </item>
-        <item alignment="Qt::AlignLeft">
-         <widget class="QCheckBox" name="checkBox">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Cull Back Face</string>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QToolButton" name="toolButton_2">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -134,7 +297,7 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QLabel" name="fps">
             <property name="sizePolicy">
@@ -172,7 +335,6 @@
      </layout>
     </item>
    </layout>
-   <zorder></zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
