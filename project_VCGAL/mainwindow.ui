@@ -70,7 +70,7 @@
         <item>
          <widget class="QToolBox" name="toolBox">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+           <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -78,7 +78,7 @@
           <property name="minimumSize">
            <size>
             <width>105</width>
-            <height>150</height>
+            <height>160</height>
            </size>
           </property>
           <property name="font">
@@ -90,7 +90,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="tabSpacing">
            <number>0</number>
@@ -101,7 +101,7 @@
              <x>0</x>
              <y>0</y>
              <width>105</width>
-             <height>104</height>
+             <height>114</height>
             </rect>
            </property>
            <attribute name="label">
@@ -110,10 +110,10 @@
            <widget class="QToolButton" name="toolButton_3">
             <property name="geometry">
              <rect>
-              <x>10</x>
+              <x>0</x>
               <y>10</y>
-              <width>91</width>
-              <height>19</height>
+              <width>101</width>
+              <height>20</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -131,33 +131,6 @@
              <string>Move</string>
             </property>
            </widget>
-           <widget class="QToolButton" name="toolButton_6">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>40</y>
-              <width>91</width>
-              <height>19</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Pick Color</string>
-            </property>
-           </widget>
           </widget>
           <widget class="QWidget" name="page_2">
            <property name="geometry">
@@ -165,7 +138,7 @@
              <x>0</x>
              <y>0</y>
              <width>105</width>
-             <height>104</height>
+             <height>114</height>
             </rect>
            </property>
            <attribute name="label">
@@ -175,7 +148,7 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>0</y>
+              <y>50</y>
               <width>252</width>
               <height>61</height>
              </rect>
@@ -185,6 +158,11 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="title">
              <string>Mode:</string>
@@ -229,8 +207,8 @@
            <widget class="QCheckBox" name="checkBox">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>70</y>
+              <x>0</x>
+              <y>30</y>
               <width>252</width>
               <height>18</height>
              </rect>
@@ -244,13 +222,41 @@
              <string>Cull Back Face</string>
             </property>
            </widget>
+           <widget class="QToolButton" name="toolButton_6">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>105</width>
+              <height>19</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Pick Color</string>
+            </property>
+           </widget>
            <zorder>groupBox</zorder>
-           <zorder>checkBox</zorder>
            <zorder>label</zorder>
            <zorder>fps</zorder>
            <zorder>verticalSpacer_2</zorder>
            <zorder>label</zorder>
            <zorder>fps</zorder>
+           <zorder>checkBox</zorder>
+           <zorder>toolButton_6</zorder>
           </widget>
          </widget>
         </item>
