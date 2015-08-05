@@ -7,6 +7,13 @@
 #include<CGAL/Modifier_base.h>
 #include<CGAL/Polyhedron_3.h>
 #include<CGAL/Polyhedron_incremental_builder_3.h>
+// Volume Mesh
+#include<CGAL/Mesh_triangulation_3.h>
+#include<CGAL/Mesh_complex_3_in_triangulation_3.h>
+#include<CGAL/Mesh_criteria_3.h>
+#include<CGAL/Polyhedral_mesh_domain_3.h>
+#include<CGAL/make_mesh_3.h>
+#include<CGAL/refine_mesh_3.h>
 
 /***** Normals *****/
 struct Facet_normal {
@@ -78,7 +85,14 @@ typedef CGAL::Simple_cartesian<Real> Kernel;
 typedef CGAL::Polyhedron_3<Kernel, My_items> Polyhedron;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
 using namespace std;
-template <class HDS>
 
+//Volume Mesh
+typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron, Kernel> MeshDomain;
+typedef CGAL::Mesh_triangulation_3<MeshDomain>::type Tr;
+typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3T3;
+typedef CGAL::Mesh_criteria_3<Tr> MeshCriteria;
+
+
+template <class HDS>
 #endif // MYITEMS
 
