@@ -85,7 +85,7 @@ private:
     float mag;
     /* Drawing */
     CGAL::Vector_3<Kernel> n1, n2, n3;
-    CGAL::Point_3<Kernel> p1,p2,p3;
+    CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
     /* Volume Mesh */
     bool volumeOK;

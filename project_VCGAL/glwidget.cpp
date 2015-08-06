@@ -146,11 +146,28 @@ void GLWidget::drawVolume()
         p1 = fIt->vertex(0)->point();
         p2 = fIt->vertex(1)->point();
         p3 = fIt->vertex(2)->point();
-        CGAL::Vector_3<Kernel> n = CGAL::normal(p2,p1,p3);
+        p4 = fIt->vertex(3)->point();
+        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p2,p3);
         glNormal3f(n.hx(), n.hy(), n.hz());
         glVertex3f(p1.hx(), p1.hy(), p1.hz());
         glVertex3f(p2.hx(), p2.hy(), p2.hz());
         glVertex3f(p3.hx(), p3.hy(), p3.hz());
+        n = CGAL::normal(p1,p3,p4);
+        glNormal3f(n.hx(), n.hy(), n.hz());
+        glVertex3f(p1.hx(), p1.hy(), p1.hz());
+        glVertex3f(p3.hx(), p3.hy(), p3.hz());
+        glVertex3f(p4.hx(), p4.hy(), p4.hz());
+        n = CGAL::normal(p1,p4,p2);
+        glNormal3f(n.hx(), n.hy(), n.hz());
+        glVertex3f(p1.hx(), p1.hy(), p1.hz());
+        glVertex3f(p2.hx(), p2.hy(), p2.hz());
+        glVertex3f(p4.hx(), p4.hy(), p4.hz());
+        n = CGAL::normal(p2,p4,p3);
+        glNormal3f(n.hx(), n.hy(), n.hz());
+        glVertex3f(p2.hx(), p2.hy(), p2.hz());
+        glVertex3f(p4.hx(), p4.hy(), p4.hz());
+        glVertex3f(p3.hx(), p3.hy(), p3.hz());
+
     }
     glEnd();
 }
