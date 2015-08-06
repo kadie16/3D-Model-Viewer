@@ -85,6 +85,7 @@ typedef double Real;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef CGAL::Polyhedron_3<Kernel, My_items> Polyhedron;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
+typedef CGAL::Point_3<Kernel> Point;
 using namespace std;
 
 //Volume Mesh
