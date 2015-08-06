@@ -41,7 +41,7 @@ public:
     void drag2Translate(float dx, float dy);
     void drag2Zoom(float dy);
     int giveFPS();
-    C3T3 generateVolumeMesh();
+    bool generateVolumeMesh();
 
 private:
     QTime frameTimer;

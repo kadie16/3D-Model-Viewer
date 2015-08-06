@@ -9,8 +9,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setAutoFillBackground(true);
     ui_fps = findChild<QLabel*>("fps");
+    ui_volStat = findChild<QLabel*>("volStatus");
+    volStatReset = false;
+    ui_volStat->setText(" ");
     connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
-    timer.start(100);
+    timer.start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -60,7 +63,9 @@ void MainWindow::on_toolButton_6_clicked()
 
 void MainWindow::on_toolButton_clicked()
 {
+    ui_volStat->setText("Loading...");
     ui->widget16->generateVolumeMesh();
+    ui_volStat->setText("Done!");
 }
 
 void MainWindow::on_radioButton_2_stateChanged()

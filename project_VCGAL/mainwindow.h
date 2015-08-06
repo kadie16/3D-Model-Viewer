@@ -40,6 +40,8 @@ private:
     QTimer timer;
     Ui::MainWindow *ui; 
     QLabel *ui_fps;
+    QLabel *ui_volStat;
+    bool volStatReset;
 };
 
 #endif // MAINWINDOW_H

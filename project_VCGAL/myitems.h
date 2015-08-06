@@ -14,6 +14,7 @@
 #include<CGAL/Polyhedral_mesh_domain_3.h>
 #include<CGAL/make_mesh_3.h>
 #include<CGAL/refine_mesh_3.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 /***** Normals *****/
 struct Facet_normal {
@@ -81,7 +82,7 @@ struct My_items : public CGAL::Polyhedron_items_3 {
 
 
 typedef double Real;
-typedef CGAL::Simple_cartesian<Real> Kernel;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef CGAL::Polyhedron_3<Kernel, My_items> Polyhedron;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
 using namespace std;

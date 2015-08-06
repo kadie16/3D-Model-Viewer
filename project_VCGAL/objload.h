@@ -55,8 +55,8 @@ class objLoad : public CGAL::Modifier_base<HDS>
                             builder.add_vertex_to_facet(v.at(0) - 1);
                             builder.add_vertex_to_facet(v.at(1) - 1);
                             builder.add_vertex_to_facet(v.at(2) - 1);
-                            if (v.size() > 3)
-                                builder.add_vertex_to_facet(v.at(3));
+                            //if (v.size() > 3)
+                               // builder.add_vertex_to_facet(v.at(3));
                             builder.end_facet();
                         }
                     }

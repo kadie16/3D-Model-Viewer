@@ -304,14 +304,18 @@ int GLWidget::giveFPS()
         return 0;
 }
 
-C3T3 GLWidget::generateVolumeMesh()
+bool GLWidget::generateVolumeMesh()
 {
     using namespace CGAL::parameters;
+    std::cout << "before domain construction" << std::endl;
     MeshDomain domain(mesh);
+    std::cout << "after domain construction" << std::endl;
     MeshCriteria criteria(facet_angle=25, facet_size=0.15, facet_distance=0.008,
                           cell_radius_edge_ratio=3);
+    std::cout << "after criteria construction" << std::endl;
     c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria, no_perturb(), no_exude());
-    return c3t3;
+    std::cout << "after c3t3 construction" << std::endl;
+    return true;
 }
 
 

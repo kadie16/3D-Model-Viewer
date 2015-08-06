@@ -52,14 +52,6 @@
         <property name="acceptDrops">
          <bool>false</bool>
         </property>
-        <zorder></zorder>
-        <zorder></zorder>
-        <zorder></zorder>
-        <zorder>toolButton_3</zorder>
-        <zorder></zorder>
-        <zorder>toolBox</zorder>
-        <zorder></zorder>
-        <zorder></zorder>
        </widget>
       </item>
       <item>
@@ -148,6 +140,24 @@
             </property>
             <property name="text">
              <string>Volume Mesh</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="volStatus">
+            <property name="geometry">
+             <rect>
+              <x>8</x>
+              <y>70</y>
+              <width>81</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Volume Mesh Status</string>
             </property>
            </widget>
           </widget>
@@ -268,14 +278,6 @@
              <string>Pick Color</string>
             </property>
            </widget>
-           <zorder>groupBox</zorder>
-           <zorder>label</zorder>
-           <zorder>fps</zorder>
-           <zorder>verticalSpacer_2</zorder>
-           <zorder>label</zorder>
-           <zorder>fps</zorder>
-           <zorder>checkBox</zorder>
-           <zorder>toolButton_6</zorder>
           </widget>
          </widget>
         </item>
