@@ -51,6 +51,7 @@ private:
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;
     Polyhedron mesh;
+    Mesh_polyhedron mesh_Poly;
     facetVectorMap normals;
     std::vector<float> center;
     std::vector<float> maxCoords;

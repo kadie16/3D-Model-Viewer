@@ -9,11 +9,15 @@
 #include<CGAL/Polyhedron_incremental_builder_3.h>
 // Volume Mesh
 #include<CGAL/Mesh_triangulation_3.h>
+#include<CGAL/Polyhedron_copy_3.h>
 #include<CGAL/Mesh_complex_3_in_triangulation_3.h>
 #include<CGAL/Mesh_criteria_3.h>
-#include<CGAL/Polyhedral_mesh_domain_3.h>
+#include<CGAL/Mesh_polyhedron_3.h>
+#include<CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include<CGAL/make_mesh_3.h>
 #include<CGAL/refine_mesh_3.h>
+#include <CGAL/Mesh_3/Robust_intersection_traits_3.h>
+#include <CGAL/Mesh_domain_with_polyline_features_3.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 /***** Normals *****/
@@ -83,16 +87,20 @@ struct My_items : public CGAL::Polyhedron_items_3 {
 
 typedef double Real;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
-typedef CGAL::Polyhedron_3<Kernel, My_items> Polyhedron;
+typedef CGAL::Mesh_3::Robust_intersection_traits_3<Kernel> IGT;
+typedef CGAL::Polyhedron_3<IGT, My_items> Polyhedron;
+typedef CGAL::Polyhedron_3<IGT> Polyhedron2;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
 typedef CGAL::Point_3<Kernel> Point;
 using namespace std;
 
 //Volume Mesh
-typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron, Kernel> MeshDomain;
+typedef CGAL::Mesh_polyhedron_3<IGT>::Type Mesh_polyhedron;
+typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Polyhedron2> MeshDomain;
 typedef CGAL::Mesh_triangulation_3<MeshDomain>::type Tr;
-typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3T3;
+typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,MeshDomain::Corner_index,MeshDomain::Curve_segment_index> C3T3;
 typedef CGAL::Mesh_criteria_3<Tr> MeshCriteria;
+typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_polyhedron> Poly_copy;
 
 
 template <class HDS>

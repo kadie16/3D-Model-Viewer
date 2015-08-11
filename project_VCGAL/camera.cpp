@@ -19,7 +19,7 @@ void camera::translate(float dx, float dy)
 void camera::findModel(objLoad<HalfedgeDS> *o)
 {
     radius = o->findRadius();
-    center = o->findCenter();
+    modelCenter = o->findCenter();
     double diameter = radius*2;
     fov = 30;
     fdist = radius/tan(fov*0.5);
@@ -41,7 +41,8 @@ void camera::viewModel()
 
 void camera::moveToCenter()
 {
-    glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+    glMatrixMode(GL_MODELVIEW);
+    glTranslatef(-modelCenter.at(0), -modelCenter.at(1), -modelCenter.at(2));
 }
 
 void camera::adjustAspect(float w, float h)
