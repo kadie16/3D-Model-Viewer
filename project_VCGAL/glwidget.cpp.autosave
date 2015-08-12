@@ -238,7 +238,6 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     objPtr = &objFile;
-    mesh_Poly.delegate(objFile);
     mesh.delegate(objFile);
     center = objPtr->findCenter();
     radius = objPtr->findRadius();

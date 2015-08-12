@@ -89,14 +89,13 @@ typedef double Real;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef CGAL::Mesh_3::Robust_intersection_traits_3<Kernel> IGT;
 typedef CGAL::Polyhedron_3<IGT, My_items> Polyhedron;
-typedef CGAL::Polyhedron_3<IGT> Polyhedron2;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
 typedef CGAL::Point_3<Kernel> Point;
 using namespace std;
 
 //Volume Mesh
 typedef CGAL::Mesh_polyhedron_3<IGT>::Type Mesh_polyhedron;
-typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Polyhedron2> MeshDomain;
+typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_polyhedron> MeshDomain;
 typedef CGAL::Mesh_triangulation_3<MeshDomain>::type Tr;
 typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,MeshDomain::Corner_index,MeshDomain::Curve_segment_index> C3T3;
 typedef CGAL::Mesh_criteria_3<Tr> MeshCriteria;

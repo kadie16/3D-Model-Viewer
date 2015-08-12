@@ -50,8 +50,6 @@ private:
     QTimer timer;
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;
-    Polyhedron mesh;
-    Mesh_polyhedron mesh_Poly;
     facetVectorMap normals;
     std::vector<float> center;
     std::vector<float> maxCoords;
@@ -90,6 +88,8 @@ private:
     CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
     /* Volume Mesh */
+    Polyhedron mesh;
+    Mesh_polyhedron mesh_Poly;
     bool volumeOK;
     C3T3 c3t3;
     Tr t;
