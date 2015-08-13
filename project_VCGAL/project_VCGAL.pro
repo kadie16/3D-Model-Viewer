@@ -38,17 +38,17 @@ DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # CGAL CORE LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/cgal/4.5/lib/ -lCGAL_Core.10.0.4
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lCGAL_Core.11
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # CGAL IMAGE IO LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/cgal/4.5/lib/ -lCGAL_ImageIO.10.0.4
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lCGAL_ImageIO
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # CGAL QT LIBRARY
 #-------------------------------------------------
@@ -84,5 +84,7 @@ macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/lib/ -lm
 
 INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include
 DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include
+
+
 
 
