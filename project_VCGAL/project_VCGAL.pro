@@ -50,41 +50,30 @@ macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lCGAL_ImageIO
 INCLUDEPATH += $$PWD/../../../../../../opt/local/include
 DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
-# CGAL QT LIBRARY
-#-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/cgal/4.5/lib/ -lCGAL_Qt4.10.0.4
-
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/cgal/4.5/include
-#-------------------------------------------------
 # BOOST THREAD LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/lib/ -lboost_thread-mt
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lboost_thread-mt
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # BOOST SYSTEM LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/lib/ -lboost_system
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lboost_system-mt
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/boost/1.57.0/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # GMP LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/lib/ -lgmp.10
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lgmp
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/gmp/6.0.0a/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 #-------------------------------------------------
 # MPFR LIBRARY
 #-------------------------------------------------
-macx: LIBS += -L$$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/lib/ -lmpfr.4
+macx: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lmpfr
 
-INCLUDEPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include
-DEPENDPATH += $$PWD/../../../../../../usr/local/Cellar/mpfr/3.1.2-p10/include
-
-
-
-
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
