@@ -89,7 +89,7 @@ private:
     Polyhedron::Halfedge_const_handle h;
     /* Volume Mesh */
     Polyhedron mesh;
-    Mesh_polyhedron mesh_Poly;
+    Mesh_Polyhedron mesh_Poly;
     bool volumeOK;
     C3T3 c3t3;
     Tr t;

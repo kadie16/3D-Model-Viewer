@@ -1,5 +1,5 @@
 /* Adapted From:
- * http://code.metager.de/source/xref/lib/cgal/4.2/examples/Polyhedron/polyhedron_prog_vertex_normal.cpp */
+ * http://code.metager.de/source/xref/lib/cgal/4.2/examples/Polyhedron/polyhedron_prog_vertex_normal.cpp*/
 #ifndef MYITEMS
 #define MYITEMS
 #include<CGAL/HalfedgeDS_default.h>
@@ -7,18 +7,18 @@
 #include<CGAL/Modifier_base.h>
 #include<CGAL/Polyhedron_3.h>
 #include<CGAL/Polyhedron_incremental_builder_3.h>
-// Volume Mesh
-#include<CGAL/Mesh_triangulation_3.h>
-#include<CGAL/Polyhedron_copy_3.h>
+/* Volume Mesh */
 #include<CGAL/Mesh_complex_3_in_triangulation_3.h>
+#include<CGAL/Mesh_triangulation_3.h>
 #include<CGAL/Mesh_criteria_3.h>
 #include<CGAL/Mesh_polyhedron_3.h>
+#include<CGAL/Polyhedron_copy_3.h>
 #include<CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include<CGAL/make_mesh_3.h>
 #include<CGAL/refine_mesh_3.h>
-#include <CGAL/Mesh_3/Robust_intersection_traits_3.h>
-#include <CGAL/Mesh_domain_with_polyline_features_3.h>
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include<CGAL/Mesh_3/Robust_intersection_traits_3.h>
+#include<CGAL/Mesh_domain_with_polyline_features_3.h>
+#include<CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 /***** Normals *****/
 struct Facet_normal {
@@ -94,12 +94,12 @@ typedef CGAL::Point_3<Kernel> Point;
 using namespace std;
 
 //Volume Mesh
-typedef CGAL::Mesh_polyhedron_3<IGT>::Type Mesh_polyhedron;
-typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_polyhedron> MeshDomain;
-typedef CGAL::Mesh_triangulation_3<MeshDomain>::type Tr;
-typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,MeshDomain::Corner_index,MeshDomain::Curve_segment_index> C3T3;
-typedef CGAL::Mesh_criteria_3<Tr> MeshCriteria;
-typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_polyhedron> Poly_copy;
+typedef CGAL::Mesh_polyhedron_3<IGT>::type Mesh_Polyhedron;
+typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_Polyhedron> Mesh_Domain;
+typedef CGAL::Mesh_triangulation_3<Mesh_Domain, IGT>::type Tr;
+typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,Mesh_Domain::Corner_index, Mesh_Domain::Curve_segment_index> C3T3;
+typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
+typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_Polyhedron::HDS> Poly_copy;
 
 
 template <class HDS>

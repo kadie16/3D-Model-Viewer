@@ -238,7 +238,11 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     objPtr = &objFile;
+
     mesh.delegate(objFile);
+    Poly_copy polyhedron_copy_modifier(mesh);
+    mesh_Poly.delegate(polyhedron_copy_modifier);
+
     center = objPtr->findCenter();
     radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
@@ -331,12 +335,13 @@ bool GLWidget::generateVolumeMesh()
 {
     using namespace CGAL::parameters;
     std::cout << "before domain construction" << std::endl;
-    MeshDomain domain(mesh_Poly);
+    Mesh_Domain domain(mesh_Poly);
+    domain.detect_features();
     std::cout << "after domain construction" << std::endl;
-    MeshCriteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
+    Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
                           cell_radius_edge_ratio=2, cell_size=0.1);
     std::cout << "after criteria construction" << std::endl;
-    c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria, no_perturb(), no_exude());
+    c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
     std::cout << "after c3t3 construction" << std::endl;
     return true;
 }
