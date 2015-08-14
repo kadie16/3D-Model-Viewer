@@ -102,6 +102,9 @@ typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
 typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_Polyhedron::HDS> Poly_copy;
 
 
+<<<<<<< HEAD
 template <class HDS>
+=======
+>>>>>>> 2718a8f... adding model class
 #endif // MYITEMS
 

@@ -14,7 +14,6 @@
 #include <QMatrix4x4>
 
 typedef Polyhedron::HalfedgeDS HDS;
-typedef map<Polyhedron::Facet_const_handle, CGAL::Vector_3<Kernel> > facetVectorMap;
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -31,7 +30,6 @@ public:
     void drawTriangle(Point p1, Point p2, Point p3);
     void drawTriangle(Polyhedron::Facet_const_handle f);
     void drawQuad(Polyhedron::Facet_const_handle f);
-    void computeNormals();
     void drawAxes();
     void resetView();
     void grabObj(objLoad<HDS> objFile);
@@ -50,17 +48,12 @@ private:
     QTimer timer;
     /* .obj Information */
     objLoad<HDS> *objPtr = 0;
-    facetVectorMap normals;
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     QQuaternion currQ;
     /* Frustrum Things */
     float radius;
-    float fdist;
-    double dNear;
-    double dFar;
-    double viewAngle;
     float w0;
     float h0;
     /* User Control */
@@ -94,6 +87,7 @@ private:
     bool volumeOK;
     C3T3 c3t3;
     Tr t;
+    model m;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

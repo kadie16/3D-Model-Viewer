@@ -84,7 +84,7 @@ void GLWidget::paintGL(){
             this->drag2Rotate(dx,dy);
         }
         /* TRANSLATION */
-        else if (/*mouseHeld && */translateOK && !rotationOK)
+        else if (mouseHeld && translateOK && !rotationOK)
         {
             this->drag2Translate(dx,dy);
         }
@@ -94,7 +94,6 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Settings */
         m.rotate(currQ);
-
         glMatrixMode(GL_MODELVIEW);
         glTranslatef(transX, transY, 0);
         /* Translate so rotation occurs about model center */
@@ -134,8 +133,9 @@ void GLWidget::drawObject()
 {
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
-    for (Polyhedron::Facet_const_iterator faceIter = mesh.facets_begin(); faceIter != mesh.facets_end(); ++faceIter) {
+    for (Polyhedron::Facet_const_iterator faceIter = m.poly().facets_begin(); faceIter != m.poly().facets_end(); ++faceIter) {
         // if (faceIter->is_triangle())
+        std::cout<< &faceIter << std::endl;
             drawTriangle(faceIter);
          //else if (faceIter->is_quad())
          //      drawQuad(faceIter);
@@ -216,12 +216,6 @@ void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
     glVertex3f(p4.hx(), p4.hy(), p4.hz()); */
 }
 
-void GLWidget::computeNormals()
-{
-    std::for_each(mesh.facets_begin(), mesh.facets_end(), Facet_normal());
-    std::for_each(mesh.vertices_begin(), mesh.vertices_end(), Vertex_normal());
-}
-
 void GLWidget::drawAxes()
 {
     glLineWidth(2);
@@ -247,18 +241,9 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     frameTimer.restart();
     frameCount = 0;
-    objPtr = &objFile;
-
-    mesh.delegate(objFile);
-    Poly_copy polyhedron_copy_modifier(mesh);
-    mesh_Poly.delegate(polyhedron_copy_modifier);
-
-    center = objPtr->findCenter();
-    radius = objPtr->findRadius();
-    maxCoords = objPtr->getMaxCoords();
-    minCoords = objPtr->getMinCoords();
-    computeNormals();
-    cam.findModel(objPtr);
+    model m2(objFile);
+    m = m2;
+    m.computeNormals();
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }

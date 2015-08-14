@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     testqstring.cpp \
     ../../../../Qt/Examples/Qt-5.4/widgets/graphicsview/boxes/trackball.cpp \
     camera.cpp \
-    objload.cpp
+    objload.cpp \
+    model.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
     camera.h \
     objload.h \
-    myitems.h
+    myitems.h \
+    model.h
 
 FORMS    += mainwindow.ui
 

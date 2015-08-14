@@ -12,7 +12,7 @@
 #include "myitems.h"
 
 /*********************************** OBJ LOAD **********************************/
-
+template <class HDS>
 class objLoad : public CGAL::Modifier_base<HDS>
 {
     public:

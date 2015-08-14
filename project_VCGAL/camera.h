@@ -5,8 +5,7 @@
 #include <QMouseEvent>
 #include <math.h>
 #include <QTime>
-#include "objload.h"
-
+#include "model.h"
 
 class camera
 {    
