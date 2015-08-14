@@ -80,6 +80,7 @@ private:
     double red,green,blue;
     bool needsReset;
     QVector3D axisOfRotation;
+    float transX, transY;
     int x,y,dx,dy,x0,y0;
     int prevPos[2];
     float mag;

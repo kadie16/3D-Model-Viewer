@@ -26,6 +26,8 @@ void GLWidget::initializeGL(){
     glEnable(GL_NORMALIZE);
     zoomF = 1;
     scale = 1;
+    transX = 0;
+    transY = 0;
     radius = 0;
     red = 0.75;
     green = 0.75;
@@ -61,7 +63,13 @@ void GLWidget::paintGL(){
         if (needsReset)
             this->resetView();
         glMatrixMode(GL_PROJECTION);
+        cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glMultMatrixf(m.constData());
+        drawAxes();
+        glPopMatrix();
+        glPushMatrix();
         /* CULLING */
         if (cullingOK)
         {
@@ -76,9 +84,9 @@ void GLWidget::paintGL(){
             this->drag2Rotate(dx,dy);
         }
         /* TRANSLATION */
-        else if (mouseHeld && translateOK && !rotationOK)
+        else if (/*mouseHeld && */translateOK && !rotationOK)
         {
-            this->drag2Translate(dx, dy);
+            this->drag2Translate(dx,dy);
         }
         /* ZOOM */
         else if (mouseHeld && zoomOK) {
@@ -86,21 +94,21 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Settings */
         m.rotate(currQ);
-        glMatrixMode(GL_PROJECTION);
-        cam.setZoom(zoomF);
+
         glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
+        glTranslatef(transX, transY, 0);
         /* Translate so rotation occurs about model center */
         glTranslatef(center.at(0), center.at(1), center.at(2));
         glMultMatrixf(m.constData());
         glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+
         if (volumeOK)
             drawVolume();
         else
-            drawObject();
-        drawAxes();
+            drawObject();    
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
+
         prevPos[0] = xNow;
         prevPos[1] = yNow;
    }
@@ -217,6 +225,7 @@ void GLWidget::computeNormals()
 void GLWidget::drawAxes()
 {
     glLineWidth(2);
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     /* Red X Axis */
     glColor3f(1,0,0);
@@ -231,6 +240,7 @@ void GLWidget::drawAxes()
     glVertex3f(0,0,0);
     glVertex3f(0,0,2);
     glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 void GLWidget::grabObj(objLoad<HDS> objFile){
@@ -314,7 +324,10 @@ void GLWidget::drag2Translate(float dx, float dy)
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    cam.translate(xT,yT);
+    transX = transX + xT;
+    transY = transY + yT;
+    glMatrixMode(GL_MODELVIEW);
+    glTranslatef(transX, transY, 0);
 }
 
 void GLWidget::drag2Zoom(float dy)
