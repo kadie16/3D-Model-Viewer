@@ -12,6 +12,7 @@ public:
     void computeNormals();
     Polyhedron poly();
     void drawMe();
+    void drawTriangle(Polyhedron::Facet_const_handle f);
     std::vector<float> center();
     float radius();
     std::vector<float> max();

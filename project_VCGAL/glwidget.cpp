@@ -57,21 +57,13 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(objPtr)
    {
-        std::cout<< "in if objPtr" << std::endl;
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
-        std::cout<< "dx dy calculated" << std::endl;
         QMatrix4x4 mat;
-        std::cout<< "mat declared" << std::endl;
         if (needsReset)
             this->resetView();
-        glMatrixMode(GL_PROJECTION);
-        //cam.setZoom(zoomF);
+        cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        drawAxes();
-        std::cout<< "axes drawn" << std::endl;
-        glPopMatrix();
         glPushMatrix();
         /* CULLING */
         if (cullingOK)
@@ -110,10 +102,13 @@ void GLWidget::paintGL(){
             m.drawMe();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
-
+        glPushMatrix();
+        drawAxes();
+        glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
    }
+    frameCount++;
 }
 
 void GLWidget::resetView()
@@ -127,6 +122,8 @@ void GLWidget::resetView()
         cam.moveToCenter();
         maxCoords = m.max();
         minCoords = m.min();
+        std::cout << maxCoords.at(0) << std::endl;
+        std::cout << minCoords.at(0) << std::endl;
         zoomF = cam.fitModel(maxCoords.at(0), minCoords.at(0),
                      maxCoords.at(1), minCoords.at(1),
                      maxCoords.at(2), minCoords.at(2));
@@ -142,7 +139,7 @@ void GLWidget::drawObject()
     for (Polyhedron::Facet_const_iterator faceIter = m.poly().facets_begin(); faceIter != m.poly().facets_end(); ++faceIter) {
         // if (faceIter->is_triangle())
         std::cout<< "hi" << std::endl;
-            drawTriangle(faceIter);
+            //drawTriangle(faceIter);
          //else if (faceIter->is_quad())
          //      drawQuad(faceIter);
     }
@@ -185,26 +182,6 @@ void GLWidget::drawTriangle(Point p1, Point p2, Point p3)
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
 
-void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
-{
-    CGAL::Vector_3<Kernel> n1, n2, n3;
-    CGAL::Point_3<Kernel> p1,p2,p3,p4;
-    Polyhedron::Halfedge_const_handle h;
-    h = f->halfedge();
-    n1 = h->vertex()->normal();
-    n2 = h->next()->vertex()->normal();
-    n3 = h->prev()->vertex()->normal();
-    p1 = h->vertex()->point();
-    p2 = h->next()->vertex()->point();
-    p3 = h->prev()->vertex()->point();
-    glNormal3f(n1.hx(), n1.hy(), n1.hz());
-    glVertex3f(p1.hx(), p1.hy(), p1.hz());
-    glNormal3f(n2.hx(), n2.hy(), n2.hz());
-    glVertex3f(p2.hx(), p2.hy(), p2.hz());
-    glNormal3f(n3.hx(), n3.hy(), n3.hz());
-    glVertex3f(p3.hx(), p3.hy(), p3.hz());
-}
-
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
 {
    /* CGAL::Point_3<Kernel> p1,p2,p3,p4;
@@ -228,7 +205,7 @@ void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
 void GLWidget::drawAxes()
 {
     glLineWidth(2);
-    glDisable(GL_LIGHTING);
+    //glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     /* Red X Axis */
     glColor3f(1,0,0);
@@ -243,7 +220,7 @@ void GLWidget::drawAxes()
     glVertex3f(0,0,0);
     glVertex3f(0,0,2);
     glEnd();
-    glEnable(GL_LIGHTING);
+   // glEnable(GL_LIGHTING);
 }
 
 void GLWidget::grabObj(objLoad<HDS> objFile){

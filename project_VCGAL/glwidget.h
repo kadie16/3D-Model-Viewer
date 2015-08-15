@@ -30,7 +30,6 @@ public:
     void drawObject();
     void drawVolume();
     void drawTriangle(Point p1, Point p2, Point p3);
-    static void drawTriangle(Polyhedron::Facet_const_handle f);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
     void resetView();
