@@ -67,10 +67,6 @@ void MainWindow::on_toolButton_6_clicked()
 void MainWindow::on_toolButton_clicked()
 {
     ui_volStat->setText("Loading...");
-<<<<<<< HEAD
-    ui->widget16->generateVolumeMesh();
-    ui_volStat->setText("Done!");
-=======
     bool success = ui->widget16->generateVolumeMesh();
     if (success) {
         ui_volStat->setText("Done!");
@@ -80,7 +76,6 @@ void MainWindow::on_toolButton_clicked()
         ui_volStat->setText("Failed!!!!");
         ui->radioButton_2->setEnabled(false);
     }
->>>>>>> f8a6ad4... independent rotation, translation slightly off
 }
 
 void MainWindow::on_radioButton_2_stateChanged()
