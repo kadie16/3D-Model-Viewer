@@ -104,7 +104,6 @@
              <rect>
               <x>0</x>
               <y>10</y>
-<<<<<<< HEAD
               <width>101</width>
               <height>21</height>
              </rect>
@@ -129,8 +128,6 @@
              <rect>
               <x>0</x>
               <y>40</y>
-=======
->>>>>>> f8a6ad4... independent rotation, translation slightly off
               <width>101</width>
               <height>21</height>
              </rect>
