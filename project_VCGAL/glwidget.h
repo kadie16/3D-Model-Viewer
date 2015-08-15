@@ -41,6 +41,7 @@ public:
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();
+    void setCurrentModel(int i);
 
 private:
     std::vector<model> models;

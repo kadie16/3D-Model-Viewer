@@ -57,7 +57,7 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(models.size() > 0)
    {
-        m = models[currentModelIndex];
+        model currentModel = models[currentModelIndex];
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 mat;
@@ -65,7 +65,6 @@ void GLWidget::paintGL(){
             this->resetView();
         cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
         /* CULLING */
         if (cullingOK)
         {
@@ -77,7 +76,7 @@ void GLWidget::paintGL(){
         /* ROTATION */
         if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-            this->drag2Rotate(dx,dy,m);
+            this->drag2Rotate(dx,dy,currentModel);
         }
         /* TRANSLATION */
         else if (mouseHeld && translateOK && !rotationOK)
@@ -89,12 +88,13 @@ void GLWidget::paintGL(){
             this->drag2Zoom(dy);
         }
         for (int i = 0; i < models.size(); i++) {
+            glPushMatrix();
             m = models[i];
         /* Apply Current Position */
             QQuaternion currQ = rotations[i];
             mat.rotate(currQ);
             glMatrixMode(GL_MODELVIEW);
-            m.translate(0,0); // applies current translation
+            currentModel.translate(0,0); // applies current translation
             /* Translate so rotation occurs about model center */
             glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
             glMultMatrixf(mat.constData());
@@ -299,6 +299,12 @@ bool GLWidget::generateVolumeMesh()
         return false;
     }
     return true;
+}
+
+void GLWidget::setCurrentModel(int i)
+{
+    if (i < models.size())
+        currentModelIndex = i;
 }
 
 

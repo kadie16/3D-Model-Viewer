@@ -244,54 +244,33 @@
                <property name="title">
                 <string>Item: </string>
                </property>
-               <widget class="QWidget" name="verticalLayoutWidget_3">
+               <widget class="QSpinBox" name="spinBox">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>20</y>
-                  <width>161</width>
-                  <height>44</height>
+                  <width>91</width>
+                  <height>25</height>
                  </rect>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_5">
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_4">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Model</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_3">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Axes</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <property name="readOnly">
+                 <bool>false</bool>
+                </property>
+                <property name="specialValueText">
+                 <string>0</string>
+                </property>
+                <property name="correctionMode">
+                 <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                </property>
+                <property name="maximum">
+                 <number>5</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
                </widget>
+               <zorder>dial</zorder>
+               <zorder>spinBox</zorder>
               </widget>
              </item>
              <item>
@@ -346,10 +325,6 @@
                  <string>Volume</string>
                 </property>
                </widget>
-               <zorder>radioButton</zorder>
-               <zorder>radioButton_2</zorder>
-               <zorder>radioButton</zorder>
-               <zorder>radioButton_2</zorder>
               </widget>
              </item>
             </layout>

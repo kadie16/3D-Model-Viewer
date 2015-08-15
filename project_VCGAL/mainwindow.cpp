@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     volStatReset = false;
     ui_volStat->setText(" ");
     ui->radioButton->setChecked(true);
-    ui->radioButton_4->setChecked(true);
+    //ui->radioButton_4->setChecked(true);
     ui->radioButton_2->setEnabled(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
     timer.start(1000);
@@ -86,4 +86,9 @@ void MainWindow::on_radioButton_2_stateChanged()
 void MainWindow::on_radioButton_2_toggled(bool checked)
 {
     ui->widget16->toggleVolume();
+}
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    ui->widget16->setCurrentModel(arg1);
 }
