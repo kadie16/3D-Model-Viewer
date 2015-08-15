@@ -55,8 +55,9 @@ void GLWidget::paintGL(){
     int xNow = x;
     int yNow = y;
     /* If a File is Loaded*/
-    if(objPtr)
+    if(models.size() > 0)
    {
+        m = models[currentModelIndex];
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 mat;
@@ -87,26 +88,27 @@ void GLWidget::paintGL(){
         else if (mouseHeld && zoomOK) {
             this->drag2Zoom(dy);
         }
+        for (int i = 0; i < models.size(); i++) {
+            m = models[i];
         /* Apply Current Position */
-        QQuaternion currQ = m.getRotation();
-        mat.rotate(currQ);
-        glMatrixMode(GL_MODELVIEW); 
-        m.translate(0,0); // applies current translation
-        //cam.moveToCenter();
-        /* Translate so rotation occurs about model center */
-        glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
-        glMultMatrixf(mat.constData());
-        glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-
-        if (volumeOK)
-            drawVolume(m);
-        else
-            drawModel(m);
-        /* Revert to Original Matrix for Future Transformations */
-        glPopMatrix();
-        glPushMatrix();
-        drawAxes();
-        glPopMatrix();
+            QQuaternion currQ = rotations[i];
+            mat.rotate(currQ);
+            glMatrixMode(GL_MODELVIEW);
+            m.translate(0,0); // applies current translation
+            /* Translate so rotation occurs about model center */
+            glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
+            glMultMatrixf(mat.constData());
+            glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
+            if (volumeOK)
+                drawVolume(m);
+            else
+                drawModel(m);
+            /* Revert to Original Matrix for Future Transformations */
+            glPopMatrix();
+        }
+            glPushMatrix();
+            drawAxes();
+            glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
    }
@@ -190,7 +192,11 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     model m2(objFile);
-    m = m2;
+    models.push_back(m2);
+    QQuaternion newQ;
+    rotations.push_back(newQ);
+    currentModelIndex = models.size() - 1;
+    m = models[currentModelIndex];
     cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
@@ -248,7 +254,11 @@ QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
     mag = sqrt(dx*dx + dy*dy);
     /* Update Rotation Quaternion */
     QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
-    QQuaternion currQ = mod.applyRotation(newQ);
+    QQuaternion currQ = rotations.at(currentModelIndex);
+    std::cout << "before: " << currQ.x() << " , " << currQ.y() << " , " << currQ.z() << std::endl;
+    currQ = newQ * currQ;
+    rotations[currentModelIndex] = currQ;
+    std::cout << "after: " << rotations[currentModelIndex].x() << " , " << rotations[currentModelIndex].y() << " , " << rotations[currentModelIndex].z() << std::endl;
     return currQ;
 }
 

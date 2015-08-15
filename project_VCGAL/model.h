@@ -9,7 +9,7 @@ class model
 public:
     model();
     model(objLoad<HDS> objFile);
-    QQuaternion applyRotation(QQuaternion newQ);
+    void setRotation(QQuaternion newQ);
     void computeNormals();
     Polyhedron poly();
     void drawMe();
@@ -29,6 +29,9 @@ public:
     void translate(float xT, float yT);
     void moveToCenter();
     void setColor(double r, double g, double b);
+    QQuaternion getCurrQ() const;
+    void setCurrQ(const QQuaternion &value);
+
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;

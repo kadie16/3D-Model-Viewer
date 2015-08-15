@@ -43,6 +43,9 @@ public:
     bool generateVolumeMesh();
 
 private:
+    std::vector<model> models;
+    std::vector<QQuaternion> rotations;
+    int currentModelIndex;
     QTime frameTimer;
     int frameCount;
     QTimer timer;

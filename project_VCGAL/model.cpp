@@ -23,10 +23,10 @@ model::model(objLoad<HDS> objFile)
     this->computeNormals();
 }
 
-QQuaternion model::applyRotation(QQuaternion newQ)
+void model::setRotation(QQuaternion newQ)
 {
-    currQ = newQ * currQ;
-    return currQ;
+    this->currQ = newQ;
+    std::cout << currQ.x() << " , " << currQ.y() << " , " << currQ.z() << std::endl;
 }
 
 void model::computeNormals()
@@ -102,6 +102,16 @@ void model::setColor(double r, double g, double b)
     blue = b;
     green = g;
 }
+QQuaternion model::getCurrQ() const
+{
+    return currQ;
+}
+
+void model::setCurrQ(const QQuaternion &value)
+{
+    currQ = value;
+}
+
 
 void model::drawMe() {
     glBegin(GL_TRIANGLES);
