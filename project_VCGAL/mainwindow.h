@@ -39,6 +39,8 @@ private slots:
 
     void on_spinBox_valueChanged(int arg1);
 
+    void on_toolButton_4_clicked();
+
 private:
     QTimer timer;
     Ui::MainWindow *ui; 

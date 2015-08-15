@@ -94,3 +94,8 @@ void MainWindow::on_spinBox_valueChanged(int arg1)
 {
     ui->widget16->setCurrentModel(arg1);
 }
+
+void MainWindow::on_toolButton_4_clicked()
+{
+    ui->widget16->toggleDrawingPlane();
+}

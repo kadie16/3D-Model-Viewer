@@ -64,28 +64,34 @@ void GLWidget::paintGL(){
         if (needsReset)
             this->resetView();
         cam.setZoom(zoomF);
-        glMatrixMode(GL_MODELVIEW);
-        /* CULLING */
-        if (cullingOK)
-        {
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
+        /* If not drawing a plane */
+        if (!drawingPlane) {
+            glMatrixMode(GL_MODELVIEW);
+            /* CULLING */
+            if (cullingOK)
+            {
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_BACK);
+            }
+            else
+                glDisable(GL_CULL_FACE);
+            /* ROTATION */
+            if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+            {
+                this->drag2Rotate(dx,dy,currentModel);
+            }
+            /* TRANSLATION */
+            else if (mouseHeld && translateOK && !rotationOK)
+            {
+                this->drag2Translate(dx,dy,models[currentModelIndex]);
+            }
+            /* ZOOM */
+            else if (mouseHeld && zoomOK) {
+                this->drag2Zoom(dy);
+            }
         }
-        else
-            glDisable(GL_CULL_FACE);
-        /* ROTATION */
-        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
-        {
-            this->drag2Rotate(dx,dy,currentModel);
-        }
-        /* TRANSLATION */
-        else if (mouseHeld && translateOK && !rotationOK)
-        {
-            this->drag2Translate(dx,dy,models[currentModelIndex]);
-        }
-        /* ZOOM */
-        else if (mouseHeld && zoomOK) {
-            this->drag2Zoom(dy);
+        if (drawingPlane) {
+            drawPlane(0,0);
         }
         for (int i = 0; i < models.size(); i++) {
             glPushMatrix();
@@ -312,40 +318,57 @@ void GLWidget::setCurrentModel(int i)
         currentModelIndex = i;
 }
 
+void GLWidget::drawPlane(int startX, int startY)
+{
+    glLineWidth(3);
+    glBegin(GL_LINES);
+    /* Left */
+    glVertex3f(startX, startY, 0);
+    glVertex3f(startX, y, 0);
+    /* Right */
+    glVertex3f(x, startY, 0);
+    glVertex3f(x, y, 0);
+    /* Top */
+    glVertex3f(startX, startY, 0);
+    glVertex3f(x, startY, 0);
+    /* Bottom */
+    glVertex3f(startX, y, 0);
+    glVertex3f(x, y, 0);
+    glEnd();
+
+
+}
+
 
 bool GLWidget::toggleRotation(){
     dx = 0; dy = 0;
-    if (rotationOK)
-        rotationOK = false;
-    else
-        rotationOK = true;
+    rotationOK = !rotationOK;
     return rotationOK;
 }
 
 bool GLWidget::toggleCulling()
 {
-    if (cullingOK)
-        cullingOK = false;
-    else
-        cullingOK = true;
+    cullingOK = !cullingOK;
     return cullingOK;
 }
 
 bool GLWidget::toggleVolume()
 {
     volumeOK = !volumeOK;
-    std::cout << volumeOK << std::endl;
     return volumeOK;
 }
 
 bool GLWidget::toggleTranslation()
 {
     dx = 0; dy = 0;
-    if (translateOK)
-        translateOK = false;
-    else
-        translateOK = true;
+    translateOK = !translateOK;
     return translateOK;
+}
+
+bool GLWidget::toggleDrawingPlane()
+{
+    drawingPlane = !drawingPlane;
+    return drawingPlane;
 }
 
 

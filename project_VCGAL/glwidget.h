@@ -25,6 +25,7 @@ public:
     bool toggleCulling();
     bool toggleVolume();
     bool toggleTranslation();
+    bool toggleDrawingPlane();
     void initializeGL();
     void paintGL();
     void drawVolume(model mod);
@@ -43,6 +44,7 @@ public:
     bool generateVolumeMesh();
     int getCurrentModel();
     void setCurrentModel(int i);
+    void drawPlane(int startX, int startY);
 
 private:
     std::vector<model> models;
@@ -92,6 +94,8 @@ private:
     C3T3 c3t3;
     Tr t;
     model m;
+    /* Plane */
+    bool drawingPlane;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();
