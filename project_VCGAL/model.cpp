@@ -23,6 +23,12 @@ model::model(objLoad<HDS> objFile)
     this->computeNormals();
 }
 
+QQuaternion model::applyRotation(QQuaternion newQ)
+{
+    currQ = newQ * currQ;
+    return currQ;
+}
+
 void model::computeNormals()
 {
     std::for_each(polyhedron.facets_begin(), polyhedron.facets_end(), Facet_normal());
@@ -61,6 +67,11 @@ float model::getTransY() {
     return currTrans.at(1);
 }
 
+QQuaternion model::getRotation()
+{
+    return currQ;
+}
+
 void model::setTransX(float f) {
     currTrans[0] = f;
 }
@@ -83,6 +94,13 @@ void model::moveToCenter()
 {
     glMatrixMode(GL_MODELVIEW);
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
+}
+
+void model::setColor(double r, double g, double b)
+{
+    red = r;
+    blue = b;
+    green = g;
 }
 
 void model::drawMe() {

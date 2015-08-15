@@ -76,18 +76,19 @@ void GLWidget::paintGL(){
         /* ROTATION */
         if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
         {
-            this->drag2Rotate(dx,dy);
+            this->drag2Rotate(dx,dy,m);
         }
         /* TRANSLATION */
         else if (mouseHeld && translateOK && !rotationOK)
         {
-            this->drag2Translate(dx,dy);
+            this->drag2Translate(dx,dy,m);
         }
         /* ZOOM */
         else if (mouseHeld && zoomOK) {
             this->drag2Zoom(dy);
         }
         /* Apply Current Position */
+        QQuaternion currQ = m.getRotation();
         mat.rotate(currQ);
         glMatrixMode(GL_MODELVIEW); 
         m.translate(0,0); // applies current translation
@@ -98,9 +99,9 @@ void GLWidget::paintGL(){
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
 
         if (volumeOK)
-            drawVolume();
+            drawVolume(m);
         else
-            m.drawMe();
+            drawModel(m);
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -115,10 +116,10 @@ void GLWidget::paintGL(){
 void GLWidget::resetView()
 {
     if (needsReset) {
-        currQ.setScalar(1);
-        currQ.setX(0);
-        currQ.setY(0);
-        currQ.setZ(0);
+        //currQ.setScalar(1);
+       // currQ.setX(0);
+        //currQ.setY(0);
+       // currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
         maxCoords = m.max();
@@ -137,9 +138,9 @@ void GLWidget::drawModel(model mod)
     mod.drawMe();
 }
 
-void GLWidget::drawVolume()
+void GLWidget::drawVolume(model mod)
 {
-   m.drawVolume();
+   mod.drawVolume();
 }
 
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
@@ -200,6 +201,7 @@ void GLWidget::grabColor(double r, double g, double b)
     red = r/255;
     green = g/255;
     blue = b/255;
+    m.setColor(red, green, blue);
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -237,7 +239,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->y = e->y();
 }
 
-QQuaternion GLWidget::drag2Rotate(float dx, float dy)
+QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
 {
     /* Define Axis of Rotation */
     axisOfRotation.setX(-dy);
@@ -246,17 +248,17 @@ QQuaternion GLWidget::drag2Rotate(float dx, float dy)
     mag = sqrt(dx*dx + dy*dy);
     /* Update Rotation Quaternion */
     QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
-    currQ = newQ * currQ;
+    QQuaternion currQ = mod.applyRotation(newQ);
     return currQ;
 }
 
-void GLWidget::drag2Translate(float dx, float dy)
+void GLWidget::drag2Translate(float dx, float dy, model mod)
 {
     float xT,yT;
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    m.translate(xT, yT);
+    mod.translate(xT, yT);
 }
 
 void GLWidget::drag2Zoom(float dy)

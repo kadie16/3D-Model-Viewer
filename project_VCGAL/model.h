@@ -9,6 +9,7 @@ class model
 public:
     model();
     model(objLoad<HDS> objFile);
+    QQuaternion applyRotation(QQuaternion newQ);
     void computeNormals();
     Polyhedron poly();
     void drawMe();
@@ -22,10 +23,12 @@ public:
     std::vector<float> min();
     float getTransX();
     float getTransY();
+    QQuaternion getRotation();
     void setTransX(float f);
     void setTransY(float f);
     void translate(float xT, float yT);
     void moveToCenter();
+    void setColor(double r, double g, double b);
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;

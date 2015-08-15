@@ -27,7 +27,7 @@ public:
     bool toggleTranslation();
     void initializeGL();
     void paintGL();
-    void drawVolume();
+    void drawVolume(model mod);
     void drawModel(model mod);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
@@ -36,8 +36,8 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
-    QQuaternion drag2Rotate(float dx, float dy);
-    void drag2Translate(float dx, float dy);
+    QQuaternion drag2Rotate(float dx, float dy, model mod);
+    void drag2Translate(float dx, float dy, model mod);
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();
@@ -51,7 +51,6 @@ private:
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
-    QQuaternion currQ;
     /* Frustrum Things */
     float radius;
     float w0;
