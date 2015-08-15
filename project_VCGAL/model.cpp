@@ -12,8 +12,8 @@ model::model(objLoad<HDS> objFile)
     polyhedron.delegate(objFile);
     Poly_copy polyhedron_copy_modifier(polyhedron);
     mesh.delegate(polyhedron_copy_modifier);
-    modelCenter = objPtr->findCenter();
-    radius = objPtr->findRadius();
+    m_center = objPtr->findCenter();
+    m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
     computeNormals();
@@ -33,7 +33,22 @@ Polyhedron model::poly()
 
 std::vector<float> model::center()
 {
-    return modelCenter;
+    return m_center;
+}
+
+float model::radius()
+{
+    return m_radius;
+}
+
+std::vector<float> model::max()
+{
+    return maxCoords;
+}
+
+std::vector<float> model::min()
+{
+    return minCoords;
 }
 
 void model::drawMe()

@@ -16,10 +16,10 @@ void camera::translate(float dx, float dy)
     glTranslatef(dx,dy,0);
 }
 
-void camera::findModel(objLoad<HalfedgeDS> *o)
+void camera::findModel(model *m)
 {
-    radius = o->findRadius();
-    modelCenter = o->findCenter();
+    radius = m->radius();
+    modelCenter = m->center();
     double diameter = radius*2;
     fov = 30;
     fdist = radius/tan(fov*0.5);

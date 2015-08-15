@@ -13,6 +13,9 @@ public:
     Polyhedron poly();
     void drawMe();
     std::vector<float> center();
+    float radius();
+    std::vector<float> max();
+    std::vector<float> min();
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
@@ -20,9 +23,9 @@ private:
     QQuaternion currQ;
     C3T3 c3t3;
     Tr t;
-    float radius;
+    float m_radius;
     double red,green,blue;
-    std::vector<float> modelCenter;
+    std::vector<float> m_center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
 };

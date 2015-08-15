@@ -64,7 +64,7 @@ void GLWidget::paintGL(){
         QMatrix4x4 mat;
         std::cout<< "mat declared" << std::endl;
         if (needsReset)
-            //this->resetView();
+            this->resetView();
         glMatrixMode(GL_PROJECTION);
         //cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
@@ -125,6 +125,8 @@ void GLWidget::resetView()
         currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
+        maxCoords = m.max();
+        minCoords = m.min();
         zoomF = cam.fitModel(maxCoords.at(0), minCoords.at(0),
                      maxCoords.at(1), minCoords.at(1),
                      maxCoords.at(2), minCoords.at(2));
@@ -188,24 +190,19 @@ void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
     CGAL::Vector_3<Kernel> n1, n2, n3;
     CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
-    std::cout<< "drawing Tri" << std::endl;
     h = f->halfedge();
-    std::cout<< "got halfedge" << std::endl;
     n1 = h->vertex()->normal();
     n2 = h->next()->vertex()->normal();
     n3 = h->prev()->vertex()->normal();
-    std::cout<< "got normal" << std::endl;
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
-    std::cout<< "got the info" << std::endl;
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glNormal3f(n2.hx(), n2.hy(), n2.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
-    std::cout<< "drew Tri" << std::endl;
 }
 
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
@@ -256,7 +253,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameCount = 0;
     model m2(objFile);
     m = m2;
-
+    cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }

@@ -14,7 +14,7 @@ public:
     void setAspect(float w, float h);
     void setZoom(float factor);
     void translate(float dx, float dy);
-    void findModel(objLoad<HalfedgeDS> *o);
+    void findModel(model *m);
     void viewModel();
     void moveToCenter();
     void adjustZoom();
