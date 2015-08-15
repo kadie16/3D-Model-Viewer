@@ -27,7 +27,6 @@ void model::computeNormals()
 {
     std::for_each(polyhedron.facets_begin(), polyhedron.facets_end(), Facet_normal());
     std::for_each(polyhedron.vertices_begin(), polyhedron.vertices_end(), Vertex_normal());
-    std::cout<< "normals computed" << std::endl;
 }
 
 Polyhedron model::poly()

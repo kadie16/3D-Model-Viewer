@@ -132,20 +132,9 @@ void GLWidget::resetView()
    }
 }
 
-void GLWidget::drawObject()
+void GLWidget::drawModel(model mod)
 {
-    std::cout<< "in drawObject" << std::endl;
-    glBegin(GL_TRIANGLES);
-    glColor3f(red, green, blue);
-    for (Polyhedron::Facet_const_iterator faceIter = m.poly().facets_begin(); faceIter != m.poly().facets_end(); ++faceIter) {
-        // if (faceIter->is_triangle())
-        std::cout<< "hi" << std::endl;
-            //drawTriangle(faceIter);
-         //else if (faceIter->is_quad())
-         //      drawQuad(faceIter);
-    }
-    glEnd();
-    frameCount++;
+    mod.drawMe();
 }
 
 void GLWidget::drawVolume()

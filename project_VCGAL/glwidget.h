@@ -27,8 +27,8 @@ public:
     bool toggleTranslation();
     void initializeGL();
     void paintGL();
-    void drawObject();
     void drawVolume();
+    void drawModel(model mod);
     void drawTriangle(Point p1, Point p2, Point p3);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
