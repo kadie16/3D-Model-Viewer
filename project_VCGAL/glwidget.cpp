@@ -301,6 +301,11 @@ bool GLWidget::generateVolumeMesh()
     return true;
 }
 
+int GLWidget::getCurrentModel()
+{
+    return currentModelIndex;
+}
+
 void GLWidget::setCurrentModel(int i)
 {
     if (i < models.size())

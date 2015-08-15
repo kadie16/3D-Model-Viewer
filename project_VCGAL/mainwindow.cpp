@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setAutoFillBackground(true);
     ui_fps = findChild<QLabel*>("fps");
+    ui_spin = findChild<QSpinBox*>("spinBox");
     ui_volStat = findChild<QLabel*>("volStatus");
     volStatReset = false;
     ui_volStat->setText(" ");
@@ -26,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::repaint() {
     ui_fps->setNum(ui->widget16->giveFPS());
+    ui_spin->setValue(ui->widget16->getCurrentModel());
 }
 
 void MainWindow::on_toolButton_2_clicked()

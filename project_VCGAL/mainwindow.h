@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QColor>
+#include <QSpinBox>
 #include <QMessageBox>
 #include "objload.h"
 #include <QMainWindow>
@@ -41,6 +42,7 @@ private slots:
 private:
     QTimer timer;
     Ui::MainWindow *ui; 
+    QSpinBox *ui_spin;
     QLabel *ui_fps;
     QLabel *ui_volStat;
     bool volStatReset;
