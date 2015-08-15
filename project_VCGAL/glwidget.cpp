@@ -87,10 +87,11 @@ void GLWidget::paintGL(){
         else if (mouseHeld && zoomOK) {
             this->drag2Zoom(dy);
         }
-        /* Apply Current Settings */
+        /* Apply Current Position */
         mat.rotate(currQ);
-        glMatrixMode(GL_MODELVIEW);
-        glTranslatef(transX, transY, 0);
+        glMatrixMode(GL_MODELVIEW); 
+        m.translate(0,0); // applies current translation
+        //cam.moveToCenter();
         /* Translate so rotation occurs about model center */
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
@@ -296,10 +297,7 @@ void GLWidget::drag2Translate(float dx, float dy)
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    transX = transX + xT;
-    transY = transY + yT;
-    glMatrixMode(GL_MODELVIEW);
-    glTranslatef(transX, transY, 0);
+    m.translate(xT, yT);
 }
 
 void GLWidget::drag2Zoom(float dy)

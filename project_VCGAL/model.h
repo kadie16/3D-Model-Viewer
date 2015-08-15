@@ -17,6 +17,12 @@ public:
     float radius();
     std::vector<float> max();
     std::vector<float> min();
+    float getTransX();
+    float getTransY();
+    void setTransX(float f);
+    void setTransY(float f);
+    void translate(float xT, float yT);
+    void moveToCenter();
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
@@ -29,6 +35,7 @@ private:
     std::vector<float> m_center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
+    std::vector<float> currTrans;
 };
 
 #endif // MODEL_H

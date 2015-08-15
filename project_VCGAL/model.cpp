@@ -19,6 +19,7 @@ model::model(objLoad<HDS> objFile)
     red = 0.75;
     green = 0.75;
     blue = 0.75;
+    currTrans.assign(2,0);
     this->computeNormals();
 }
 
@@ -49,13 +50,43 @@ std::vector<float> model::max()
     return maxCoords;
 }
 
-std::vector<float> model::min()
-{
+std::vector<float> model::min() {
     return minCoords;
 }
 
-void model::drawMe()
+float model::getTransX() {
+    return currTrans.at(0);
+}
+
+float model::getTransY() {
+    return currTrans.at(1);
+}
+
+void model::setTransX(float f) {
+    currTrans[0] = f;
+}
+
+void model::setTransY(float f) {
+    currTrans[1] = f;
+}
+
+void model::translate(float xT, float yT)
 {
+    currTrans[0] = currTrans[0] + xT;
+    currTrans[1] = currTrans[1] + yT;
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(currTrans[0], currTrans[1], 0);
+    this->moveToCenter();
+}
+
+void model::moveToCenter()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
+}
+
+void model::drawMe() {
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
     for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
