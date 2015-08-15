@@ -88,18 +88,27 @@ struct My_items : public CGAL::Polyhedron_items_3 {
 typedef double Real;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef CGAL::Mesh_3::Robust_intersection_traits_3<Kernel> IGT;
-typedef CGAL::Polyhedron_3<IGT, My_items> Polyhedron;
+typedef CGAL::Polyhedron_3<Kernel, My_items> Polyhedron;
 typedef Polyhedron::HalfedgeDS HalfedgeDS;
 typedef CGAL::Point_3<Kernel> Point;
 using namespace std;
 
-//Volume Mesh
+/* Volume Mesh */
 typedef CGAL::Mesh_polyhedron_3<IGT>::type Mesh_Polyhedron;
-typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_Polyhedron> Mesh_Domain;
-typedef CGAL::Mesh_triangulation_3<Mesh_Domain, IGT>::type Tr;
-typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr,Mesh_Domain::Corner_index, Mesh_Domain::Curve_segment_index> C3T3;
+/* With Features */
+typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_Polyhedron> Feature_Mesh_Domain;
+typedef CGAL::Mesh_triangulation_3<Feature_Mesh_Domain, IGT>::type Feature_Tr;
+typedef CGAL::Mesh_complex_3_in_triangulation_3<Feature_Tr,
+                                                Feature_Mesh_Domain::Corner_index,
+                                                Feature_Mesh_Domain::Curve_segment_index> Feature_C3T3;
+/* Without Features */
+typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron, Kernel> Mesh_Domain;
+typedef CGAL::Mesh_triangulation_3<Mesh_Domain>::type Tr;
+typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3T3;
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
+/* Copier */
 typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_Polyhedron::HDS> Poly_copy;
+
 
 #endif // MYITEMS
 
