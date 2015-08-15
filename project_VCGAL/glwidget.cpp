@@ -139,37 +139,7 @@ void GLWidget::drawModel(model mod)
 
 void GLWidget::drawVolume()
 {
-    Tr t;
-    t = c3t3.triangulation();
-    glBegin(GL_TRIANGLES);
-    glColor3f(1,0,0);
-    for (Tr::Finite_cells_iterator fIt = t.finite_cells_begin(); fIt != t.finite_cells_end(); ++fIt) {
-        p1 = fIt->vertex(0)->point();
-        p2 = fIt->vertex(1)->point();
-        p3 = fIt->vertex(2)->point();
-        p4 = fIt->vertex(3)->point();
-        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p2,p3);
-        glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p1,p2,p3);
-        n = CGAL::normal(p1,p3,p4);
-        glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p1,p3,p4);
-        n = CGAL::normal(p1,p4,p2);
-        glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p1,p2,p4);
-        n = CGAL::normal(p2,p4,p3);
-        glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p2,p4,p3);
-
-    }
-    glEnd();
-}
-
-void GLWidget::drawTriangle(Point p1, Point p2, Point p3)
-{
-    glVertex3f(p1.hx(), p1.hy(), p1.hz());
-    glVertex3f(p2.hx(), p2.hy(), p2.hz());
-    glVertex3f(p3.hx(), p3.hy(), p3.hz());
+   m.drawVolume();
 }
 
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
@@ -306,6 +276,7 @@ int GLWidget::giveFPS()
 bool GLWidget::generateVolumeMesh()
 {
     mesh = m.poly();
+    m.generateVolumeMesh();
     using namespace CGAL::parameters;
     Mesh_Domain domain(mesh);
     Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,

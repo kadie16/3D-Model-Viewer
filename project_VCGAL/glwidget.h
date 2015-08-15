@@ -29,7 +29,6 @@ public:
     void paintGL();
     void drawVolume();
     void drawModel(model mod);
-    void drawTriangle(Point p1, Point p2, Point p3);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
     void resetView();

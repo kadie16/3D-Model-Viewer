@@ -14,6 +14,8 @@ public:
     void drawMe();
     void drawTriangle(Polyhedron::Facet_const_handle f);
     bool generateVolumeMesh();
+    void drawVolume();
+    void drawTriangle(Point p1, Point p2, Point p3);
     std::vector<float> center();
     float radius();
     std::vector<float> max();
