@@ -82,7 +82,7 @@ void GLWidget::paintGL(){
         /* TRANSLATION */
         else if (mouseHeld && translateOK && !rotationOK)
         {
-            this->drag2Translate(dx,dy,m);
+            this->drag2Translate(dx,dy,models[currentModelIndex]);
         }
         /* ZOOM */
         else if (mouseHeld && zoomOK) {
@@ -207,7 +207,7 @@ void GLWidget::grabColor(double r, double g, double b)
     red = r/255;
     green = g/255;
     blue = b/255;
-    m.setColor(red, green, blue);
+    models[currentModelIndex].setColor(red, green, blue);
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -255,10 +255,8 @@ QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
     /* Update Rotation Quaternion */
     QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
     QQuaternion currQ = rotations.at(currentModelIndex);
-    std::cout << "before: " << currQ.x() << " , " << currQ.y() << " , " << currQ.z() << std::endl;
     currQ = newQ * currQ;
     rotations[currentModelIndex] = currQ;
-    std::cout << "after: " << rotations[currentModelIndex].x() << " , " << rotations[currentModelIndex].y() << " , " << rotations[currentModelIndex].z() << std::endl;
     return currQ;
 }
 
