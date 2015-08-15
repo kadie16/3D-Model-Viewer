@@ -57,17 +57,20 @@ void GLWidget::paintGL(){
     /* If a File is Loaded*/
     if(objPtr)
    {
+        std::cout<< "in if objPtr" << std::endl;
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
-        QMatrix4x4 m;
+        std::cout<< "dx dy calculated" << std::endl;
+        QMatrix4x4 mat;
+        std::cout<< "mat declared" << std::endl;
         if (needsReset)
-            this->resetView();
+            //this->resetView();
         glMatrixMode(GL_PROJECTION);
-        cam.setZoom(zoomF);
+        //cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        glMultMatrixf(m.constData());
         drawAxes();
+        std::cout<< "axes drawn" << std::endl;
         glPopMatrix();
         glPushMatrix();
         /* CULLING */
@@ -93,18 +96,18 @@ void GLWidget::paintGL(){
             this->drag2Zoom(dy);
         }
         /* Apply Current Settings */
-        m.rotate(currQ);
+        mat.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         glTranslatef(transX, transY, 0);
         /* Translate so rotation occurs about model center */
-        glTranslatef(center.at(0), center.at(1), center.at(2));
-        glMultMatrixf(m.constData());
-        glTranslatef(-center.at(0), -center.at(1), -center.at(2));
+        glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
+        glMultMatrixf(mat.constData());
+        glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
 
         if (volumeOK)
             drawVolume();
         else
-            drawObject();    
+            m.drawMe();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
 
@@ -131,11 +134,12 @@ void GLWidget::resetView()
 
 void GLWidget::drawObject()
 {
+    std::cout<< "in drawObject" << std::endl;
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
     for (Polyhedron::Facet_const_iterator faceIter = m.poly().facets_begin(); faceIter != m.poly().facets_end(); ++faceIter) {
         // if (faceIter->is_triangle())
-        std::cout<< &faceIter << std::endl;
+        std::cout<< "hi" << std::endl;
             drawTriangle(faceIter);
          //else if (faceIter->is_quad())
          //      drawQuad(faceIter);
@@ -181,19 +185,27 @@ void GLWidget::drawTriangle(Point p1, Point p2, Point p3)
 
 void GLWidget::drawTriangle(Polyhedron::Facet_const_handle f)
 {
+    CGAL::Vector_3<Kernel> n1, n2, n3;
+    CGAL::Point_3<Kernel> p1,p2,p3,p4;
+    Polyhedron::Halfedge_const_handle h;
+    std::cout<< "drawing Tri" << std::endl;
     h = f->halfedge();
+    std::cout<< "got halfedge" << std::endl;
     n1 = h->vertex()->normal();
     n2 = h->next()->vertex()->normal();
     n3 = h->prev()->vertex()->normal();
+    std::cout<< "got normal" << std::endl;
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
+    std::cout<< "got the info" << std::endl;
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glNormal3f(n2.hx(), n2.hy(), n2.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
+    std::cout<< "drew Tri" << std::endl;
 }
 
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
@@ -238,12 +250,13 @@ void GLWidget::drawAxes()
 }
 
 void GLWidget::grabObj(objLoad<HDS> objFile){
+    objPtr = &objFile;
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     frameTimer.restart();
     frameCount = 0;
     model m2(objFile);
     m = m2;
-    m.computeNormals();
+
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }

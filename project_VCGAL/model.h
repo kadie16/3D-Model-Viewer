@@ -1,8 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
-#include "objload.h"
 #include <QQuaternion>
-
+#include "myitems.h"
+#include "objload.h"
 typedef Polyhedron::HalfedgeDS HDS;
 class model
 {
@@ -11,6 +11,8 @@ public:
     model(objLoad<HDS> objFile);
     void computeNormals();
     Polyhedron poly();
+    void drawMe();
+    std::vector<float> center();
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
@@ -20,7 +22,7 @@ private:
     Tr t;
     float radius;
     double red,green,blue;
-    std::vector<float> center;
+    std::vector<float> modelCenter;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
 };

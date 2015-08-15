@@ -7,11 +7,13 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QDebug>
-#include "camera.h"
 #include <QQuaternion>
 #include <QObject>
 #include <QLabel>
 #include <QMatrix4x4>
+#include "myitems.h"
+#include "objload.h"
+#include "camera.h"
 
 typedef Polyhedron::HalfedgeDS HDS;
 class GLWidget : public QGLWidget
@@ -28,7 +30,7 @@ public:
     void drawObject();
     void drawVolume();
     void drawTriangle(Point p1, Point p2, Point p3);
-    void drawTriangle(Polyhedron::Facet_const_handle f);
+    static void drawTriangle(Polyhedron::Facet_const_handle f);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
     void resetView();
