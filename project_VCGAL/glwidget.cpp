@@ -305,11 +305,18 @@ int GLWidget::giveFPS()
 
 bool GLWidget::generateVolumeMesh()
 {
+    mesh = m.poly();
     using namespace CGAL::parameters;
     Mesh_Domain domain(mesh);
     Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
                           cell_radius_edge_ratio=2, cell_size=0.1);
-    c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+    try {
+        std::cout << "made domain correctly" << std::endl;
+        c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+
+    } catch (...) {
+        return false;
+    }
     return true;
 }
 

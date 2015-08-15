@@ -116,3 +116,18 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
+
+bool model::generateVolumeMesh()
+{
+    using namespace CGAL::parameters;
+    Mesh_Domain domain(polyhedron);
+    Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
+                          cell_radius_edge_ratio=2, cell_size=0.1);
+    try {
+        c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+    } catch (...) {
+        return false;
+    }
+    return true;
+}
+
