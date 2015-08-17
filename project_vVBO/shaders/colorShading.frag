@@ -3,8 +3,9 @@
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
+attribute fragColor; 
 
 void main() {
-    //Just hardcode the color to red
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    
+    gl_FragColor = fragColor;
 }

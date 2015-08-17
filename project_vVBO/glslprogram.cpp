@@ -18,14 +18,14 @@ void GLSLProgram::compileShaders(const std::string& vertexShaderFilePath, const 
 
 }
 
-void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
-{
+void GLSLProgram::compileShader(const std::string& filePath, GLuint id) {
+    _programID = glCreateProgram();
     std::ifstream vertexFile(filePath.c_str());
     if (vertexFile.fail())
         fatalError("Failed to open " + filePath);
     std::string fileContents = "";
     std::string line;
-    while (std::getline(vertexFile, line)){
+    while (std::getline(vertexFile, line)) {
         fileContents += line + "\n";
     }
     vertexFile.close();
@@ -47,7 +47,6 @@ void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
 }
 
 void GLSLProgram::linkShaders() {
-    _programID = glCreateProgram();
     glAttachShader(_programID, _vertexShaderID);
     glAttachShader(_programID, _fragmentShaderID);
     glLinkProgram(_programID);
