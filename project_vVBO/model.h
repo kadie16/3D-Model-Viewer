@@ -8,6 +8,7 @@ class model
 {
 public:
     model();
+    ~model();
     model(objLoad<HDS> objFile);
     void computeNormals();
     Polyhedron poly();
@@ -26,7 +27,11 @@ public:
     void setTransY(float f);
     void translate(float xT, float yT);
     void moveToCenter();
+    void genBuffers();
+    static int CheckGLErrors();
 private:
+    bool hasVolume;
+    GLuint _vboID;
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
     Mesh_Polyhedron mesh;
@@ -39,6 +44,7 @@ private:
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     std::vector<float> currTrans;
+    int numFaces;
 };
 
 #endif // MODEL_H

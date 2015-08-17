@@ -104,7 +104,7 @@ void GLWidget::paintGL(){
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
-        drawAxes();
+        //drawAxes();
         glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;

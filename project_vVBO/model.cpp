@@ -6,11 +6,20 @@ model::model()
 
 }
 
+model::~model()
+{
+    if (_vboID != 0)
+        glDeleteBuffers(1, &_vboID);
+}
+
 model::model(objLoad<HDS> objFile)
 {
+    std::cout<< "Errors at construction: " << CheckGLErrors() <<std::endl;
+    hasVolume = false;
     objPtr = &objFile;
     polyhedron.delegate(objFile);
     Poly_copy polyhedron_copy_modifier(polyhedron);
+    numFaces = polyhedron.size_of_facets();
     mesh.delegate(polyhedron_copy_modifier);
     m_center = objPtr->findCenter();
     m_radius = objPtr->findRadius();
@@ -20,7 +29,9 @@ model::model(objLoad<HDS> objFile)
     green = 0.75;
     blue = 0.75;
     currTrans.assign(2,0);
+    _vboID = 0;
     this->computeNormals();
+    this->genBuffers();
 }
 
 void model::computeNormals()
@@ -85,7 +96,58 @@ void model::moveToCenter()
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
 }
 
+void model::genBuffers()
+{
+    if (_vboID == 0){
+        std::cout<< "Errors at begining:  " << CheckGLErrors() <<std::endl;
+        glGenBuffers(1, &_vboID);
+        std::cout<< "vbo: " << _vboID << std::endl;
+        std::cout<< "Errors after gen: " << CheckGLErrors() <<std::endl;
+        std::cout<< numFaces << std::endl;
+        float vertexData[numFaces*3*3]; // numFaces * 3 vertices per face * 3 dimensions per vertex
+        /* fill */
+        int i = 0;
+        Polyhedron::Halfedge_const_handle h;
+        for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
+            CGAL::Point_3<Kernel> p1,p2,p3;
+            h = faceIter->halfedge();
+            p1 = h->vertex()->point();
+            p2 = h->next()->vertex()->point();
+            p3 = h->prev()->vertex()->point();
+            vertexData[i] = p1.hx(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p1.hy(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p1.hz(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p2.hx(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p2.hy(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p2.hz(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p3.hx(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p3.hy(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p3.hz(); i++; std::cout<< i << std::endl;
+        }
+        std::cout << "done filling" << std::endl;
+        glBindBuffer(GL_ARRAY_BUFFER, _vboID);
+        std::cout<< "Errors after bind: " << CheckGLErrors() <<std::endl;
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+        std::cout<< "Errors after data: " << CheckGLErrors() <<std::endl;
+        glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind Buffer
+        std::cout<< "Errors after unbind: " << CheckGLErrors() <<std::endl;
+    }
+}
+
 void model::drawMe() {
+
+    std::cout<< "vbo: " << _vboID << std::endl;
+    glBindBuffer(GL_ARRAY_BUFFER, _vboID);
+    std::cout<< "Errors after drawbind: " << CheckGLErrors() <<std::endl;
+    glEnableVertexAttribArray(0);
+    std::cout<< "Errors after enable attrib: " << CheckGLErrors() <<std::endl;
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    std::cout<< "Errors after attrib pointer: " << CheckGLErrors() <<std::endl;
+    glDrawArrays(GL_TRIANGLES, 0, numFaces*3);
+    std::cout<< "Errors after draw: " << CheckGLErrors() <<std::endl;
+    glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    /*
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
     for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
@@ -94,7 +156,7 @@ void model::drawMe() {
          //else if (faceIter->is_quad())
          //      drawQuad(faceIter);
     }
-    glEnd();
+    glEnd(); */
 }
 
 void model::drawTriangle(Polyhedron::Facet_const_handle f)
@@ -125,6 +187,7 @@ bool model::generateVolumeMesh()
                           cell_radius_edge_ratio=2, cell_size=0.1);
     try {
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+        hasVolume = true;
     } catch (...) {
         return false;
     }
@@ -165,4 +228,17 @@ void model::drawTriangle(Point p1, Point p2, Point p3)
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
+}
+
+int model::CheckGLErrors()
+{
+  int errCount = 0;
+  for(GLenum currError = glGetError(); currError != GL_NO_ERROR; currError = glGetError())
+  {
+    //Do something with `currError`.
+    std::cout << currError << std::endl ;
+    ++errCount;
+  }
+
+  return errCount;
 }
