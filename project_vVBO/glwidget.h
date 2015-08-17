@@ -14,6 +14,7 @@
 #include "myitems.h"
 #include "objload.h"
 #include "camera.h"
+#include "glslprogram.h"
 
 typedef Polyhedron::HalfedgeDS HDS;
 class GLWidget : public QGLWidget
@@ -41,8 +42,10 @@ public:
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();
+    void initShaders();
 
 private:
+    GLSLProgram _shaderProgram;
     QTime frameTimer;
     int frameCount;
     QTimer timer;

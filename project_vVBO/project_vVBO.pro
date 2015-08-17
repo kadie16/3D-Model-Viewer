@@ -18,6 +18,8 @@ SOURCES += main.cpp\
     camera.cpp \
     objload.cpp \
     model.cpp \
+    glslprogram.cpp \
+    errors.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
@@ -25,6 +27,8 @@ HEADERS  += mainwindow.h \
     objload.h \
     myitems.h \
     model.h \
+    glslprogram.h \
+    errors.h
 
 FORMS    += mainwindow.ui
 

@@ -45,6 +45,8 @@ void GLWidget::initializeGL(){
     axisOfRotation.setX(0);
     axisOfRotation.setY(0);
     axisOfRotation.setZ(0);
+    initShaders();
+    _shaderProgram.use();
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 }
@@ -52,6 +54,7 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    //_shaderProgram.use();
     int xNow = x;
     int yNow = y;
     /* If a File is Loaded*/
@@ -104,12 +107,13 @@ void GLWidget::paintGL(){
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
-        //drawAxes();
+        drawAxes();
         glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
    }
     frameCount++;
+    //shaderProgram.unuse();
 }
 
 void GLWidget::resetView()
@@ -189,7 +193,8 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     model m2(objFile);
-    cam.findModel(&m2);
+    m = m2;
+    cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }
@@ -288,6 +293,14 @@ bool GLWidget::generateVolumeMesh()
         return false;
     }
     return true;
+}
+
+void GLWidget::initShaders()
+{
+    _shaderProgram.compileShaders("/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.vert",
+                                  "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.frag");
+    _shaderProgram.addAttribute("vertexPosition");
+    _shaderProgram.linkShaders();
 }
 
 

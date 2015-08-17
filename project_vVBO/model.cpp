@@ -9,7 +9,7 @@ model::model()
 model::~model()
 {
     /* am making a copy of model, need to find where and stop */
-    if (_vboID != 0)
+    //if (_vboID != 0)
         //glDeleteBuffers(1, &_vboID);
 }
 
@@ -115,15 +115,15 @@ void model::genBuffers()
             p1 = h->vertex()->point();
             p2 = h->next()->vertex()->point();
             p3 = h->prev()->vertex()->point();
-            vertexData[i] = p1.hx(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p1.hy(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p1.hz(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p2.hx(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p2.hy(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p2.hz(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p3.hx(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p3.hy(); std::cout<< vertexData[i] << std::endl; i++;
-            vertexData[i] = p3.hz(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i++] = p1.hx();
+            vertexData[i++] = p1.hy();
+            vertexData[i++] = p1.hz();
+            vertexData[i++] = p2.hx();
+            vertexData[i++] = p2.hy();
+            vertexData[i++] = p2.hz();
+            vertexData[i++] = p3.hx();
+            vertexData[i++] = p3.hy();
+            vertexData[i++] = p3.hz();
         }
         std::cout << "done filling" << std::endl;
         glBindBuffer(GL_ARRAY_BUFFER, _vboID);
