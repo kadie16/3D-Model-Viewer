@@ -8,13 +8,13 @@ model::model()
 
 model::~model()
 {
+    /* am making a copy of model, need to find where and stop */
     if (_vboID != 0)
-        glDeleteBuffers(1, &_vboID);
+        //glDeleteBuffers(1, &_vboID);
 }
 
 model::model(objLoad<HDS> objFile)
 {
-    std::cout<< "Errors at construction: " << CheckGLErrors() <<std::endl;
     hasVolume = false;
     objPtr = &objFile;
     polyhedron.delegate(objFile);
@@ -108,21 +108,22 @@ void model::genBuffers()
         /* fill */
         int i = 0;
         Polyhedron::Halfedge_const_handle h;
+        CGAL::Point_3<Kernel> p1,p2,p3;
         for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
-            CGAL::Point_3<Kernel> p1,p2,p3;
+
             h = faceIter->halfedge();
             p1 = h->vertex()->point();
             p2 = h->next()->vertex()->point();
             p3 = h->prev()->vertex()->point();
-            vertexData[i] = p1.hx(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p1.hy(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p1.hz(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p2.hx(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p2.hy(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p2.hz(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p3.hx(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p3.hy(); i++; std::cout<< i << std::endl;
-            vertexData[i] = p3.hz(); i++; std::cout<< i << std::endl;
+            vertexData[i] = p1.hx(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p1.hy(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p1.hz(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p2.hx(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p2.hy(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p2.hz(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p3.hx(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p3.hy(); std::cout<< vertexData[i] << std::endl; i++;
+            vertexData[i] = p3.hz(); std::cout<< vertexData[i] << std::endl; i++;
         }
         std::cout << "done filling" << std::endl;
         glBindBuffer(GL_ARRAY_BUFFER, _vboID);

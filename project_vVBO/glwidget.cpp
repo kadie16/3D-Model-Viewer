@@ -189,8 +189,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     model m2(objFile);
-    m = m2;
-    cam.findModel(&m);
+    cam.findModel(&m2);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 }
