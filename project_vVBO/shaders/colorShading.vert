@@ -4,10 +4,8 @@
 //input data from the VBO. Each vertex is 3 floats
 attribute vec3 vertexPosition;
 attribute vec4 vertexColor; 
-attribute vec3 vertexNormal;
-varying vec3 position; 
+//attribute vec3 vertexNormal;
 varying vec4 fragColor;
-varying vec3 normal;
 
 void main() {
     //Set the x,y position on the screen
@@ -16,9 +14,7 @@ void main() {
     //gl_Normal.xyz = vertexNormal;
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
-    //Transforms by ModelView Matrix 
+    // Transforms by ModelView Matrix 
     gl_Position = gl_ModelViewProjectionMatrix * gl_Position;
     fragColor = vertexColor; 
-    position = vec3(gl_ModelViewMatrix * gl_Vertex); 
-    normal = gl_NormalMatrix * gl_Normal;
 }

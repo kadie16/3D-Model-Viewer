@@ -15,7 +15,6 @@ public:
     void addAttribute(const std::string& attribName);
     void use();
     void unuse();
-    GLuint getUniformLocation(const std::string& uniformName);
 private:
     int _numAttributes;
     void compileShader(const std::string &filePath, GLuint id);

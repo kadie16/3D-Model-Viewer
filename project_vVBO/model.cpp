@@ -11,10 +11,9 @@ model::~model()
     /* am making a copy of model, need to find where and stop */
     //if (_vboID != 0)
         //glDeleteBuffers(1, &_vboID);
-    std::cout << "DELETED!!!!!!!!" << std::endl;
 }
 
-model::model(objLoad<HDS> objFile): red(192), green(192), blue(192), _vboID(0)
+model::model(objLoad<HDS> objFile)
 {
     hasVolume = false;
     objPtr = &objFile;
@@ -26,7 +25,11 @@ model::model(objLoad<HDS> objFile): red(192), green(192), blue(192), _vboID(0)
     m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
+    red = 192;
+    green = 192;
+    blue = 192;
     currTrans.assign(2,0);
+    _vboID = 0;
     this->computeNormals();
     this->genBuffers();
 }
@@ -112,11 +115,11 @@ void model::genBuffers()
 
             h = faceIter->halfedge();
             p[0] = h->vertex()->point();
-            //n[0] = h->vertex()->normal();
+            n[0] = h->vertex()->normal();
             p[1] = h->next()->vertex()->point();
-            //n[1] = h->next()->vertex()->normal();
+            n[1] = h->next()->vertex()->normal();
             p[2] = h->prev()->vertex()->point();
-            //n[2] = h->prev()->vertex()->normal();
+            n[2] = h->prev()->vertex()->normal();
             for (int k = 0; k < 3; k++){
                 vertexData[i].position.x = p[k].hx();
                 vertexData[i].position.y = p[k].hy();
@@ -161,6 +164,16 @@ void model::drawMe() {
     glDrawArrays(GL_TRIANGLES, 0, numFaces*3);
     glDisableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    /*
+    glBegin(GL_TRIANGLES);
+    glColor3f(red, green, blue);
+    for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
+        // if (faceIter->is_triangle())
+        drawTriangle(faceIter);
+         //else if (faceIter->is_quad())
+         //      drawQuad(faceIter);
+    }
+    glEnd(); */
 }
 
 void model::drawTriangle(Polyhedron::Facet_const_handle f)
