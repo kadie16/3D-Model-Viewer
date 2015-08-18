@@ -47,6 +47,17 @@ void GLWidget::initializeGL(){
     axisOfRotation.setZ(0);
     initShaders();
     _shaderProgram.use();
+    glUniform3f(_shaderProgram.getUniformLocation("lightPos"),0.0,0.0,0.0);
+    glUniform3f(_shaderProgram.getUniformLocation("mAmbient"),0.2,0.2,0.2);
+    glUniform3f(_shaderProgram.getUniformLocation("mDiffuse"),0.7,0.7,0.7);
+    glUniform3f(_shaderProgram.getUniformLocation("mSpecular"),1.0,1.0,1.0);
+
+    glUniform3f(_shaderProgram.getUniformLocation("lAmbient"),0.2,0.2,0.2);
+    glUniform3f(_shaderProgram.getUniformLocation("lDiffuse"),0.7,0.7,0.7);
+    glUniform3f(_shaderProgram.getUniformLocation("lSpecular"),1.0,1.0,1.0);
+
+    glUniform1f(_shaderProgram.getUniformLocation("shininess"), 32.0);
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 }
@@ -192,8 +203,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     frameTimer.restart();
     frameCount = 0;
-    model m2(objFile);
-    m = m2;
+    m = model(objFile);
     cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
@@ -298,11 +308,11 @@ bool GLWidget::generateVolumeMesh()
 
 void GLWidget::initShaders()
 {
-    _shaderProgram.compileShaders("/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.vert",
-                                  "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.frag");
+    _shaderProgram.compileShaders("/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading2.vert",
+                                  "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading2.frag");
     _shaderProgram.addAttribute("vertexPosition");
     _shaderProgram.addAttribute("vertexColor");
-    _shaderProgram.addAttribute("vertexNormal");
+    //_shaderProgram.addAttribute("vertexNormal");
     _shaderProgram.linkShaders();
 }
 
