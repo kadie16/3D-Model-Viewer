@@ -25,9 +25,9 @@ model::model(objLoad<HDS> objFile)
     m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
-    red = 255;
-    green = 0;
-    blue = 255;
+    red = 192;
+    green = 192;
+    blue = 192;
     currTrans.assign(2,0);
     _vboID = 0;
     this->computeNormals();
@@ -98,7 +98,7 @@ void model::moveToCenter()
 
 void model::genBuffers()
 {
-    if (_vboID == 0){
+   // if (_vboID == 0){
         std::cout<< "Errors at begining:  " << CheckGLErrors() <<std::endl;
         glGenBuffers(1, &_vboID);
         std::cout<< "vbo: " << _vboID << std::endl;
@@ -127,11 +127,21 @@ void model::genBuffers()
                 i++;
             }
         }
+        std::cout << red  << " " << green << " " <<
+                       blue  << std::endl;
         i = 0;
         glBindBuffer(GL_ARRAY_BUFFER, _vboID);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind Buffer
-    }
+    //}
+}
+
+void model::setColor(GLubyte r, GLubyte g, GLubyte b)
+{
+    red = r;
+    green = g;
+    blue = b;
+    this->genBuffers();
 }
 
 void model::drawMe() {

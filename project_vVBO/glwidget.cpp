@@ -199,11 +199,12 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     needsReset = true;
 }
 
-void GLWidget::grabColor(double r, double g, double b)
+void GLWidget::grabColor(GLubyte r, GLubyte g, GLubyte b)
 {
-    red = r/255;
-    green = g/255;
-    blue = b/255;
+    red = r;
+    green = g;
+    blue = b;
+    m.setColor(r, g, b);
 }
 
 void GLWidget::resizeGL(int w, int h){

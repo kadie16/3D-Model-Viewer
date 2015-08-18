@@ -110,5 +110,6 @@ typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
 /* Copier */
 typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_Polyhedron::HDS> Poly_copy;
 
+typedef unsigned char GLubyte;
 
 #endif // MYITEMS

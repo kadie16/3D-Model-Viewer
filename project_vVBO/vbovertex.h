@@ -1,4 +1,6 @@
 #pragma once
+//#include <GL/glew.h>
+
 struct vboVertex {
     struct Position{
         float x;
@@ -7,9 +9,9 @@ struct vboVertex {
     } position;
 
     struct Color{
-        double r;
-        double g;
-        double b;
-        double a;
+        GLubyte r;
+        GLubyte g;
+        GLubyte b;
+        GLubyte a;
     } color;
 };

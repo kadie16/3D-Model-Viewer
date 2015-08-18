@@ -34,7 +34,7 @@ public:
     void drawAxes();
     void resetView();
     void grabObj(objLoad<HDS> objFile);
-    void grabColor(double r, double g, double b);
+    void grabColor(GLubyte r, GLubyte g, GLubyte b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
     QQuaternion drag2Rotate(float dx, float dy);
