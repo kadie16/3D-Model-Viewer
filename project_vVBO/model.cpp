@@ -124,13 +124,6 @@ void model::genBuffers()
                 vertexData[i].position.x = p[k].hx();
                 vertexData[i].position.y = p[k].hy();
                 vertexData[i].position.z = p[k].hz();
-                vertexData[i].normal.x = n[k].hx();
-                vertexData[i].normal.y = n[k].hy();
-                vertexData[i].normal.z = n[k].hz();
-                vertexData[i].color.r = red;
-                vertexData[i].color.g = green;
-                vertexData[i].color.b = blue;
-                vertexData[i].color.a = 1;
                 i++;
             }
         }
@@ -148,6 +141,7 @@ void model::setColor(GLubyte r, GLubyte g, GLubyte b)
     red = r;
     green = g;
     blue = b;
+
     this->genBuffers();
 }
 
@@ -159,8 +153,6 @@ void model::drawMe() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vboVertex), (void*)offsetof(vboVertex, position));
     /* This is the color attribute pointer */
     glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(vboVertex), (void*)offsetof(vboVertex, color));
-    /* This is the normal attribute pointer */
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vboVertex), (void*)offsetof(vboVertex, normal));
     glDrawArrays(GL_TRIANGLES, 0, numFaces*3);
     glDisableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

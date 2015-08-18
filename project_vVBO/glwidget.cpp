@@ -54,6 +54,7 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glUniform3f(_shaderProgram.getUniformLocation("color"),red,green,blue);
     //_shaderProgram.use();
     int xNow = x;
     int yNow = y;
@@ -302,7 +303,6 @@ void GLWidget::initShaders()
                                   "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.frag");
     _shaderProgram.addAttribute("vertexPosition");
     _shaderProgram.addAttribute("vertexColor");
-    _shaderProgram.addAttribute("vertexNormal");
     _shaderProgram.linkShaders();
 }
 

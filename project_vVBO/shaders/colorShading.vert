@@ -3,7 +3,7 @@
 
 //input data from the VBO. Each vertex is 3 floats
 attribute vec3 vertexPosition;
-attribute vec4 vertexColor; 
+uniform vec3 vertexColor; 
 //attribute vec3 vertexNormal;
 varying vec4 fragColor;
 
@@ -16,5 +16,5 @@ void main() {
     gl_Position.w = 1.0;
     // Transforms by ModelView Matrix 
     gl_Position = gl_ModelViewProjectionMatrix * gl_Position;
-    fragColor = vertexColor; 
+    fragColor = vec4(vertexColor, 1.0f); 
 }

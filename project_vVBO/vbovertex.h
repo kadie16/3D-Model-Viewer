@@ -8,12 +8,6 @@ struct vboVertex {
         float z;
     } position;
 
-    struct Normal{
-        float x;
-        float y;
-        float z;
-    } normal;
-
     struct Color{
         GLubyte r;
         GLubyte g;
