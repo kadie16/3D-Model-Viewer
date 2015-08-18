@@ -302,6 +302,7 @@ void GLWidget::initShaders()
                                   "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.frag");
     _shaderProgram.addAttribute("vertexPosition");
     _shaderProgram.addAttribute("vertexColor");
+    _shaderProgram.addAttribute("vertexNormal");
     _shaderProgram.linkShaders();
 }
 

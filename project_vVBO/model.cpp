@@ -109,17 +109,24 @@ void model::genBuffers()
         int i = 0;
         Polyhedron::Halfedge_const_handle h;
         CGAL::Point_3<Kernel> p[3];
+        CGAL::Vector_3<Kernel> n[3];
 
         for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
 
             h = faceIter->halfedge();
             p[0] = h->vertex()->point();
+            n[0] = h->vertex()->normal();
             p[1] = h->next()->vertex()->point();
+            n[1] = h->next()->vertex()->normal();
             p[2] = h->prev()->vertex()->point();
+            n[2] = h->prev()->vertex()->normal();
             for (int k = 0; k < 3; k++){
                 vertexData[i].position.x = p[k].hx();
                 vertexData[i].position.y = p[k].hy();
                 vertexData[i].position.z = p[k].hz();
+                vertexData[i].normal.x = n[k].hx();
+                vertexData[i].normal.y = n[k].hy();
+                vertexData[i].normal.z = n[k].hz();
                 vertexData[i].color.r = red;
                 vertexData[i].color.g = green;
                 vertexData[i].color.b = blue;
@@ -152,6 +159,8 @@ void model::drawMe() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vboVertex), (void*)offsetof(vboVertex, position));
     /* This is the color attribute pointer */
     glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(vboVertex), (void*)offsetof(vboVertex, color));
+    /* This is the normal attribute pointer */
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vboVertex), (void*)offsetof(vboVertex, normal));
     glDrawArrays(GL_TRIANGLES, 0, numFaces*3);
     glDisableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
