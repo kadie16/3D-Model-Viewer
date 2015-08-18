@@ -12,4 +12,5 @@ void main() {
     
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
+    fragColor = vertexColor; 
 }

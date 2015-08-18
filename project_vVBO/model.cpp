@@ -1,6 +1,6 @@
 #include "glwidget.h"
 #include "model.h"
-
+#include "vbovertex.h"
 model::model()
 {
 
@@ -25,9 +25,9 @@ model::model(objLoad<HDS> objFile)
     m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
-    red = 0.75;
-    green = 0.75;
-    blue = 0.75;
+    red = 255;
+    green = 0;
+    blue = 255;
     currTrans.assign(2,0);
     _vboID = 0;
     this->computeNormals();
@@ -104,48 +104,45 @@ void model::genBuffers()
         std::cout<< "vbo: " << _vboID << std::endl;
         std::cout<< "Errors after gen: " << CheckGLErrors() <<std::endl;
         std::cout<< numFaces << std::endl;
-        float vertexData[numFaces*3*3]; // numFaces * 3 vertices per face * 3 dimensions per vertex
+        vboVertex vertexData[numFaces*3]; // numFaces * 3 vertices per face * 3 dimensions per vertex
         /* fill */
         int i = 0;
         Polyhedron::Halfedge_const_handle h;
-        CGAL::Point_3<Kernel> p1,p2,p3;
+        CGAL::Point_3<Kernel> p[3];
+
         for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
 
             h = faceIter->halfedge();
-            p1 = h->vertex()->point();
-            p2 = h->next()->vertex()->point();
-            p3 = h->prev()->vertex()->point();
-            vertexData[i++] = p1.hx();
-            vertexData[i++] = p1.hy();
-            vertexData[i++] = p1.hz();
-            vertexData[i++] = p2.hx();
-            vertexData[i++] = p2.hy();
-            vertexData[i++] = p2.hz();
-            vertexData[i++] = p3.hx();
-            vertexData[i++] = p3.hy();
-            vertexData[i++] = p3.hz();
+            p[0] = h->vertex()->point();
+            p[1] = h->next()->vertex()->point();
+            p[2] = h->prev()->vertex()->point();
+            for (int k = 0; k < 3; k++){
+                vertexData[i].position.x = p[k].hx();
+                vertexData[i].position.y = p[k].hy();
+                vertexData[i].position.z = p[k].hz();
+                vertexData[i].color.r = red;
+                vertexData[i].color.g = green;
+                vertexData[i].color.b = blue;
+                vertexData[i].color.a = 1;
+                i++;
+            }
         }
-        std::cout << "done filling" << std::endl;
+        i = 0;
         glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-        std::cout<< "Errors after bind: " << CheckGLErrors() <<std::endl;
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-        std::cout<< "Errors after data: " << CheckGLErrors() <<std::endl;
         glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind Buffer
-        std::cout<< "Errors after unbind: " << CheckGLErrors() <<std::endl;
     }
 }
 
 void model::drawMe() {
 
-    std::cout<< "vbo: " << _vboID << std::endl;
     glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-    std::cout<< "Errors after drawbind: " << CheckGLErrors() <<std::endl;
     glEnableVertexAttribArray(0);
-    std::cout<< "Errors after enable attrib: " << CheckGLErrors() <<std::endl;
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    std::cout<< "Errors after attrib pointer: " << CheckGLErrors() <<std::endl;
+    /* This is the position attribute pointer */
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vboVertex), (void*)offsetof(vboVertex, position));
+    /* This is the color attribute pointer */
+    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(vboVertex), (void*)offsetof(vboVertex, color));
     glDrawArrays(GL_TRIANGLES, 0, numFaces*3);
-    std::cout<< "Errors after draw: " << CheckGLErrors() <<std::endl;
     glDisableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     /*
@@ -231,15 +228,4 @@ void model::drawTriangle(Point p1, Point p2, Point p3)
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
 
-int model::CheckGLErrors()
-{
-  int errCount = 0;
-  for(GLenum currError = glGetError(); currError != GL_NO_ERROR; currError = glGetError())
-  {
-    //Do something with `currError`.
-    std::cout << currError << std::endl ;
-    ++errCount;
-  }
 
-  return errCount;
-}

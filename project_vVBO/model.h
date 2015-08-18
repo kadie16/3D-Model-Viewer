@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include <QQuaternion>
+#include <cstddef>
 #include "myitems.h"
 #include "objload.h"
 typedef Polyhedron::HalfedgeDS HDS;
@@ -28,7 +29,7 @@ public:
     void translate(float xT, float yT);
     void moveToCenter();
     void genBuffers();
-    static int CheckGLErrors();
+
 private:
     bool hasVolume;
     GLuint _vboID;

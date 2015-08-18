@@ -300,6 +300,7 @@ void GLWidget::initShaders()
     _shaderProgram.compileShaders("/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.vert",
                                   "/Users/Kadie/Documents/kadiesworkspace/A-STAR-IHPC-Project/project_vVBO/shaders/colorShading.frag");
     _shaderProgram.addAttribute("vertexPosition");
+    _shaderProgram.addAttribute("vertexColor");
     _shaderProgram.linkShaders();
 }
 

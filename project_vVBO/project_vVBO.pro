@@ -28,7 +28,8 @@ HEADERS  += mainwindow.h \
     myitems.h \
     model.h \
     glslprogram.h \
-    errors.h
+    errors.h \
+    vbovertex.h
 
 FORMS    += mainwindow.ui
 
