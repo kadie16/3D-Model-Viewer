@@ -34,7 +34,7 @@ public:
     void drawAxes();
     void resetView();
     void grabObj(objLoad<HDS> objFile);
-    void grabColor(GLubyte r, GLubyte g, GLubyte b);
+    void grabColor(float r, float g, float b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
     QQuaternion drag2Rotate(float dx, float dy);
@@ -73,7 +73,7 @@ private:
     float zoomF;
     double scale;
     /* Color Pick */
-    double red,green,blue;
+    float red,green,blue;
     bool needsReset;
     QVector3D axisOfRotation;
     float transX, transY;

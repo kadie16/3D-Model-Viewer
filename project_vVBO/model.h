@@ -29,7 +29,7 @@ public:
     void translate(float xT, float yT);
     void moveToCenter();
     void genBuffers();
-    void setColor (GLubyte r, GLubyte g, GLubyte b);
+    void setColor (float r, float g, float b);
 
 private:
     bool hasVolume;
@@ -41,7 +41,7 @@ private:
     C3T3 c3t3;
     Tr t;
     float m_radius;
-    GLubyte red,green,blue;
+    float red,green,blue;
     std::vector<float> m_center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;

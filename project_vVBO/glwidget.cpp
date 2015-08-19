@@ -29,9 +29,9 @@ void GLWidget::initializeGL(){
     transX = 0;
     transY = 0;
     radius = 0;
-    red = 0.75;
-    green = 0.75;
-    blue = 0.75;
+    red = 166;
+    green = 166;
+    blue = 166;
     mag = 0;
     mouseHeld = false;
     rotationOK = false;
@@ -54,7 +54,7 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glUniform3f(_shaderProgram.getUniformLocation("color"),red,green,blue);
+    glUniform3f(_shaderProgram.getUniformLocation("vertexColor"),red/255,green/255,blue/255);
     //_shaderProgram.use();
     int xNow = x;
     int yNow = y;
@@ -200,7 +200,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     needsReset = true;
 }
 
-void GLWidget::grabColor(GLubyte r, GLubyte g, GLubyte b)
+void GLWidget::grabColor(float r, float g, float b)
 {
     red = r;
     green = g;

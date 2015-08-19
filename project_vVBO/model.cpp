@@ -136,13 +136,13 @@ void model::genBuffers()
     //}
 }
 
-void model::setColor(GLubyte r, GLubyte g, GLubyte b)
+void model::setColor(float r, float g, float b)
 {
-    red = r;
-    green = g;
-    blue = b;
+    red = r/255;
+    green = g/255;
+    blue = b/255;
 
-    this->genBuffers();
+   // this->genBuffers();
 }
 
 void model::drawMe() {
