@@ -92,15 +92,10 @@ void GLWidget::paintGL(){
             this->drag2Zoom(dy);
         }
         /* Apply Current Position */
-        mat.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
         m.translate(0,0); // applies current translation
         //cam.moveToCenter();
-        /* Translate so rotation occurs about model center */
-        glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
-        glMultMatrixf(mat.constData());
-        glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-
+        rotateAboutModelCenter(m, currQ);
         if (volumeOK)
             drawVolume();
         else
@@ -108,6 +103,7 @@ void GLWidget::paintGL(){
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
+        rotateAboutModelCenter(m, currQ);
         drawAxes();
         glPopMatrix();
         prevPos[0] = xNow;
@@ -185,7 +181,16 @@ void GLWidget::drawAxes()
     glVertex3f(0,0,0);
     glVertex3f(0,0,2);
     glEnd();
-   // glEnable(GL_LIGHTING);
+    // glEnable(GL_LIGHTING);
+}
+
+void GLWidget::rotateAboutModelCenter(model mod, QQuaternion q)
+{
+    QMatrix4x4 mat;
+    mat.rotate(q);
+    glTranslatef(mod.center().at(0), mod.center().at(1), mod.center().at(2));
+    glMultMatrixf(mat.constData());
+    glTranslatef(-mod.center().at(0), -mod.center().at(1), -mod.center().at(2));
 }
 
 void GLWidget::grabObj(objLoad<HDS> objFile){

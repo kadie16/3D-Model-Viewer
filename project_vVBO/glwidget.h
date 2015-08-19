@@ -32,6 +32,7 @@ public:
     void drawModel(model mod);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
+    void rotateAboutModelCenter(model mod, QQuaternion q);
     void resetView();
     void grabObj(objLoad<HDS> objFile);
     void grabColor(float r, float g, float b);
