@@ -127,6 +127,7 @@ typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
 typedef CGAL::AABB_traits<Kernel, Primitive> Traits;
 typedef Kernel::Segment_3 Segment;
 typedef Kernel::Plane_3 Plane;
+typedef Kernel::Vector_3 Vector;
 typedef CGAL::AABB_tree<Traits> Tree;
 typedef boost::optional< Tree::Intersection_and_primitive_id<Segment>::Type > Segment_intersection;
 typedef boost::optional< Tree::Intersection_and_primitive_id<Plane>::Type > Plane_intersection;

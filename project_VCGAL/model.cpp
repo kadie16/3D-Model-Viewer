@@ -102,6 +102,34 @@ void model::buildTree()
     // computes #intersections with segment query
     std::cout << tree.number_of_intersected_primitives(segment_query)
         << " intersection(s)" << std::endl;
+    // computes first encountered intersection with segment query
+    // (generally a point)
+    Segment_intersection intersection =
+        tree.any_intersection(segment_query);
+    if(intersection)
+    {
+        // gets intersection object
+      if(boost::get<Point>(&(intersection->first)))
+        std::cout << "intersection object is a point" << std::endl;
+    }
+    // computes all intersections with segment query (as pairs object - primitive_id)
+    std::list<Segment_intersection> intersections;
+    tree.all_intersections(segment_query, std::back_inserter(intersections));
+    // computes all intersected primitives with segment query as primitive ids
+    std::list<Primitive_id> primitives;
+    tree.all_intersected_primitives(segment_query, std::back_inserter(primitives));
+    // constructs plane query
+    Vector vec(0.0,0.0,1.0);
+    Plane plane_query(a,vec);
+    // computes first encountered intersection with plane query
+    // (generally a segment)
+    Plane_intersection plane_intersection = tree.any_intersection(plane_query);
+    if(plane_intersection)
+    {
+
+      if(boost::get<Segment>(&(plane_intersection->first)))
+            std::cout << "intersection object is a segment" << std::endl;
+    }
 }
 
 void model::drawMe() {
