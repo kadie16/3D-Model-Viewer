@@ -4,20 +4,16 @@
 //for each pixel.
 varying vec3 position; 
 varying vec4 fragColor;
-
+float shininess;
 varying vec3 normal;
 varying vec3 vertex_to_light_vector;
  
 void main()
 {
- 
-    // Scaling The Input Vector To Length 1
-    vec3 normalized_normal = normalize(normal);
-    vec3 normalized_vertex_to_light_vector = normalize(vertex_to_light_vector);
- 
-    // Calculating The Diffuse Term And Clamping It To [0;1]
-    float DiffuseTerm = clamp(dot(normal, vertex_to_light_vector), 0.0, 1.0);
- 
+	shininess = 2.0;
+	const vec4 AmbientColor = vec4(0.1, 0.1, 0.1, 1.0);
+    // Calculating The Diffuse Term 
+ 	float DiffuseTerm = pow(max(0.0, dot(normal, vertex_to_light_vector)),shininess);
     // Calculating The Final Color
-    gl_FragColor = fragColor * DiffuseTerm;
+    gl_FragColor = (fragColor + AmbientColor) * DiffuseTerm;
 }

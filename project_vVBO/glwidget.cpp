@@ -16,7 +16,7 @@ void GLWidget::initializeGL(){
     glClearDepth( 1.0f );
     glDepthFunc( GL_LEQUAL );
     /* Background Setting */
-    glClearColor( 1, 1, 1, 1);
+    glClearColor( 0, 0, 0, 1);
     /* Light Settings */
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
