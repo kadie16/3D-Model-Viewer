@@ -5,8 +5,7 @@ model::model()
 
 }
 
-model::model(objLoad<HDS> objFile)
-{
+model::model(objLoad<HDS> objFile) {
     objPtr = &objFile;
 
     polyhedron.delegate(objFile);
@@ -23,7 +22,12 @@ model::model(objLoad<HDS> objFile)
     blue = 0.75;
     currTrans.assign(2,0);
     this->computeNormals();
-    this->buildTree();
+    Vector vec(0.0,0.0,1.0);
+    Point a(-0.2, 0.2, -0.2);
+    Plane plane_query(a,vec);
+    this->seekIntersections(plane_query, polyhedron);
+    hasVol = false;
+    volumeMode = false;
 }
 
 void model::computeNormals()
@@ -88,58 +92,49 @@ void model::moveToCenter()
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
 }
 
-void model::buildTree()
+void model::seekIntersections(Plane plane_query, Polyhedron _polyhedron)
 {
-    Tree tree(faces(polyhedron).first, faces(polyhedron).second, polyhedron);
-    Point a(-0.2, 0.2, -0.2);
-    Point b(1.3, 0.2, 1.3);
-    Segment segment_query(a,b);
-    // tests intersections with segment query
-    if(tree.do_intersect(segment_query))
-        std::cout << "intersection(s)" << std::endl;
-    else
-        std::cout << "no intersection" << std::endl;
-    // computes #intersections with segment query
-    std::cout << tree.number_of_intersected_primitives(segment_query)
-        << " intersection(s)" << std::endl;
-    // computes first encountered intersection with segment query
-    // (generally a point)
-    Segment_intersection intersection =
-        tree.any_intersection(segment_query);
-    if(intersection)
-    {
-        // gets intersection object
-      if(boost::get<Point>(&(intersection->first)))
-        std::cout << "intersection object is a point" << std::endl;
-    }
-    // computes all intersections with segment query (as pairs object - primitive_id)
-    std::list<Segment_intersection> intersections;
-    tree.all_intersections(segment_query, std::back_inserter(intersections));
-    // computes all intersected primitives with segment query as primitive ids
-    std::list<Primitive_id> primitives;
-    tree.all_intersected_primitives(segment_query, std::back_inserter(primitives));
-    // constructs plane query
-    Vector vec(0.0,0.0,1.0);
-    Plane plane_query(a,vec);
-    // computes first encountered intersection with plane query
-    // (generally a segment)
+
+    Tree tree(faces(_polyhedron).first, faces(_polyhedron).second, _polyhedron);
     Plane_intersection plane_intersection = tree.any_intersection(plane_query);
     if(plane_intersection)
     {
-
       if(boost::get<Segment>(&(plane_intersection->first)))
             std::cout << "intersection object is a segment" << std::endl;
     }
+    /************************************************************/
+    tree.all_intersections(plane_query,std::back_inserter(intersections));
+
+    //Segment segment;
+    //Here, I get intersetions (Points: (X,Y,Z))
+    //for( it = intersections.begin();it !=intersections.end();it++) {
+       // std::cout<< it << std::endl; //m_segment.push_back(segment);
+    //}
 }
 
+Polyhedron model::volumePolyhedron()
+{
+    polyhedron_builder<HDS> builder(c3t3);
+    vol_poly.delegate(builder);
+
+    return vol_poly;
+}
+
+
+
 void model::drawMe() {
+   if(volumeMode)
+       this->drawPoly(vol_poly);
+   else
+       this->drawPoly(polyhedron);
+}
+
+void model::drawPoly(Polyhedron poly) {
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
-    for (Polyhedron::Facet_const_iterator faceIter = polyhedron.facets_begin(); faceIter != polyhedron.facets_end(); ++faceIter) {
-        // if (faceIter->is_triangle())
+    for (Polyhedron::Facet_const_iterator faceIter = poly.facets_begin(); faceIter != poly.facets_end(); ++faceIter) {
+        std::cout << &faceIter;
         drawTriangle(faceIter);
-         //else if (faceIter->is_quad())
-         //      drawQuad(faceIter);
     }
     glEnd();
 }
@@ -172,6 +167,9 @@ bool model::generateVolumeMesh()
                           cell_radius_edge_ratio=2, cell_size=0.1);
     try {
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+        this->volumePolyhedron();
+        hasVol = true;
+        volumeMode = true;
     } catch (...) {
         return false;
     }
@@ -219,4 +217,15 @@ void model::setColor(double r, double g, double b)
     red = r;
     blue = b;
     green = g;
+}
+
+bool model::hasVolume() {
+    return hasVol;
+}
+
+bool model::toggleMode() {
+    if (hasVol)
+        volumeMode = volumeMode;
+    else
+        volumeMode = false;
 }
