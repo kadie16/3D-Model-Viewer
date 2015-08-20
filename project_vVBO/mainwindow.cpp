@@ -87,3 +87,8 @@ void MainWindow::on_radioButton_2_toggled(bool checked)
 {
     ui->widget16->toggleVolume();
 }
+
+void MainWindow::on_toolButton_4_clicked()
+{
+    ui->widget16->setDrawPlaneMode(true);
+}

@@ -26,6 +26,7 @@ public:
     bool toggleCulling();
     bool toggleVolume();
     bool toggleTranslation();
+    bool setDrawPlaneMode(bool setting);
     void initializeGL();
     void paintGL();
     void drawVolume();
@@ -44,6 +45,7 @@ public:
     int giveFPS();
     bool generateVolumeMesh();
     void initShaders();
+    void drawPlane(float startX, float startY);
 
 private:
     GLSLProgram _shaderProgram;
@@ -55,6 +57,7 @@ private:
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
+    float lastClick[2];
     QQuaternion currQ;
     /* Frustrum Things */
     float radius;
@@ -92,6 +95,8 @@ private:
     C3T3 c3t3;
     Tr t;
     model m;
+    bool beginDrawPlane;
+    bool drawPlaneMode;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();

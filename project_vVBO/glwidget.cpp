@@ -33,12 +33,15 @@ void GLWidget::initializeGL(){
     green = 166;
     blue = 166;
     mag = 0;
+    lastClick[0] = 69.0f;
+    lastClick[1] = 69.0f;
     mouseHeld = false;
     rotationOK = false;
     translateOK = false;
     needsReset = false;
     cullingOK = false;
     volumeOK = false;
+    drawPlaneMode = false;
     w0 = this->width();
     h0 = this->height();
     cam.setAspect(w0,h0);
@@ -54,13 +57,13 @@ void GLWidget::initializeGL(){
 void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glUniform3f(_shaderProgram.getUniformLocation("vertexColor"),red/255,green/255,blue/255);
     //_shaderProgram.use();
     int xNow = x;
     int yNow = y;
     /* If a File is Loaded*/
     if(objPtr)
    {
+        glUniform3f(_shaderProgram.getUniformLocation("vertexColor"),red/255,green/255,blue/255);
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 mat;
@@ -90,6 +93,10 @@ void GLWidget::paintGL(){
         /* ZOOM */
         else if (mouseHeld && zoomOK) {
             this->drag2Zoom(dy);
+        }
+        if (drawPlaneMode){
+            if(lastClick[0] != 69.0f || lastClick[1] != 69.0f)
+                drawPlane(0, 0);
         }
         /* Apply Current Position */
         glMatrixMode(GL_MODELVIEW);
@@ -184,8 +191,7 @@ void GLWidget::drawAxes()
     // glEnable(GL_LIGHTING);
 }
 
-void GLWidget::rotateAboutModelCenter(model mod, QQuaternion q)
-{
+void GLWidget::rotateAboutModelCenter(model mod, QQuaternion q) {
     QMatrix4x4 mat;
     mat.rotate(q);
     glTranslatef(mod.center().at(0), mod.center().at(1), mod.center().at(2));
@@ -193,7 +199,7 @@ void GLWidget::rotateAboutModelCenter(model mod, QQuaternion q)
     glTranslatef(-mod.center().at(0), -mod.center().at(1), -mod.center().at(2));
 }
 
-void GLWidget::grabObj(objLoad<HDS> objFile){
+void GLWidget::grabObj(objLoad<HDS> objFile) {
     objPtr = &objFile;
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     frameTimer.restart();
@@ -221,7 +227,11 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
-    if (e->button() == Qt::LeftButton && !translateOK)
+    if (drawPlaneMode){
+      lastClick[0] = e->x();
+      lastClick[1] = e->y();
+    }
+    else if (e->button() == Qt::LeftButton && !translateOK)
     {
         zoomOK = false;
         rotationOK = true;
@@ -239,6 +249,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
+    //drawPlaneMode = false;
     rotationOK = false;
     mouseHeld = false;
 }
@@ -312,37 +323,63 @@ void GLWidget::initShaders()
 }
 
 
-bool GLWidget::toggleRotation(){
+void GLWidget::drawPlane(float startX, float startY)
+{
+    /*std::cout << "draw draw draw" << std::endl;
+    glBegin(GL_TRIANGLES);
+    glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+    glVertex3f(startX, startY, 0);
+    glVertex3f(startX, this->y, 0);
+    glVertex3f(this->x, startY, 0);
+    glVertex3f(this->x,this->y,0);
+    glVertex3f(startX, this->y, 0);
+    glVertex3f(this->x, startY, 0);
+    glEnd();*/
+
+    //glLineWidth(3);
+       glBegin(GL_QUADS);
+       glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+       /* Left */
+       glVertex3f(startX, startY, 0);
+       glVertex3f(startX, y, 0);
+       /* Right */
+       glVertex3f(x, startY, 0);
+       glVertex3f(x, y, 0);
+       /* Top */
+       glVertex3f(startX, startY, 0);
+       glVertex3f(x, startY, 0);
+       /* Bottom */
+       glVertex3f(startX, y, 0);
+       glVertex3f(x, y, 0);
+       glEnd();
+}
+
+
+bool GLWidget::toggleRotation() {
     dx = 0; dy = 0;
-    if (rotationOK)
-        rotationOK = false;
-    else
-        rotationOK = true;
+    rotationOK = !rotationOK;
     return rotationOK;
 }
 
-bool GLWidget::toggleCulling()
-{
-    if (cullingOK)
-        cullingOK = false;
-    else
-        cullingOK = true;
+bool GLWidget::toggleCulling() {
+    cullingOK = !cullingOK;
     return cullingOK;
 }
 
-bool GLWidget::toggleVolume()
-{
+bool GLWidget::toggleVolume() {
     volumeOK = !volumeOK;
-    std::cout << volumeOK << std::endl;
     return volumeOK;
 }
 
 bool GLWidget::toggleTranslation()
 {
     dx = 0; dy = 0;
-    if (translateOK)
-        translateOK = false;
-    else
-        translateOK = true;
+    translateOK = !translateOK;
     return translateOK;
+}
+
+bool GLWidget::setDrawPlaneMode(bool setting)
+{
+    drawPlaneMode = setting;
+    return drawPlaneMode;
 }

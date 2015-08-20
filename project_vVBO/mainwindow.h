@@ -36,6 +36,8 @@ private slots:
     void on_radioButton_2_stateChanged();
 
     void on_radioButton_2_toggled(bool checked);
+    void on_toolButton_4_clicked();
+
 private:
     QTimer timer;
     Ui::MainWindow *ui;
