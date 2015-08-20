@@ -23,6 +23,7 @@ model::model(objLoad<HDS> objFile)
     blue = 0.75;
     currTrans.assign(2,0);
     this->computeNormals();
+    this->buildTree();
 }
 
 void model::computeNormals()
@@ -85,6 +86,22 @@ void model::moveToCenter()
 {
     glMatrixMode(GL_MODELVIEW);
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
+}
+
+void model::buildTree()
+{
+    Tree tree(faces(polyhedron).first, faces(polyhedron).second, polyhedron);
+    Point a(-0.2, 0.2, -0.2);
+    Point b(1.3, 0.2, 1.3);
+    Segment segment_query(a,b);
+    // tests intersections with segment query
+    if(tree.do_intersect(segment_query))
+        std::cout << "intersection(s)" << std::endl;
+    else
+        std::cout << "no intersection" << std::endl;
+    // computes #intersections with segment query
+    std::cout << tree.number_of_intersected_primitives(segment_query)
+        << " intersection(s)" << std::endl;
 }
 
 void model::drawMe() {

@@ -26,6 +26,7 @@ public:
     void setColor(double r, double g, double b);
     void translate(float xT, float yT);
     void moveToCenter();
+    void buildTree();
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
@@ -34,6 +35,7 @@ private:
     QQuaternion currQ;
     C3T3 c3t3;
     Tr t;
+    //Tree intersectionTree;
     float m_radius;
     double red,green,blue;
     std::vector<float> m_center;
