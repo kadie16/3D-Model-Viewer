@@ -21,7 +21,7 @@ model::model(objLoad<HDS> objFile) {
     green = 0.75;
     blue = 0.75;
     currTrans.assign(2,0);
-    this->computeNormals();
+    polyhedron = computeNormals(polyhedron);
     Vector vec(0.0,0.0,1.0);
     Point a(-0.2, 0.2, -0.2);
     Plane plane_query(a,vec);
@@ -30,10 +30,11 @@ model::model(objLoad<HDS> objFile) {
     volumeMode = false;
 }
 
-void model::computeNormals()
+Polyhedron model::computeNormals(Polyhedron poly)
 {
-    std::for_each(polyhedron.facets_begin(), polyhedron.facets_end(), Facet_normal());
-    std::for_each(polyhedron.vertices_begin(), polyhedron.vertices_end(), Vertex_normal());
+    std::for_each(poly.facets_begin(), poly.facets_end(), Facet_normal());
+    std::for_each(poly.vertices_begin(), poly.vertices_end(), Vertex_normal());
+    return poly;
 }
 
 Polyhedron model::poly()
@@ -116,7 +117,7 @@ Polyhedron model::volumePolyhedron()
 {
     polyhedron_builder<HDS> builder(c3t3);
     vol_poly.delegate(builder);
-
+    vol_poly = computeNormals(vol_poly);
     return vol_poly;
 }
 

@@ -8,7 +8,7 @@ class model {
 public:
     model();
     model(objLoad<HDS> objFile);
-    void computeNormals();
+    Polyhedron computeNormals(Polyhedron poly);
     Polyhedron poly();
     //Nef_Polyhedron nefPoly;
     void drawMe();
