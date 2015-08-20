@@ -8,7 +8,7 @@
 #include "model.h"
 
 class camera
-{    
+{
 public:
     camera();
     void setAspect(float w, float h);
@@ -38,4 +38,4 @@ private:
     double fdist;
 };
 
-#endif // TRACKBALL_H
+#endif // CAMERA_H

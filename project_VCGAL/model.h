@@ -3,14 +3,13 @@
 #include <QQuaternion>
 #include "myitems.h"
 #include "objload.h"
-typedef Polyhedron::HalfedgeDS HDS;
-class model
-{
+class model {
 public:
     model();
     model(objLoad<HDS> objFile);
     void computeNormals();
     Polyhedron poly();
+    //Nef_Polyhedron nefPoly;
     void drawMe();
     void drawTriangle(Polyhedron::Facet_const_handle f);
     bool generateVolumeMesh();
@@ -22,16 +21,15 @@ public:
     std::vector<float> min();
     float getTransX();
     float getTransY();
-    QQuaternion getRotation();
     void setTransX(float f);
     void setTransY(float f);
+    void setColor(double r, double g, double b);
     void translate(float xT, float yT);
     void moveToCenter();
-    void setColor(double r, double g, double b);
-
 private:
     objLoad<HDS> *objPtr = 0;
     Polyhedron polyhedron;
+    //Polyhedron2 poly2;
     Mesh_Polyhedron mesh;
     QQuaternion currQ;
     C3T3 c3t3;

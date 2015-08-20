@@ -9,12 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setAutoFillBackground(true);
     ui_fps = findChild<QLabel*>("fps");
-    ui_spin = findChild<QSpinBox*>("spinBox");
     ui_volStat = findChild<QLabel*>("volStatus");
     volStatReset = false;
     ui_volStat->setText(" ");
     ui->radioButton->setChecked(true);
-    //ui->radioButton_4->setChecked(true);
     ui->radioButton_2->setEnabled(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
     timer.start(1000);
@@ -27,7 +25,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::repaint() {
     ui_fps->setNum(ui->widget16->giveFPS());
-    ui_spin->setValue(ui->widget16->getCurrentModel());
 }
 
 void MainWindow::on_toolButton_2_clicked()
@@ -90,12 +87,7 @@ void MainWindow::on_radioButton_2_toggled(bool checked)
     ui->widget16->toggleVolume();
 }
 
-void MainWindow::on_spinBox_valueChanged(int arg1)
-{
-    ui->widget16->setCurrentModel(arg1);
-}
-
 void MainWindow::on_toolButton_4_clicked()
 {
-    ui->widget16->toggleDrawingPlane();
+    ui->widget16->toggleDrawPlane();
 }

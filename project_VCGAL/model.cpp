@@ -1,6 +1,5 @@
 #include "glwidget.h"
 #include "model.h"
-
 model::model()
 {
 
@@ -9,9 +8,12 @@ model::model()
 model::model(objLoad<HDS> objFile)
 {
     objPtr = &objFile;
+
     polyhedron.delegate(objFile);
     Poly_copy polyhedron_copy_modifier(polyhedron);
+    //poly2.delegate(objFile);
     mesh.delegate(polyhedron_copy_modifier);
+    //nefPoly = Nef_Polyhedron(polyhedron);
     m_center = objPtr->findCenter();
     m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
@@ -22,7 +24,6 @@ model::model(objLoad<HDS> objFile)
     currTrans.assign(2,0);
     this->computeNormals();
 }
-
 
 void model::computeNormals()
 {
@@ -84,13 +85,6 @@ void model::moveToCenter()
 {
     glMatrixMode(GL_MODELVIEW);
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
-}
-
-void model::setColor(double r, double g, double b)
-{
-    red = r;
-    blue = b;
-    green = g;
 }
 
 void model::drawMe() {
@@ -175,3 +169,9 @@ void model::drawTriangle(Point p1, Point p2, Point p3)
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
 }
 
+void model::setColor(double r, double g, double b)
+{
+    red = r;
+    blue = b;
+    green = g;
+}

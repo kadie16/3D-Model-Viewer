@@ -1,4 +1,4 @@
-﻿#ifndef MAINWINDOW_H
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QFileDialog>
 #include <QColorDialog>
@@ -36,14 +36,11 @@ private slots:
     void on_radioButton_2_stateChanged();
 
     void on_radioButton_2_toggled(bool checked);
-
-    void on_spinBox_valueChanged(int arg1);
-
     void on_toolButton_4_clicked();
 
 private:
     QTimer timer;
-    Ui::MainWindow *ui; 
+    Ui::MainWindow *ui;
     QSpinBox *ui_spin;
     QLabel *ui_fps;
     QLabel *ui_volStat;

@@ -9,7 +9,7 @@ QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = projectV1
+TARGET = project_VCGAL
 TEMPLATE = app
 
 SOURCES += main.cpp\

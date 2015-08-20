@@ -55,66 +55,57 @@ void GLWidget::paintGL(){
     int xNow = x;
     int yNow = y;
     /* If a File is Loaded*/
-    if(models.size() > 0)
+    if(objPtr)
    {
-        model currentModel = models[currentModelIndex];
         dx = (xNow - prevPos[0])/2;
         dy = (yNow - prevPos[1])/2;
         QMatrix4x4 mat;
         if (needsReset)
             this->resetView();
         cam.setZoom(zoomF);
-        /* If not drawing a plane */
-        if (!drawingPlane) {
-            glMatrixMode(GL_MODELVIEW);
-            /* CULLING */
-            if (cullingOK)
-            {
-                glEnable(GL_CULL_FACE);
-                glCullFace(GL_BACK);
-            }
-            else
-                glDisable(GL_CULL_FACE);
-            /* ROTATION */
-            if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
-            {
-                this->drag2Rotate(dx,dy,currentModel);
-            }
-            /* TRANSLATION */
-            else if (mouseHeld && translateOK && !rotationOK)
-            {
-                this->drag2Translate(dx,dy,models[currentModelIndex]);
-            }
-            /* ZOOM */
-            else if (mouseHeld && zoomOK) {
-                this->drag2Zoom(dy);
-            }
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        /* CULLING */
+        if (cullingOK)
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
         }
-        if (drawingPlane) {
-            drawPlane(0,0);
+        else
+            glDisable(GL_CULL_FACE);
+        /* ROTATION */
+        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+        {
+            this->drag2Rotate(dx,dy);
         }
-        for (int i = 0; i < models.size(); i++) {
-            glPushMatrix();
-            m = models[i];
+        /* TRANSLATION */
+        else if (mouseHeld && translateOK && !rotationOK)
+        {
+            this->drag2Translate(dx,dy);
+        }
+        /* ZOOM */
+        else if (mouseHeld && zoomOK) {
+            this->drag2Zoom(dy);
+        }
         /* Apply Current Position */
-            QQuaternion currQ = rotations[i];
-            mat.rotate(currQ);
-            glMatrixMode(GL_MODELVIEW);
-            currentModel.translate(0,0); // applies current translation
-            /* Translate so rotation occurs about model center */
-            glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
-            glMultMatrixf(mat.constData());
-            glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-            if (volumeOK)
-                drawVolume(m);
-            else
-                drawModel(m);
-            /* Revert to Original Matrix for Future Transformations */
-            glPopMatrix();
-        }
-            glPushMatrix();
-            drawAxes();
-            glPopMatrix();
+        mat.rotate(currQ);
+        glMatrixMode(GL_MODELVIEW);
+        m.translate(0,0); // applies current translation
+        //cam.moveToCenter();
+        /* Translate so rotation occurs about model center */
+        glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
+        glMultMatrixf(mat.constData());
+        glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
+
+        if (volumeOK)
+            drawVolume();
+        else
+            m.drawMe();
+        /* Revert to Original Matrix for Future Transformations */
+        glPopMatrix();
+        glPushMatrix();
+        drawAxes();
+        glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
    }
@@ -124,10 +115,10 @@ void GLWidget::paintGL(){
 void GLWidget::resetView()
 {
     if (needsReset) {
-        //currQ.setScalar(1);
-       // currQ.setX(0);
-        //currQ.setY(0);
-       // currQ.setZ(0);
+        currQ.setScalar(1);
+        currQ.setX(0);
+        currQ.setY(0);
+        currQ.setZ(0);
         cam.viewModel();
         cam.moveToCenter();
         maxCoords = m.max();
@@ -146,9 +137,9 @@ void GLWidget::drawModel(model mod)
     mod.drawMe();
 }
 
-void GLWidget::drawVolume(model mod)
+void GLWidget::drawVolume()
 {
-   mod.drawVolume();
+   m.drawVolume();
 }
 
 void GLWidget::drawQuad(Polyhedron::Facet_const_handle f)
@@ -198,11 +189,7 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     frameTimer.restart();
     frameCount = 0;
     model m2(objFile);
-    models.push_back(m2);
-    QQuaternion newQ;
-    rotations.push_back(newQ);
-    currentModelIndex = models.size() - 1;
-    m = models[currentModelIndex];
+    m = m2;
     cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
@@ -213,7 +200,7 @@ void GLWidget::grabColor(double r, double g, double b)
     red = r/255;
     green = g/255;
     blue = b/255;
-    models[currentModelIndex].setColor(red, green, blue);
+    m.setColor(red, green, blue);
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -224,7 +211,11 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
-    if (e->button() == Qt::LeftButton && !translateOK)
+    if (drawingPlane)
+        {
+            this->drawPlane(e->x(), e->y());
+        }
+    else if (e->button() == Qt::LeftButton && !translateOK)
     {
         zoomOK = false;
         rotationOK = true;
@@ -251,7 +242,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->y = e->y();
 }
 
-QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
+QQuaternion GLWidget::drag2Rotate(float dx, float dy)
 {
     /* Define Axis of Rotation */
     axisOfRotation.setX(-dy);
@@ -260,19 +251,17 @@ QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
     mag = sqrt(dx*dx + dy*dy);
     /* Update Rotation Quaternion */
     QQuaternion newQ = QQuaternion::fromAxisAndAngle(axisOfRotation, mag);
-    QQuaternion currQ = rotations.at(currentModelIndex);
     currQ = newQ * currQ;
-    rotations[currentModelIndex] = currQ;
     return currQ;
 }
 
-void GLWidget::drag2Translate(float dx, float dy, model mod)
+void GLWidget::drag2Translate(float dx, float dy)
 {
     float xT,yT;
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    mod.translate(xT, yT);
+    m.translate(xT, yT);
 }
 
 void GLWidget::drag2Zoom(float dy)
@@ -307,68 +296,57 @@ bool GLWidget::generateVolumeMesh()
     return true;
 }
 
-int GLWidget::getCurrentModel()
+bool GLWidget::toggleDrawPlane()
 {
-    return currentModelIndex;
+    drawingPlane = !drawingPlane;
+    return drawingPlane;
 }
 
-void GLWidget::setCurrentModel(int i)
+void GLWidget::drawPlane(float startX, float startY)
 {
-    if (i < models.size())
-        currentModelIndex = i;
-}
-
-void GLWidget::drawPlane(int startX, int startY)
-{
-    glLineWidth(3);
-    glBegin(GL_LINES);
-    /* Left */
+    glBegin(GL_TRIANGLES);
+    glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
     glVertex3f(startX, startY, 0);
     glVertex3f(startX, y, 0);
-    /* Right */
     glVertex3f(x, startY, 0);
-    glVertex3f(x, y, 0);
-    /* Top */
-    glVertex3f(startX, startY, 0);
     glVertex3f(x, startY, 0);
-    /* Bottom */
     glVertex3f(startX, y, 0);
     glVertex3f(x, y, 0);
     glEnd();
-
-
 }
 
 
 bool GLWidget::toggleRotation(){
     dx = 0; dy = 0;
-    rotationOK = !rotationOK;
+    if (rotationOK)
+        rotationOK = false;
+    else
+        rotationOK = true;
     return rotationOK;
 }
 
 bool GLWidget::toggleCulling()
 {
-    cullingOK = !cullingOK;
+    if (cullingOK)
+        cullingOK = false;
+    else
+        cullingOK = true;
     return cullingOK;
 }
 
 bool GLWidget::toggleVolume()
 {
     volumeOK = !volumeOK;
+    std::cout << volumeOK << std::endl;
     return volumeOK;
 }
 
 bool GLWidget::toggleTranslation()
 {
     dx = 0; dy = 0;
-    translateOK = !translateOK;
+    if (translateOK)
+        translateOK = false;
+    else
+        translateOK = true;
     return translateOK;
 }
-
-bool GLWidget::toggleDrawingPlane()
-{
-    drawingPlane = !drawingPlane;
-    return drawingPlane;
-}
-
-

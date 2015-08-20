@@ -19,11 +19,18 @@
 #include<CGAL/Mesh_3/Robust_intersection_traits_3.h>
 #include<CGAL/Mesh_domain_with_polyline_features_3.h>
 #include<CGAL/Exact_predicates_inexact_constructions_kernel.h>
+//#include <CGAL/Nef_polyhedron_3.h>
+
+/* Intersections */
+#include <CGAL/AABB_tree.h>
+#include <CGAL/AABB_traits.h>
+#include <CGAL/boost/graph/graph_traits_Polyhedron_3.h>
+#include <CGAL/AABB_face_graph_triangle_primitive.h>
 
 /***** Normals *****/
 struct Facet_normal {
   template <class Facet>
-  void operator()( Facet& f) {
+  void operator()(Facet& f) {
       typename Facet::Halfedge_handle h = f.halfedge();
       typename Facet::Normal_3 normal = CGAL::normal(h->next()->vertex()->point(),
                                                      h->vertex()->point(),
@@ -106,9 +113,23 @@ typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron, Kernel> Mesh_Domain;
 typedef CGAL::Mesh_triangulation_3<Mesh_Domain>::type Tr;
 typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3T3;
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
+
 /* Copier */
 typedef CGAL::Polyhedron_copy_3<Polyhedron, Mesh_Polyhedron::HDS> Poly_copy;
 
+/* Nef */
+//typedef CGAL::Nef_polyhedron_3<Kernel> Nef_Polyhedron;
+typedef CGAL::Polyhedron_3<Kernel> Polyhedron2;
+typedef Polyhedron::HalfedgeDS HDS;
+
+/* AABB */
+typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
+typedef CGAL::AABB_traits<Kernel, Primitive> Traits;
+typedef Kernel::Segment_3 Segment;
+typedef Kernel::Plane_3 Plane;
+typedef CGAL::AABB_tree<Traits> Tree;
+typedef boost::optional< Tree::Intersection_and_primitive_id<Segment>::Type > Segment_intersection;
+typedef boost::optional< Tree::Intersection_and_primitive_id<Plane>::Type > Plane_intersection;
+typedef Tree::Primitive_id Primitive_id;
 
 #endif // MYITEMS
-

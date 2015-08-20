@@ -25,10 +25,9 @@ public:
     bool toggleCulling();
     bool toggleVolume();
     bool toggleTranslation();
-    bool toggleDrawingPlane();
     void initializeGL();
     void paintGL();
-    void drawVolume(model mod);
+    void drawVolume();
     void drawModel(model mod);
     void drawQuad(Polyhedron::Facet_const_handle f);
     void drawAxes();
@@ -37,19 +36,15 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
-    QQuaternion drag2Rotate(float dx, float dy, model mod);
-    void drag2Translate(float dx, float dy, model mod);
+    QQuaternion drag2Rotate(float dx, float dy);
+    void drag2Translate(float dx, float dy);
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();
-    int getCurrentModel();
-    void setCurrentModel(int i);
-    void drawPlane(int startX, int startY);
+    bool toggleDrawPlane();
+    void drawPlane(float startX, float startY);
 
 private:
-    std::vector<model> models;
-    std::vector<QQuaternion> rotations;
-    int currentModelIndex;
     QTime frameTimer;
     int frameCount;
     QTimer timer;
@@ -58,6 +53,7 @@ private:
     std::vector<float> center;
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
+    QQuaternion currQ;
     /* Frustrum Things */
     float radius;
     float w0;
@@ -91,11 +87,10 @@ private:
     Polyhedron mesh;
     Mesh_Polyhedron mesh_Poly;
     bool volumeOK;
+    bool drawingPlane;
     C3T3 c3t3;
     Tr t;
     model m;
-    /* Plane */
-    bool drawingPlane;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();
