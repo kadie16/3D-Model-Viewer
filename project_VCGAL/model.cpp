@@ -101,14 +101,10 @@ void model::seekIntersections(Plane plane_query)
     else
         _polyhedron = &surface_poly;
     Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
-    Plane_intersection plane_intersection = tree.any_intersection(plane_query);
-    if(plane_intersection)
-    {
-      if(boost::get<Segment>(&(plane_intersection->first)))
-            std::cout << "intersection object is a segment" << std::endl;
-    }
-    /************************************************************/
     tree.all_intersections(plane_query,std::back_inserter(intersections));
+    for (std::list<Plane_intersection>::iterator it = intersections.begin();it !=intersections.end(); it++) {
+        std::cout << &it << std::endl;
+    }
 
     //Segment segment;
     //Here, I get intersetions (Points: (X,Y,Z))
