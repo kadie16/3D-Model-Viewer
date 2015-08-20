@@ -96,11 +96,7 @@ void GLWidget::paintGL(){
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-
-        if (volumeOK)
-            drawVolume();
-        else
-            m.drawMe();
+        m.drawMe();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -336,9 +332,7 @@ bool GLWidget::toggleCulling()
 
 bool GLWidget::toggleVolume()
 {
-    volumeOK = !volumeOK;
-    std::cout << volumeOK << std::endl;
-    return volumeOK;
+    m.toggleMode();
 }
 
 bool GLWidget::toggleTranslation()

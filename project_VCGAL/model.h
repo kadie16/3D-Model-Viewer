@@ -28,7 +28,7 @@ public:
     void setColor(double r, double g, double b);
     void translate(float xT, float yT);
     void moveToCenter();
-    void seekIntersections(Plane plane_query, Polyhedron _polyhedron);
+    void seekIntersections(Plane plane_query);
     Polyhedron volumePolyhedron();
     bool hasVolume();
     bool toggleMode();
@@ -36,8 +36,8 @@ public:
 private:
     std::list<Plane_intersection> intersections;
     objLoad<HDS> *objPtr = 0;
-    Polyhedron vol_poly;
-    Polyhedron polyhedron;
+    Polyhedron volume_poly;
+    Polyhedron surface_poly;
     //Polyhedron2 poly2;
     Mesh_Polyhedron mesh;
     QQuaternion currQ;

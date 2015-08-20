@@ -8,8 +8,8 @@ model::model()
 model::model(objLoad<HDS> objFile) {
     objPtr = &objFile;
 
-    polyhedron.delegate(objFile);
-    Poly_copy polyhedron_copy_modifier(polyhedron);
+    surface_poly.delegate(objFile);
+    Poly_copy polyhedron_copy_modifier(surface_poly);
     //poly2.delegate(objFile);
     mesh.delegate(polyhedron_copy_modifier);
     //nefPoly = Nef_Polyhedron(polyhedron);
@@ -21,11 +21,11 @@ model::model(objLoad<HDS> objFile) {
     green = 0.75;
     blue = 0.75;
     currTrans.assign(2,0);
-    polyhedron = computeNormals(polyhedron);
+    surface_poly = computeNormals(surface_poly);
     Vector vec(0.0,0.0,1.0);
     Point a(-0.2, 0.2, -0.2);
     Plane plane_query(a,vec);
-    this->seekIntersections(plane_query, polyhedron);
+    this->seekIntersections(plane_query);
     hasVol = false;
     volumeMode = false;
 }
@@ -39,7 +39,7 @@ Polyhedron model::computeNormals(Polyhedron poly)
 
 Polyhedron model::poly()
 {
-    return polyhedron;
+    return surface_poly;
 }
 
 std::vector<float> model::center()
@@ -93,10 +93,14 @@ void model::moveToCenter()
     glTranslatef(-m_center.at(0), -m_center.at(1), -m_center.at(2));
 }
 
-void model::seekIntersections(Plane plane_query, Polyhedron _polyhedron)
+void model::seekIntersections(Plane plane_query)
 {
-
-    Tree tree(faces(_polyhedron).first, faces(_polyhedron).second, _polyhedron);
+    Polyhedron* _polyhedron;
+    if (volumeMode)
+         _polyhedron = &volume_poly;
+    else
+        _polyhedron = &surface_poly;
+    Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
     Plane_intersection plane_intersection = tree.any_intersection(plane_query);
     if(plane_intersection)
     {
@@ -116,25 +120,24 @@ void model::seekIntersections(Plane plane_query, Polyhedron _polyhedron)
 Polyhedron model::volumePolyhedron()
 {
     polyhedron_builder<HDS> builder(c3t3);
-    vol_poly.delegate(builder);
-    vol_poly = computeNormals(vol_poly);
-    return vol_poly;
+    volume_poly.delegate(builder);
+    volume_poly = computeNormals(volume_poly);
+    return volume_poly;
 }
 
 
 
 void model::drawMe() {
    if(volumeMode)
-       this->drawPoly(vol_poly);
+       this->drawPoly(volume_poly);
    else
-       this->drawPoly(polyhedron);
+       this->drawPoly(surface_poly);
 }
 
 void model::drawPoly(Polyhedron poly) {
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
     for (Polyhedron::Facet_const_iterator faceIter = poly.facets_begin(); faceIter != poly.facets_end(); ++faceIter) {
-        std::cout << &faceIter;
         drawTriangle(faceIter);
     }
     glEnd();
@@ -163,14 +166,13 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
 bool model::generateVolumeMesh()
 {
     using namespace CGAL::parameters;
-    Mesh_Domain domain(polyhedron);
+    Mesh_Domain domain(surface_poly);
     Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
                           cell_radius_edge_ratio=2, cell_size=0.1);
     try {
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
         this->volumePolyhedron();
         hasVol = true;
-        volumeMode = true;
     } catch (...) {
         return false;
     }
@@ -226,7 +228,7 @@ bool model::hasVolume() {
 
 bool model::toggleMode() {
     if (hasVol)
-        volumeMode = volumeMode;
+        volumeMode = !volumeMode;
     else
         volumeMode = false;
 }
