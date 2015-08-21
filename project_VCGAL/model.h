@@ -28,12 +28,15 @@ public:
     void translate(float xT, float yT);
     void moveToCenter();
     void seekIntersections(Plane plane_query);
+    void drawIntersections();
+    void clearIntersections();
+
     Polyhedron volumePolyhedron();
     bool hasVolume();
     bool toggleMode();
 
 private:
-    std::list<Plane_intersection> intersections;
+
     objLoad<HDS> *objPtr = 0;
     Polyhedron volume_poly;
     Polyhedron surface_poly;
@@ -42,7 +45,7 @@ private:
     QQuaternion currQ;
     C3T3 c3t3;
     Tr t;
-    //Tree intersectionTree;
+    std::list<Plane_intersection> intersections;
     float m_radius;
     double red,green,blue;
     std::vector<float> m_center;

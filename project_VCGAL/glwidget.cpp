@@ -47,6 +47,8 @@ void GLWidget::initializeGL(){
     axisOfRotation.setZ(0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+
+
 }
 
 void GLWidget::paintGL(){
@@ -54,6 +56,10 @@ void GLWidget::paintGL(){
     glClear(GL_DEPTH_BUFFER_BIT);
     int xNow = x;
     int yNow = y;
+    /****** intersections ********/
+    Vector vec(0.0,0.0,1.0);
+    Point a(-0.2, -0.2, -0.2);
+    Plane plane_query(a,vec);
     /* If a File is Loaded*/
     if(objPtr)
    {
@@ -97,6 +103,7 @@ void GLWidget::paintGL(){
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
         m.drawMe();
+        m.seekIntersections(plane_query);
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();

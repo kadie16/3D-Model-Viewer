@@ -97,43 +97,46 @@ void model::moveToCenter()
 void model::seekIntersections(Plane plane_query)
 {
     Polyhedron* _polyhedron;
-    if (volumeMode)
-         _polyhedron = &volume_poly;
-    else
-        _polyhedron = &surface_poly;
+    if (volumeMode){
+        std::cout << "volume intersections" << std::endl;
+         _polyhedron = &volume_poly;}
+    else{
+        _polyhedron = &surface_poly;}
     Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
     tree.all_intersections(plane_query,std::back_inserter(intersections));
-    int segmentCount = 0;
-    int planeCount = 0;
-    int totalCount = 0;
+    this->drawIntersections();
+}
 
-    Plane_intersection plane_intersection = tree.any_intersection(plane_query);
-    if(plane_intersection)
-    {
-
-      if(boost::get<Segment>(&(plane_intersection->first)))
-            std::cout << "intersection object is a segment" << std::endl;
-    }
-
+void model::drawIntersections()
+{
     for (std::list<Plane_intersection>::iterator it = intersections.begin();it !=intersections.end(); it++) {
         Plane_intersection p = *it;
         std::cout << "first: " << (p->first) << std::endl;
-        drawTriangle((p->second));
-
         if(boost::get<Segment>(&(p->first))) {
-            std::cout << "Segment" << std::endl;
-            segmentCount++;
-        } /*else if (/*boost::get<Plane>(&(p->first))) {
-            std::cout << "Plane" << std::endl;
-            planeCount++;
-        } */ else {
+            //drawTriangle((p->second));
+            //std::cout << "Segment" << p->second->hx() << std::endl;
+                glLineWidth(10);
+                glBegin(GL_LINES);
+                glColor3f(1,0,0);
+                Point p1 = boost::get<Segment>(&(p->first))->point(0); //vertex(0);
+                Point p2 = boost::get<Segment>(&(p->first))->point(1);
+                glVertex3f(p1.hx(), p1.hy(), p1.hz());
+                glVertex3f(p2.hx(), p2.hy(), p2.hz());
+                glEnd();
+        } else if (boost::get<Point>(&(p->first))) {
+           /* std::cout<< "Triangle" << std::endl;
+            Point p1 = boost::get<Triangle>(&(p->first))->vertex(0);
+            Point p2 = boost::get<Triangle>(&(p->first))->vertex(1);
+            Point p3 = boost::get<Triangle>(&(p->first))->vertex(3);
+
+            glBegin(GL_TRIANGLES);
+            glColor3f(1,0,0);
+            drawTriangle(p1,p2,p3);
+            glEnd(); */
+        } else {
             std::cout << "Other" << std::endl;
         }
-        totalCount++;
     }
-   /* std::cout << segmentCount <<" Segments" << std::endl;
-    std::cout << planeCount <<" Planes" << std::endl;
-    std::cout << totalCount <<" Total" << std::endl; */
 }
 
 Polyhedron model::volumePolyhedron()
@@ -164,6 +167,7 @@ void model::drawPoly(Polyhedron poly) {
 
 void model::drawTriangle(Polyhedron::Facet_const_handle f)
 {
+
     CGAL::Vector_3<Kernel> n1, n2, n3;
     CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
@@ -174,7 +178,7 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
-    glColor3f(1.0f,0.0f,0.0f);
+    //glColor3f(1.0f,0.0f,0.0f);
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glNormal3f(n2.hx(), n2.hy(), n2.hz());
