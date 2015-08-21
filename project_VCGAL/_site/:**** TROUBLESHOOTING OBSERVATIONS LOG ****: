@@ -1,0 +1,7 @@
+/**** TROUBLESHOOTING OBSERVATIONS LOG ****/ 
+
+15 July 2015 : 
+
+			- Model renders correctly, but glEnable(GL_CULLFACE) removes what should be the front face. In other words, object appears black when back face is culled. This is corrected when calling glFrontFace(GL_CW);
+
+			- Rotation enabled, but model does not rotate about it's center. 

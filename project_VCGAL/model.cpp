@@ -1,5 +1,6 @@
 #include "glwidget.h"
 #include "model.h"
+
 model::model()
 {
 
@@ -102,15 +103,37 @@ void model::seekIntersections(Plane plane_query)
         _polyhedron = &surface_poly;
     Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
     tree.all_intersections(plane_query,std::back_inserter(intersections));
-    for (std::list<Plane_intersection>::iterator it = intersections.begin();it !=intersections.end(); it++) {
-        std::cout << &it << std::endl;
+    int segmentCount = 0;
+    int planeCount = 0;
+    int totalCount = 0;
+
+    Plane_intersection plane_intersection = tree.any_intersection(plane_query);
+    if(plane_intersection)
+    {
+
+      if(boost::get<Segment>(&(plane_intersection->first)))
+            std::cout << "intersection object is a segment" << std::endl;
     }
 
-    //Segment segment;
-    //Here, I get intersetions (Points: (X,Y,Z))
-    //for( it = intersections.begin();it !=intersections.end();it++) {
-       // std::cout<< it << std::endl; //m_segment.push_back(segment);
-    //}
+    for (std::list<Plane_intersection>::iterator it = intersections.begin();it !=intersections.end(); it++) {
+        Plane_intersection p = *it;
+        std::cout << "first: " << (p->first) << std::endl;
+        drawTriangle((p->second));
+
+        if(boost::get<Segment>(&(p->first))) {
+            std::cout << "Segment" << std::endl;
+            segmentCount++;
+        } /*else if (/*boost::get<Plane>(&(p->first))) {
+            std::cout << "Plane" << std::endl;
+            planeCount++;
+        } */ else {
+            std::cout << "Other" << std::endl;
+        }
+        totalCount++;
+    }
+   /* std::cout << segmentCount <<" Segments" << std::endl;
+    std::cout << planeCount <<" Planes" << std::endl;
+    std::cout << totalCount <<" Total" << std::endl; */
 }
 
 Polyhedron model::volumePolyhedron()
@@ -151,6 +174,7 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
+    glColor3f(1.0f,0.0f,0.0f);
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glNormal3f(n2.hx(), n2.hy(), n2.hz());

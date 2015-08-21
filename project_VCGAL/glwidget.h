@@ -11,8 +11,6 @@
 #include <QObject>
 #include <QLabel>
 #include <QMatrix4x4>
-#include "myitems.h"
-#include "objload.h"
 #include "camera.h"
 
 typedef Polyhedron::HalfedgeDS HDS;

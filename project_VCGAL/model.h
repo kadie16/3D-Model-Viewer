@@ -1,7 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include <QQuaternion>
-#include "myitems.h"
 #include "objload.h"
 typedef Polyhedron::HalfedgeDS HDS;
 class model {

@@ -2,6 +2,8 @@
  * http://code.metager.de/source/xref/lib/cgal/4.2/examples/Polyhedron/polyhedron_prog_vertex_normal.cpp*/
 #ifndef MYITEMS
 #define MYITEMS
+#include <CGAL/boost/graph/graph_traits_Polyhedron_3.h>
+
 #include<CGAL/HalfedgeDS_default.h>
 #include<CGAL/Simple_cartesian.h>
 #include<CGAL/Modifier_base.h>
@@ -24,7 +26,6 @@
 /* Intersections */
 #include <CGAL/AABB_tree.h>
 #include <CGAL/AABB_traits.h>
-#include <CGAL/boost/graph/graph_traits_Polyhedron_3.h>
 #include <CGAL/AABB_face_graph_triangle_primitive.h>
 
 /***** Normals *****/

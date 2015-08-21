@@ -100,6 +100,9 @@ void GLWidget::paintGL(){
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
+        glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
+        glMultMatrixf(mat.constData());
+        glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
         drawAxes();
         glPopMatrix();
         prevPos[0] = xNow;

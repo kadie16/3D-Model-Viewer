@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "objload.h"
 #include <QApplication>
 #include <QFileDialog>
 
