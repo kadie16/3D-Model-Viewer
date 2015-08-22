@@ -114,15 +114,21 @@ void model::seekIntersections2(Plane plane_query)
     for(int i=0; i < triMap.size(); i++) {
         /* If the triangle intersects the plane */
         if (CGAL::do_intersect(plane_query, triMap[i])) {
-            intersections2.push_back(faceMap[i]);
+            intersections2.push_back(triMap[i]);
         }
     }
 }
 
 void model::drawIntersections2() {
-    glColor3f(1,0,0);
+    glColor3f(1,0,0); Point p1,p2,p3;
     for (int i = 0; i < intersections2.size(); i++) {
-        drawTriangle(*intersections2.at(i));
+        p1 = intersections2.at(i).vertex(0);
+        p2 = intersections2.at(i).vertex(1);
+        p3 = intersections2.at(i).vertex(2);
+        glBegin(GL_TRIANGLES);
+        glColor3f(1,0,0);
+        drawTriangle(p1,p2,p3);
+        glEnd();
     }
 }
 

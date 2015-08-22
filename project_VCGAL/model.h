@@ -58,7 +58,7 @@ private:
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     std::vector<float> currTrans;
-    std::vector<Polyhedron::Facet_const_handle*> intersections2;
+    std::vector<CGAL::Triangle_3<Kernel> > intersections2;
     bool volumeMode;
     bool hasVol;
 };
