@@ -32,6 +32,7 @@ public:
     void moveToCenter();
     void seekIntersections(Plane plane_query);
     void seekIntersections2(Plane plane_query);
+    void seekIntersections3(Plane plane_query);
     void drawIntersections();
     void drawIntersections2();
     void clearIntersections();
@@ -60,6 +61,7 @@ private:
     std::vector<float> minCoords;
     std::vector<float> currTrans;
     std::vector<CGAL::Triangle_3<Kernel> > intersections2;
+    std::vector<CGAL::Triangle_3<Kernel> > intersections3;
     bool volumeMode;
     bool hasVol;
 };

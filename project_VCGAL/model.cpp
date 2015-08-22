@@ -119,6 +119,24 @@ void model::seekIntersections2(Plane plane_query)
     }
 }
 
+void model::seekIntersections3(Plane plane_query)
+{
+    std::vector<CGAL::Triangle_3<Kernel> > cell;
+    for (int i=0; i < volume_triMap.size(); i++) {
+       cell = volume_triMap[i];
+       for (int k = 0; k < 4; k++) {
+           if (CGAL::do_intersect(plane_query, cell[k])) {
+               /* save this cell and stop checking it*/
+               intersections3.push_back(cell[0]);
+               intersections3.push_back(cell[1]);
+               intersections3.push_back(cell[2]);
+               intersections3.push_back(cell[3]);
+               return;
+           }
+       }
+    }
+}
+
 void model::drawIntersections2() {
     glColor3f(1,0,0); Point p1,p2,p3;
     for (int i = 0; i < intersections2.size(); i++) {
