@@ -179,6 +179,18 @@ std::vector<CGAL::Triangle_3<Kernel> > model::makeMap(Polyhedron poly)
     return triMap;
 }
 
+std::vector<std::vector<CGAL::Triangle_3<Kernel> > > model::makeMap(C3T3 c3t3)
+{
+    std::vector<std::vector<CGAL::Triangle_3<Kernel> > > toReturn;
+    std::vector<CGAL::Triangle_3<Kernel> > temp;
+    Tr t = c3t3.triangulation();
+    for (Tr::Finite_cells_iterator fIt = t.finite_cells_begin(); fIt != t.finite_cells_end(); ++fIt) {
+        temp = makeCellVec(*fIt);
+        toReturn.push_back(temp);
+    }
+    return toReturn;
+}
+
 Polyhedron model::volumePolyhedron()
 {
     polyhedron_builder<HDS> builder(c3t3);
@@ -243,6 +255,23 @@ CGAL::Triangle_3<Kernel> model::makeTriangle(Polyhedron::Facet_const_handle f)
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
     return Kernel::Triangle_3(p1,p2,p3);
+}
+
+std::vector<CGAL::Triangle_3<Kernel> > model::makeCellVec(Tr::Cell c)
+{
+    Point p1,p2,p3,p4;
+    p1 = c.vertex(0)->point();
+    p2 = c.vertex(1)->point();
+    p3 = c.vertex(2)->point();
+    p4 = c.vertex(3)->point();
+
+    std::vector<CGAL::Triangle_3<Kernel> > toReturn;
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p2,p3));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p3,p4));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p2,p4));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p2,p4,p3));
+
+    return toReturn;
 }
 
 bool model::generateVolumeMesh()

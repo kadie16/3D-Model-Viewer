@@ -14,6 +14,7 @@ public:
     void drawMe();
     void drawPoly(Polyhedron poly);
     CGAL::Triangle_3<Kernel> makeTriangle(Polyhedron::Facet_const_handle f);
+    std::vector<CGAL::Triangle_3<Kernel> > makeCellVec(Tr::Cell c);
     void drawTriangle(Polyhedron::Facet_const_handle f);
     bool generateVolumeMesh();
     void drawVolume();
