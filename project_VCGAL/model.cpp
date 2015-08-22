@@ -26,7 +26,7 @@ model::model(objLoad<HDS> objFile) {
     Vector vec(0.0,0.0,1.0);
     Point a(-0.2, 0.2, -0.2);
     Plane plane_query(a,vec);
-    makeMap(surface_poly);
+    surface_triMap = makeMap(surface_poly);
    // this->seekIntersections(plane_query);
     hasVol = false;
     volumeMode = false;
@@ -111,10 +111,10 @@ void model::seekIntersections(Plane plane_query)
 void model::seekIntersections2(Plane plane_query)
 {
     //clearIntersections();
-    for(int i=0; i < triMap.size(); i++) {
+    for(int i=0; i < surface_triMap.size(); i++) {
         /* If the triangle intersects the plane */
-        if (CGAL::do_intersect(plane_query, triMap[i])) {
-            intersections2.push_back(triMap[i]);
+        if (CGAL::do_intersect(plane_query, surface_triMap[i])) {
+            intersections2.push_back(surface_triMap[i]);
         }
     }
 }
@@ -169,13 +169,14 @@ void model::clearIntersections()
     intersections.clear();
 }
 
-void model::makeMap(Polyhedron poly)
+std::vector<CGAL::Triangle_3<Kernel> > model::makeMap(Polyhedron poly)
 {
+    std::vector<CGAL::Triangle_3<Kernel> > triMap;
     int i = 0;
     for (Polyhedron::Facet_const_iterator faceIter = poly.facets_begin(); faceIter != poly.facets_end(); ++faceIter) {
-        triMap[i] = makeTriangle(faceIter);
-        faceMap[i++] = &faceIter;
+        triMap.push_back(makeTriangle(faceIter));
     }
+    return triMap;
 }
 
 Polyhedron model::volumePolyhedron()

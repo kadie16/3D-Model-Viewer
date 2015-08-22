@@ -34,15 +34,15 @@ public:
     void drawIntersections();
     void drawIntersections2();
     void clearIntersections();
-    void makeMap(Polyhedron poly);
-
+    std::vector<CGAL::Triangle_3<Kernel> > makeMap(Polyhedron poly);
+    std::vector<std::vector<CGAL::Triangle_3<Kernel> > > makeMap(C3T3 c3t3);
     Polyhedron volumePolyhedron();
     bool hasVolume();
     bool toggleMode();
 
 private:
-    std::map<int , CGAL::Triangle_3<Kernel> > triMap;
-    std::map<int ,Polyhedron::Facet_const_handle*> faceMap;
+    std::vector<CGAL::Triangle_3<Kernel> > surface_triMap;
+    std::vector<std::vector<CGAL::Triangle_3<Kernel> > > volume_triMap;
     objLoad<HDS> *objPtr = 0;
     Polyhedron volume_poly;
     Polyhedron surface_poly;
