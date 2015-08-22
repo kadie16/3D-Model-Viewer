@@ -26,7 +26,8 @@ model::model(objLoad<HDS> objFile) {
     Vector vec(0.0,0.0,1.0);
     Point a(-0.2, 0.2, -0.2);
     Plane plane_query(a,vec);
-    this->seekIntersections(plane_query);
+    makeMap(surface_poly);
+   // this->seekIntersections(plane_query);
     hasVol = false;
     volumeMode = false;
 }
@@ -107,11 +108,29 @@ void model::seekIntersections(Plane plane_query)
     this->drawIntersections();
 }
 
+void model::seekIntersections2(Plane plane_query)
+{
+    //clearIntersections();
+    for(int i=0; i < triMap.size(); i++) {
+        /* If the triangle intersects the plane */
+        if (CGAL::do_intersect(plane_query, triMap[i])) {
+            intersections2.push_back(faceMap[i]);
+        }
+    }
+}
+
+void model::drawIntersections2() {
+    glColor3f(1,0,0);
+    for (int i = 0; i < intersections2.size(); i++) {
+        drawTriangle(*intersections2.at(i));
+    }
+}
+
 void model::drawIntersections()
 {
     for (std::list<Plane_intersection>::iterator it = intersections.begin();it !=intersections.end(); it++) {
         Plane_intersection p = *it;
-        std::cout << "first: " << (p->first) << std::endl;
+        //std::cout << "first: " << (p->first) << std::endl;
         if(boost::get<Segment>(&(p->first))) {
             //drawTriangle((p->second));
             //std::cout << "Segment" << p->second->hx() << std::endl;
@@ -136,6 +155,20 @@ void model::drawIntersections()
         } else {
             std::cout << "Other" << std::endl;
         }
+    }
+}
+
+void model::clearIntersections()
+{
+    intersections.clear();
+}
+
+void model::makeMap(Polyhedron poly)
+{
+    int i = 0;
+    for (Polyhedron::Facet_const_iterator faceIter = poly.facets_begin(); faceIter != poly.facets_end(); ++faceIter) {
+        triMap[i] = makeTriangle(faceIter);
+        faceMap[i++] = &faceIter;
     }
 }
 
@@ -171,20 +204,38 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     CGAL::Vector_3<Kernel> n1, n2, n3;
     CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
+    std::cout << "in draw" << std::endl;
     h = f->halfedge();
-    n1 = h->vertex()->normal();
-    n2 = h->next()->vertex()->normal();
-    n3 = h->prev()->vertex()->normal();
+    std::cout << "got halfedge" << std::endl;
+   // n1 = h->vertex()->normal();
+   // n2 = h->next()->vertex()->normal();
+   // n3 = h->prev()->vertex()->normal();
+    p1 = h->vertex()->point();
+    std::cout << "got p1" << std::endl;
+    p2 = h->next()->vertex()->point();
+    std::cout << "p2" << std::endl;
+    p3 = h->prev()->vertex()->point();
+    std::cout << "p3" << std::endl;
+    //glColor3f(1.0f,0.0f,0.0f);
+   // glNormal3f(n1.hx(), n1.hy(), n1.hz());
+    glVertex3f(p1.hx(), p1.hy(), p1.hz());
+   // glNormal3f(n2.hx(), n2.hy(), n2.hz());
+    glVertex3f(p2.hx(), p2.hy(), p2.hz());
+    //glNormal3f(n3.hx(), n3.hy(), n3.hz());
+    glVertex3f(p3.hx(), p3.hy(), p3.hz());
+    std::cout << "drawsuccess" << std::endl;
+}
+
+CGAL::Triangle_3<Kernel> model::makeTriangle(Polyhedron::Facet_const_handle f)
+{
+
+    CGAL::Point_3<Kernel> p1,p2,p3,p4;
+    Polyhedron::Halfedge_const_handle h;
+    h = f->halfedge();
     p1 = h->vertex()->point();
     p2 = h->next()->vertex()->point();
     p3 = h->prev()->vertex()->point();
-    //glColor3f(1.0f,0.0f,0.0f);
-    glNormal3f(n1.hx(), n1.hy(), n1.hz());
-    glVertex3f(p1.hx(), p1.hy(), p1.hz());
-    glNormal3f(n2.hx(), n2.hy(), n2.hz());
-    glVertex3f(p2.hx(), p2.hy(), p2.hz());
-    glNormal3f(n3.hx(), n3.hy(), n3.hz());
-    glVertex3f(p3.hx(), p3.hy(), p3.hz());
+    return Kernel::Triangle_3(p1,p2,p3);
 }
 
 bool model::generateVolumeMesh()

@@ -48,7 +48,6 @@ void GLWidget::initializeGL(){
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-
 }
 
 void GLWidget::paintGL(){
@@ -57,9 +56,7 @@ void GLWidget::paintGL(){
     int xNow = x;
     int yNow = y;
     /****** intersections ********/
-    Vector vec(0.0,0.0,1.0);
-    Point a(-0.2, -0.2, -0.2);
-    Plane plane_query(a,vec);
+
     /* If a File is Loaded*/
     if(objPtr)
    {
@@ -102,8 +99,8 @@ void GLWidget::paintGL(){
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-        m.drawMe();
-        m.seekIntersections(plane_query);
+        //m.drawMe();
+        m.drawIntersections2();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -194,11 +191,16 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     /* TO DO , CLEAN UP UNUSED OBJFILES */
     frameTimer.restart();
     frameCount = 0;
-    model m2(objFile);
-    m = m2;
+    m = model(objFile);
+   // m = m2;
     cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
+
+    Vector vec(0.0,0.0,1.0);
+    Point a(-0.2, -0.2, -0.2);
+    Plane plane_query(a,vec);
+    m.seekIntersections2(plane_query);
 }
 
 void GLWidget::grabColor(double r, double g, double b)
