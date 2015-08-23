@@ -131,18 +131,26 @@ void model::seekIntersections3(Plane plane_query)
                intersections3.push_back(cell[1]);
                intersections3.push_back(cell[2]);
                intersections3.push_back(cell[3]);
-               return;
+               break;
            }
        }
     }
 }
 
 void model::drawIntersections2() {
-    glColor3f(1,0,0); Point p1,p2,p3;
-    for (int i = 0; i < intersections2.size(); i++) {
-        p1 = intersections2.at(i).vertex(0);
-        p2 = intersections2.at(i).vertex(1);
-        p3 = intersections2.at(i).vertex(2);
+    std::vector<CGAL::Triangle_3<Kernel> >* currentIntersections;
+    if(volumeMode) {
+        currentIntersections = &intersections3;
+        glColor3f(0,0,1);
+    } else {
+        currentIntersections = &intersections2;
+        glColor3f(1,0,0);
+    }
+    Point p1,p2,p3;
+    for (int i = 0; i < currentIntersections->size(); i++) {
+        p1 = currentIntersections->at(i).vertex(0);
+        p2 = currentIntersections->at(i).vertex(1);
+        p3 = currentIntersections->at(i).vertex(2);
         glBegin(GL_TRIANGLES);
         glColor3f(1,0,0);
         drawTriangle(p1,p2,p3);
@@ -301,6 +309,7 @@ bool model::generateVolumeMesh()
     try {
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
         this->volumePolyhedron();
+        volume_triMap = makeMap(c3t3);
         hasVol = true;
     } catch (...) {
         return false;

@@ -297,6 +297,10 @@ bool GLWidget::generateVolumeMesh()
     try {
         std::cout << "made domain correctly" << std::endl;
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
+        Vector vec(0.0,0.0,1.0);
+        Point a(-0.2, -0.2, -0.2);
+        Plane plane_query(a,vec);
+        m.seekIntersections3(plane_query);
 
     } catch (...) {
         return false;
