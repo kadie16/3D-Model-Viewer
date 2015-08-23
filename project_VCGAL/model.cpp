@@ -108,16 +108,21 @@ void model::seekIntersections(Plane plane_query)
     this->drawIntersections();
 }
 
+triPair model::makeTriPair(CGAL::Triangle_3<Kernel> tri) {
+    return triPair(tri, CGAL::normal(tri.vertex(2), tri.vertex(1), tri.vertex(3)));
+}
+
 void model::seekIntersections2(Plane plane_query)
 {
     //clearIntersections();
     for(int i=0; i < surface_triMap.size(); i++) {
         /* If the triangle intersects the plane */
         if (CGAL::do_intersect(plane_query, surface_triMap[i])) {
-            intersections2.push_back(surface_triMap[i]);
+            intersections2.push_back(makeTriPair(surface_triMap[i]));
         }
     }
 }
+
 
 void model::seekIntersections3(Plane plane_query)
 {
@@ -127,10 +132,11 @@ void model::seekIntersections3(Plane plane_query)
        for (int k = 0; k < 4; k++) {
            if (CGAL::do_intersect(plane_query, cell[k])) {
                /* save this cell and stop checking it*/
-               intersections3.push_back(cell[0]);
-               intersections3.push_back(cell[1]);
-               intersections3.push_back(cell[2]);
-               intersections3.push_back(cell[3]);
+               typedef std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > pair;
+               intersections3.push_back(makeTriPair(cell[0]));
+               intersections3.push_back(makeTriPair(cell[1]));
+               intersections3.push_back(makeTriPair(cell[2]));
+               intersections3.push_back(makeTriPair(cell[3]));
                break;
            }
        }
@@ -138,7 +144,8 @@ void model::seekIntersections3(Plane plane_query)
 }
 
 void model::drawIntersections2() {
-    std::vector<CGAL::Triangle_3<Kernel> >* currentIntersections;
+    std::vector<std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > >* currentIntersections;
+    CGAL::Vector_3<Kernel>* n;
     if(volumeMode) {
         currentIntersections = &intersections3;
         glColor3f(0,0,1);
@@ -147,16 +154,17 @@ void model::drawIntersections2() {
         glColor3f(1,0,0);
     }
     Point p1,p2,p3;
-
+    glBegin(GL_TRIANGLES);
     for (int i = 0; i < currentIntersections->size(); i++) {
-        p1 = currentIntersections->at(i).vertex(0);
-        p2 = currentIntersections->at(i).vertex(1);
-        p3 = currentIntersections->at(i).vertex(2);
-        glBegin(GL_TRIANGLES);
+        p1 = currentIntersections->at(i).first.vertex(0);
+        p2 = currentIntersections->at(i).first.vertex(1);
+        p3 = currentIntersections->at(i).first.vertex(2);
+        n =  &currentIntersections->at(i).second;
        // glColor3f(1,0,0);
+        glNormal3f(n->hx(), n->hy(), n->hz());
         drawTriangle(p1,p2,p3);
-        glEnd();
     }
+    glEnd();
 }
 
 void model::drawIntersections()
@@ -347,10 +355,9 @@ void model::drawVolume()
     glEnd();
 }
 
-void model::drawTriangle(Point p1, Point p2, Point p3)
-{
-    CGAL::Vector_3<Kernel> n = CGAL::normal(p2,p1,p3);
-    glNormal3f(n.hx(), n.hy(), n.hz());
+void model::drawTriangle(Point p1, Point p2, Point p3) {
+    //CGAL::Vector_3<Kernel> n = CGAL::normal(p2,p1,p3);
+    //glNormal3f(n.hx(), n.hy(), n.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());

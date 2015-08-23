@@ -38,6 +38,7 @@ public:
     void clearIntersections();
     std::vector<CGAL::Triangle_3<Kernel> > makeMap(Polyhedron poly);
     std::vector<std::vector<CGAL::Triangle_3<Kernel> > > makeMap(C3T3 c3t3);
+    triPair makeTriPair(CGAL::Triangle_3<Kernel> tri);
     Polyhedron volumePolyhedron();
     bool hasVolume();
     bool toggleMode();
@@ -60,8 +61,9 @@ private:
     std::vector<float> maxCoords;
     std::vector<float> minCoords;
     std::vector<float> currTrans;
-    std::vector<CGAL::Triangle_3<Kernel> > intersections2;
-    std::vector<CGAL::Triangle_3<Kernel> > intersections3;
+    std::vector<std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > > intersections2;
+    std::vector<std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > > intersections3;
+
     bool volumeMode;
     bool hasVol;
 };
