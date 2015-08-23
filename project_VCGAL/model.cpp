@@ -147,12 +147,13 @@ void model::drawIntersections2() {
         glColor3f(1,0,0);
     }
     Point p1,p2,p3;
+
     for (int i = 0; i < currentIntersections->size(); i++) {
         p1 = currentIntersections->at(i).vertex(0);
         p2 = currentIntersections->at(i).vertex(1);
         p3 = currentIntersections->at(i).vertex(2);
         glBegin(GL_TRIANGLES);
-        glColor3f(1,0,0);
+       // glColor3f(1,0,0);
         drawTriangle(p1,p2,p3);
         glEnd();
     }
@@ -252,21 +253,21 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     std::cout << "in draw" << std::endl;
     h = f->halfedge();
     std::cout << "got halfedge" << std::endl;
-   // n1 = h->vertex()->normal();
-   // n2 = h->next()->vertex()->normal();
-   // n3 = h->prev()->vertex()->normal();
+    n1 = h->vertex()->normal();
+    n2 = h->next()->vertex()->normal();
+    n3 = h->prev()->vertex()->normal();
     p1 = h->vertex()->point();
     std::cout << "got p1" << std::endl;
     p2 = h->next()->vertex()->point();
     std::cout << "p2" << std::endl;
     p3 = h->prev()->vertex()->point();
     std::cout << "p3" << std::endl;
-    //glColor3f(1.0f,0.0f,0.0f);
-   // glNormal3f(n1.hx(), n1.hy(), n1.hz());
+
+    glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
-   // glNormal3f(n2.hx(), n2.hy(), n2.hz());
+    glNormal3f(n2.hx(), n2.hy(), n2.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
-    //glNormal3f(n3.hx(), n3.hy(), n3.hz());
+    glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
     std::cout << "drawsuccess" << std::endl;
 }
@@ -348,6 +349,8 @@ void model::drawVolume()
 
 void model::drawTriangle(Point p1, Point p2, Point p3)
 {
+    CGAL::Vector_3<Kernel> n = CGAL::normal(p2,p1,p3);
+    glNormal3f(n.hx(), n.hy(), n.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());

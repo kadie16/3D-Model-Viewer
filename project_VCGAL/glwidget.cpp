@@ -99,7 +99,7 @@ void GLWidget::paintGL(){
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-        //m.drawMe();
+        m.drawMe();
         m.drawIntersections2();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
