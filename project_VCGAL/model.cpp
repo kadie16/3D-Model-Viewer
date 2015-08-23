@@ -108,8 +108,8 @@ void model::seekIntersections(Plane plane_query)
     this->drawIntersections();
 }
 
-triPair model::makeTriPair(CGAL::Triangle_3<Kernel> tri) {
-    return triPair(tri, CGAL::normal(tri.vertex(2), tri.vertex(1), tri.vertex(3)));
+Tri_Pair model::triPair(CGAL::Triangle_3<Kernel> tri) {
+    return Tri_Pair(tri, CGAL::normal(tri.vertex(2), tri.vertex(1), tri.vertex(3)));
 }
 
 void model::seekIntersections2(Plane plane_query)
@@ -118,7 +118,7 @@ void model::seekIntersections2(Plane plane_query)
     for(int i=0; i < surface_triMap.size(); i++) {
         /* If the triangle intersects the plane */
         if (CGAL::do_intersect(plane_query, surface_triMap[i])) {
-            intersections2.push_back(makeTriPair(surface_triMap[i]));
+            intersections2.push_back(triPair(surface_triMap[i]));
         }
     }
 }
@@ -132,11 +132,10 @@ void model::seekIntersections3(Plane plane_query)
        for (int k = 0; k < 4; k++) {
            if (CGAL::do_intersect(plane_query, cell[k])) {
                /* save this cell and stop checking it*/
-               typedef std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > pair;
-               intersections3.push_back(makeTriPair(cell[0]));
-               intersections3.push_back(makeTriPair(cell[1]));
-               intersections3.push_back(makeTriPair(cell[2]));
-               intersections3.push_back(makeTriPair(cell[3]));
+               intersections3.push_back(triPair(cell[0]));
+               intersections3.push_back(triPair(cell[1]));
+               intersections3.push_back(triPair(cell[2]));
+               intersections3.push_back(triPair(cell[3]));
                break;
            }
        }
@@ -301,10 +300,10 @@ std::vector<CGAL::Triangle_3<Kernel> > model::makeCellVec(Tr::Cell c)
     p4 = c.vertex(3)->point();
 
     std::vector<CGAL::Triangle_3<Kernel> > toReturn;
-    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p2,p3));
-    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p3,p4));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p3,p2));
     toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p2,p4));
-    toReturn.push_back(CGAL::Triangle_3<Kernel>(p2,p4,p3));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p1,p4,p3));
+    toReturn.push_back(CGAL::Triangle_3<Kernel>(p2,p3,p4));
 
     return toReturn;
 }

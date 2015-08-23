@@ -38,7 +38,7 @@ public:
     void clearIntersections();
     std::vector<CGAL::Triangle_3<Kernel> > makeMap(Polyhedron poly);
     std::vector<std::vector<CGAL::Triangle_3<Kernel> > > makeMap(C3T3 c3t3);
-    triPair makeTriPair(CGAL::Triangle_3<Kernel> tri);
+    Tri_Pair triPair(CGAL::Triangle_3<Kernel> tri);
     Polyhedron volumePolyhedron();
     bool hasVolume();
     bool toggleMode();

@@ -136,6 +136,6 @@ typedef boost::optional< Tree::Intersection_and_primitive_id<Segment>::Type > Se
 typedef boost::optional< Tree::Intersection_and_primitive_id<Plane>::Type > Plane_intersection;
 typedef Tree::Primitive_id Primitive_id;
 
-typedef std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > triPair;
+typedef std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > Tri_Pair;
 
 #endif // MYITEMS
