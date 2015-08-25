@@ -68,18 +68,37 @@ void GLWidget::paintGL(){
         cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        processModelControls(m, dx, dy);
+        /* CULLING */
+        if (cullingOK)
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+        }
+        else
+            glDisable(GL_CULL_FACE);
+        /* ROTATION */
+        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+        {
+            this->drag2Rotate(dx,dy, m);
+        }
+        /* TRANSLATION */
+        else if (mouseHeld && translateOK && !rotationOK)
+        {
+            this->drag2Translate(dx,dy);
+        }
+        /* ZOOM */
+        else if (mouseHeld && zoomOK) {
+            this->drag2Zoom(dy);
+        }
         /* Apply Current Position */
         mat.rotate(currQ);
-        glMatrixMode(GL_MODELVIEW);
         m.translate(0,0); // applies current translation
-        //cam.moveToCenter();
         /* Translate so rotation occurs about model center */
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
         m.drawMe();
-        //m.drawIntersections2();
+        m.drawIntersections();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -179,7 +198,8 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     Vector vec(0.5,0.5,0.5);
     Point a(m.center().at(0), m.center().at(1), m.center().at(2));
     Plane plane_query(a,vec);
-    m.seekIntersections2(plane_query);
+    m.seekIntersections(plane_query);
+    //m.seekIntersections2(plane_query);
 }
 
 void GLWidget::grabColor(double r, double g, double b)
@@ -260,7 +280,7 @@ void GLWidget::processModelControls(model mod, float dx, float dy)
     /* TRANSLATION */
     else if (mouseHeld && translateOK && !rotationOK)
     {
-        this->drag2Translate(dx,dy, mod);
+        this->drag2Translate(dx,dy);
     }
     /* ZOOM */
     else if (mouseHeld && zoomOK) {
@@ -268,13 +288,13 @@ void GLWidget::processModelControls(model mod, float dx, float dy)
     }
 }
 
-void GLWidget::drag2Translate(float dx, float dy, model mod)
+void GLWidget::drag2Translate(float dx, float dy)
 {
     float xT,yT;
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    mod.translate(xT, yT);
+    m.translate(xT, yT);
 }
 
 void GLWidget::drag2Zoom(float dy)

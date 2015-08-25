@@ -207,7 +207,7 @@ void model::drawIntersections()
         if(boost::get<Segment>(&(p->first))) {
             //drawTriangle((p->second));
             //std::cout << "Segment" << p->second->hx() << std::endl;
-                glLineWidth(10);
+                glLineWidth(4);
                 glBegin(GL_LINES);
                 glColor3f(1,0,0);
                 Point p1 = boost::get<Segment>(&(p->first))->point(0); //vertex(0);
@@ -304,7 +304,6 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glNormal3f(n3.hx(), n3.hy(), n3.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());
-    std::cout << "drawsuccess" << std::endl;
 }
 
 CGAL::Triangle_3<Kernel> model::makeTriangle(Polyhedron::Facet_const_handle f)
@@ -363,7 +362,6 @@ void model::drawVolume()
     Tr t;
     t = c3t3.triangulation();
     glBegin(GL_TRIANGLES);
-    //glColor3f(1,0,0);
     for (Tr::Finite_cells_iterator fIt = t.finite_cells_begin(); fIt != t.finite_cells_end(); ++fIt) {
         p1 = fIt->vertex(0)->point();
         p2 = fIt->vertex(1)->point();
@@ -387,8 +385,7 @@ void model::drawVolume()
 }
 
 void model::drawTriangle(Point p1, Point p2, Point p3) {
-    //CGAL::Vector_3<Kernel> n = CGAL::normal(p2,p1,p3);
-    //glNormal3f(n.hx(), n.hy(), n.hz());
+
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
     glVertex3f(p2.hx(), p2.hy(), p2.hz());
     glVertex3f(p3.hx(), p3.hy(), p3.hz());

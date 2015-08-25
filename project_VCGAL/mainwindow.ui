@@ -104,11 +104,14 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>101</width>
-              <height>131</height>
+              <width>111</width>
+              <height>120</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
              <item>
               <widget class="QToolButton" name="toolButton_3">
                <property name="sizePolicy">
@@ -141,6 +144,30 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="checkBox_2">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Intersections </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_3">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Model </string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QLabel" name="volStatus">
                <property name="font">
                 <font>
@@ -149,30 +176,6 @@
                </property>
                <property name="text">
                 <string>Volume Mesh Status</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkBox_2">
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Selection Mode</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDialogButtonBox" name="buttonBox">
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                </font>
-               </property>
-               <property name="standardButtons">
-                <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
                </property>
               </widget>
              </item>
@@ -248,49 +251,6 @@
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QGroupBox" name="groupBox_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                </font>
-               </property>
-               <property name="title">
-                <string>Item: </string>
-               </property>
-               <widget class="QSpinBox" name="spinBox">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>20</y>
-                  <width>91</width>
-                  <height>25</height>
-                 </rect>
-                </property>
-                <property name="readOnly">
-                 <bool>false</bool>
-                </property>
-                <property name="specialValueText">
-                 <string>0</string>
-                </property>
-                <property name="correctionMode">
-                 <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-                </property>
-                <property name="maximum">
-                 <number>5</number>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-               </widget>
-              </widget>
-             </item>
              <item>
               <widget class="QGroupBox" name="groupBox">
                <property name="sizePolicy">

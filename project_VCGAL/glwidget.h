@@ -36,7 +36,7 @@ public:
     void mouseMoveEvent(QMouseEvent *e);
     QQuaternion drag2Rotate(float dx, float dy, model mod);
     void processModelControls(model mod, float dx, float dy);
-    void drag2Translate(float dx, float dy, model mod);
+    void drag2Translate(float dx, float dy);
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();
