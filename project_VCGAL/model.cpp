@@ -6,28 +6,51 @@ model::model()
 
 }
 
+model::model(float x, float y, float dx, float dy)
+{
+   Polyhedron p;
+   Point p1(x,y,0);
+   Point p2(x+dx, y, 0);
+   Point p3(x+dx, y+dy, 0);
+   Point p4(x, y+dy, 0);
+   surface_poly.make_triangle(p1,p2,p3);
+   surface_poly.make_triangle(p2,p3,p4);
+   m_center.push_back(x+dx/2);
+   m_center.push_back(y+dy/2);
+   m_radius = sqrt(dx*dx + dy*dy);
+   maxCoords.push_back((x > x + dx)?x:x+dx);
+   maxCoords.push_back((y > y + dy)?y:y+dy);
+   minCoords.push_back((x < x + dx)?x:x+dx);
+   minCoords.push_back((y > y + dy)?y:y+dy);
+   red = 0.0f;
+   green = 0.0f;
+   blue = 0.75f;
+   currTrans.assign(2,0);
+   surface_poly = computeNormals(surface_poly);
+   isPlane = true;
+   hasVol = false;
+   volumeMode = false;
+}
+
 model::model(objLoad<HDS> objFile) {
     objPtr = &objFile;
-
     surface_poly.delegate(objFile);
     Poly_copy polyhedron_copy_modifier(surface_poly);
     //poly2.delegate(objFile);
     mesh.delegate(polyhedron_copy_modifier);
-    //nefPoly = Nef_Polyhedron(polyhedron);
     m_center = objPtr->findCenter();
     m_radius = objPtr->findRadius();
     maxCoords = objPtr->getMaxCoords();
     minCoords = objPtr->getMinCoords();
-    red = 0.75;
-    green = 0.75;
-    blue = 0.75;
+    red = 0.75f;
+    green = 0.75f;
+    blue = 0.75f;
     currTrans.assign(2,0);
     surface_poly = computeNormals(surface_poly);
     Vector vec(0.0,0.0,1.0);
     Point a(-0.2, 0.2, -0.2);
     Plane plane_query(a,vec);
     surface_triMap = makeMap(surface_poly);
-   // this->seekIntersections(plane_query);
     hasVol = false;
     volumeMode = false;
 }
@@ -97,15 +120,20 @@ void model::moveToCenter()
 
 void model::seekIntersections(Plane plane_query)
 {
-    Polyhedron* _polyhedron;
-    if (volumeMode){
-        std::cout << "volume intersections" << std::endl;
-         _polyhedron = &volume_poly;}
-    else{
-        _polyhedron = &surface_poly;}
-    Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
-    tree.all_intersections(plane_query,std::back_inserter(intersections));
-    this->drawIntersections();
+    if (!isPlane) {
+        this->clearIntersections();
+        Polyhedron* _polyhedron;
+        if (volumeMode){
+            std::cout << "volume intersections" << std::endl;
+            _polyhedron = &volume_poly;
+        }
+        else {
+            _polyhedron = &surface_poly;
+        }
+        Tree tree(faces(*_polyhedron).first, faces(*_polyhedron).second, *_polyhedron);
+        tree.all_intersections(plane_query,std::back_inserter(intersections));
+        this->drawIntersections();
+    }
 }
 
 Tri_Pair model::triPair(CGAL::Triangle_3<Kernel> tri) {
@@ -114,11 +142,13 @@ Tri_Pair model::triPair(CGAL::Triangle_3<Kernel> tri) {
 
 void model::seekIntersections2(Plane plane_query)
 {
-    //clearIntersections();
-    for(int i=0; i < surface_triMap.size(); i++) {
-        /* If the triangle intersects the plane */
-        if (CGAL::do_intersect(plane_query, surface_triMap[i])) {
-            intersections2.push_back(triPair(surface_triMap[i]));
+    if (!isPlane) {
+        intersections2.clear();
+        for(int i=0; i < surface_triMap.size(); i++) {
+            /* If the triangle intersects the plane */
+            if (CGAL::do_intersect(plane_query, surface_triMap[i])) {
+                intersections2.push_back(triPair(surface_triMap[i]));
+            }
         }
     }
 }
@@ -126,19 +156,22 @@ void model::seekIntersections2(Plane plane_query)
 
 void model::seekIntersections3(Plane plane_query)
 {
-    std::vector<CGAL::Triangle_3<Kernel> > cell;
-    for (int i=0; i < volume_triMap.size(); i++) {
-       cell = volume_triMap[i];
-       for (int k = 0; k < 4; k++) {
-           if (CGAL::do_intersect(plane_query, cell[k])) {
-               /* save this cell and stop checking it*/
-               intersections3.push_back(triPair(cell[0]));
-               intersections3.push_back(triPair(cell[1]));
-               intersections3.push_back(triPair(cell[2]));
-               intersections3.push_back(triPair(cell[3]));
-               break;
-           }
-       }
+    if (!isPlane) {
+        intersections3.clear();
+        std::vector<CGAL::Triangle_3<Kernel> > cell;
+        for (int i=0; i < volume_triMap.size(); i++) {
+            cell = volume_triMap[i];
+            for (int k = 0; k < 4; k++) {
+                if (CGAL::do_intersect(plane_query, cell[k])) {
+                    /* save this cell and stop checking it*/
+                    intersections3.push_back(triPair(cell[0]));
+                    intersections3.push_back(triPair(cell[1]));
+                    intersections3.push_back(triPair(cell[2]));
+                    intersections3.push_back(triPair(cell[3]));
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -257,18 +290,13 @@ void model::drawTriangle(Polyhedron::Facet_const_handle f)
     CGAL::Vector_3<Kernel> n1, n2, n3;
     CGAL::Point_3<Kernel> p1,p2,p3,p4;
     Polyhedron::Halfedge_const_handle h;
-    std::cout << "in draw" << std::endl;
     h = f->halfedge();
-    std::cout << "got halfedge" << std::endl;
     n1 = h->vertex()->normal();
     n2 = h->next()->vertex()->normal();
     n3 = h->prev()->vertex()->normal();
     p1 = h->vertex()->point();
-    std::cout << "got p1" << std::endl;
     p2 = h->next()->vertex()->point();
-    std::cout << "p2" << std::endl;
     p3 = h->prev()->vertex()->point();
-    std::cout << "p3" << std::endl;
 
     glNormal3f(n1.hx(), n1.hy(), n1.hz());
     glVertex3f(p1.hx(), p1.hy(), p1.hz());
@@ -311,10 +339,14 @@ std::vector<CGAL::Triangle_3<Kernel> > model::makeCellVec(Tr::Cell c)
 bool model::generateVolumeMesh()
 {
     using namespace CGAL::parameters;
+    //Feature_Mesh_Domain f_domain(mesh);
+    //f_domain.detect_features();
     Mesh_Domain domain(surface_poly);
+    //Feature_Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,cell_radius_edge_ratio=2, cell_size=0.1);
     Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,
-                          cell_radius_edge_ratio=2, cell_size=0.1);
+                           cell_radius_edge_ratio=2, cell_size=0.1);
     try {
+        //Feature_C3T3 f_c3t3 = CGAL::make_mesh_3<Feature_C3T3>(f_domain, criteria);
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
         this->volumePolyhedron();
         volume_triMap = makeMap(c3t3);
@@ -331,24 +363,24 @@ void model::drawVolume()
     Tr t;
     t = c3t3.triangulation();
     glBegin(GL_TRIANGLES);
-    glColor3f(1,0,0);
+    //glColor3f(1,0,0);
     for (Tr::Finite_cells_iterator fIt = t.finite_cells_begin(); fIt != t.finite_cells_end(); ++fIt) {
         p1 = fIt->vertex(0)->point();
         p2 = fIt->vertex(1)->point();
         p3 = fIt->vertex(2)->point();
         p4 = fIt->vertex(3)->point();
-        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p2,p3);
+        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p3,p2);
         glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p1,p2,p3);
-        n = CGAL::normal(p1,p3,p4);
-        glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p1,p3,p4);
-        n = CGAL::normal(p1,p4,p2);
+        drawTriangle(p1,p3,p2);
+        n = CGAL::normal(p1,p2,p4);
         glNormal3f(n.hx(), n.hy(), n.hz());
         drawTriangle(p1,p2,p4);
-        n = CGAL::normal(p2,p4,p3);
+        n = CGAL::normal(p1,p4,p3);
         glNormal3f(n.hx(), n.hy(), n.hz());
-        drawTriangle(p2,p4,p3);
+        drawTriangle(p1,p4,p3);
+        n = CGAL::normal(p2,p3,p4);
+        glNormal3f(n.hx(), n.hy(), n.hz());
+        drawTriangle(p2,p3,p4);
 
     }
     glEnd();
@@ -378,4 +410,5 @@ bool model::toggleMode() {
         volumeMode = !volumeMode;
     else
         volumeMode = false;
+    return volumeMode;
 }

@@ -34,8 +34,9 @@ public:
     void grabColor(double r, double g, double b);
     void resizeGL(int w, int h);
     void mouseMoveEvent(QMouseEvent *e);
-    QQuaternion drag2Rotate(float dx, float dy);
-    void drag2Translate(float dx, float dy);
+    QQuaternion drag2Rotate(float dx, float dy, model mod);
+    void processModelControls(model mod, float dx, float dy);
+    void drag2Translate(float dx, float dy, model mod);
     void drag2Zoom(float dy);
     int giveFPS();
     bool generateVolumeMesh();

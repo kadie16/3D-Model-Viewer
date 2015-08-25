@@ -18,14 +18,14 @@ SOURCES += main.cpp\
     testqstring.cpp \
     camera.cpp \
     objload.cpp \
-    model.cpp \
+    model.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
     camera.h \
     objload.h \
     myitems.h \
-    model.h \
+    model.h
 
 FORMS    += mainwindow.ui
 

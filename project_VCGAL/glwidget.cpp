@@ -68,28 +68,7 @@ void GLWidget::paintGL(){
         cam.setZoom(zoomF);
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
-        /* CULLING */
-        if (cullingOK)
-        {
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
-        }
-        else
-            glDisable(GL_CULL_FACE);
-        /* ROTATION */
-        if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
-        {
-            this->drag2Rotate(dx,dy);
-        }
-        /* TRANSLATION */
-        else if (mouseHeld && translateOK && !rotationOK)
-        {
-            this->drag2Translate(dx,dy);
-        }
-        /* ZOOM */
-        else if (mouseHeld && zoomOK) {
-            this->drag2Zoom(dy);
-        }
+        processModelControls(m, dx, dy);
         /* Apply Current Position */
         mat.rotate(currQ);
         glMatrixMode(GL_MODELVIEW);
@@ -99,8 +78,8 @@ void GLWidget::paintGL(){
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-        //m.drawMe();
-        m.drawIntersections2();
+        m.drawMe();
+        //m.drawIntersections2();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -197,8 +176,8 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
 
-    Vector vec(0.0,0.0,1.0);
-    Point a(-0.2, -0.2, -0.2);
+    Vector vec(0.5,0.5,0.5);
+    Point a(m.center().at(0), m.center().at(1), m.center().at(2));
     Plane plane_query(a,vec);
     m.seekIntersections2(plane_query);
 }
@@ -250,7 +229,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e){
     this->y = e->y();
 }
 
-QQuaternion GLWidget::drag2Rotate(float dx, float dy)
+QQuaternion GLWidget::drag2Rotate(float dx, float dy, model mod)
 {
     /* Define Axis of Rotation */
     axisOfRotation.setX(-dy);
@@ -263,13 +242,39 @@ QQuaternion GLWidget::drag2Rotate(float dx, float dy)
     return currQ;
 }
 
-void GLWidget::drag2Translate(float dx, float dy)
+void GLWidget::processModelControls(model mod, float dx, float dy)
+{
+    /* CULLING */
+    if (cullingOK)
+    {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+    }
+    else
+        glDisable(GL_CULL_FACE);
+    /* ROTATION */
+    if (mouseHeld && rotationOK && !translateOK && (dx!=0 || dy!=0))
+    {
+        this->drag2Rotate(dx,dy, mod);
+    }
+    /* TRANSLATION */
+    else if (mouseHeld && translateOK && !rotationOK)
+    {
+        this->drag2Translate(dx,dy, mod);
+    }
+    /* ZOOM */
+    else if (mouseHeld && zoomOK) {
+        this->drag2Zoom(dy);
+    }
+}
+
+void GLWidget::drag2Translate(float dx, float dy, model mod)
 {
     float xT,yT;
     /* Adjust Magnitude of Translation to Dimensions of Model */
     xT = (maxCoords.at(0) - minCoords.at(0))*dx/(scale*1*this->width());
     yT = -(maxCoords.at(1) - minCoords.at(1))*dy/(scale*1*this->height());
-    m.translate(xT, yT);
+    mod.translate(xT, yT);
 }
 
 void GLWidget::drag2Zoom(float dy)
@@ -298,7 +303,7 @@ bool GLWidget::generateVolumeMesh()
         std::cout << "made domain correctly" << std::endl;
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
         Vector vec(0.0,0.0,1.0);
-        Point a(-0.2, -0.2, -0.2);
+        Point a(0.2, 0.2, 0.2);
         Plane plane_query(a,vec);
         m.seekIntersections3(plane_query);
 

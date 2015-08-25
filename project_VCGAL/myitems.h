@@ -106,6 +106,7 @@ typedef CGAL::Mesh_polyhedron_3<IGT>::type Mesh_Polyhedron;
 /* With Features */
 typedef CGAL::Polyhedral_mesh_domain_with_features_3<IGT, Mesh_Polyhedron> Feature_Mesh_Domain;
 typedef CGAL::Mesh_triangulation_3<Feature_Mesh_Domain, IGT>::type Feature_Tr;
+typedef CGAL::Mesh_criteria_3<Feature_Tr> Feature_Mesh_Criteria;
 typedef CGAL::Mesh_complex_3_in_triangulation_3<Feature_Tr,
                                                 Feature_Mesh_Domain::Corner_index,
                                                 Feature_Mesh_Domain::Curve_segment_index> Feature_C3T3;

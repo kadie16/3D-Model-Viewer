@@ -7,6 +7,7 @@ typedef Polyhedron::HalfedgeDS HDS;
 class model {
 public:
     model();
+    model(float x, float y, float dx, float dy);
     model(objLoad<HDS> objFile);
     Polyhedron computeNormals(Polyhedron poly);
     Polyhedron poly();
@@ -63,7 +64,7 @@ private:
     std::vector<float> currTrans;
     std::vector<std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > > intersections2;
     std::vector<std::pair<CGAL::Triangle_3<Kernel>,CGAL::Vector_3<Kernel> > > intersections3;
-
+    bool isPlane;
     bool volumeMode;
     bool hasVol;
 };
