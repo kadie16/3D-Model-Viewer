@@ -20,6 +20,7 @@ public:
     void adjustZoom();
     void adjustAspect(float w, float h);
     float fitModel(float xMax, float xMin, float yMax, float yMin, float zMax, float zMin);
+    double getNear();
 private:
     std::vector<float> modelCenter;
     float radius;

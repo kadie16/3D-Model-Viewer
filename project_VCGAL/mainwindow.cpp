@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_volStat = findChild<QLabel*>("volStatus");
     volStatReset = false;
     ui_volStat->setText(" ");
+    ui->checkBox_3->setChecked(true);
     ui->radioButton->setChecked(true);
     ui->radioButton_2->setEnabled(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
@@ -84,10 +85,35 @@ void MainWindow::on_radioButton_2_stateChanged()
 
 void MainWindow::on_radioButton_2_toggled(bool checked)
 {
-    ui->widget16->toggleVolume();
+        ui->widget16->toggleVolume();
 }
 
 void MainWindow::on_toolButton_4_clicked()
 {
+    ui->widget16->constructPlaneModel();
     ui->widget16->toggleDrawPlane();
+}
+
+void MainWindow::on_checkBox_2_toggled(bool checked)
+{
+    if (checked)
+        ui->widget16->setDrawIntersections(true);
+    else
+        ui->widget16->setDrawIntersections(false);
+}
+
+void MainWindow::on_checkBox_3_toggled(bool checked)
+{
+    if (checked)
+        ui->widget16->setDrawModel(true);
+    else
+        ui->widget16->setDrawModel(false);
+}
+
+void MainWindow::on_checkBox_4_toggled(bool checked)
+{
+    if (checked)
+        ui->widget16->setDrawIntersectionLine(true);
+    else
+        ui->widget16->setDrawIntersectionLine(false);
 }

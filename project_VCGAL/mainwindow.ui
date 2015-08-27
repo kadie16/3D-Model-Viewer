@@ -104,8 +104,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>111</width>
-              <height>120</height>
+              <width>116</width>
+              <height>181</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -144,26 +144,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_2">
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                </font>
-               </property>
+              <widget class="QToolButton" name="toolButton_4">
                <property name="text">
-                <string>Intersections </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkBox_3">
-               <property name="font">
-                <font>
-                 <pointsize>10</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Model </string>
+                <string>draw plane </string>
                </property>
               </widget>
              </item>
@@ -181,8 +164,6 @@
              </item>
             </layout>
            </widget>
-           <zorder>toolButton_3</zorder>
-           <zorder>verticalLayoutWidget</zorder>
           </widget>
           <widget class="QWidget" name="page_2">
            <property name="geometry">
@@ -301,6 +282,60 @@
                 </property>
                 <property name="text">
                  <string>Volume</string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="checkBox_3">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>120</y>
+                  <width>114</width>
+                  <height>18</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Model </string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="checkBox_2">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>72</y>
+                  <width>114</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Intersecting Faces</string>
+                </property>
+               </widget>
+               <widget class="QCheckBox" name="checkBox_4">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>96</y>
+                  <width>114</width>
+                  <height>18</height>
+                 </rect>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Intersecting Line</string>
                 </property>
                </widget>
               </widget>

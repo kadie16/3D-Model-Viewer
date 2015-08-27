@@ -84,6 +84,11 @@ float camera::fitModel(float xMax, float xMin, float yMax, float yMin, float zMa
     return zoomF;
 }
 
+double camera::getNear()
+{
+    return near;
+}
+
 void camera::setZoom(float factor)
 {
     if (factor > 0.01)
@@ -94,3 +99,5 @@ void camera::setZoom(float factor)
     glLoadIdentity(); // make sure zoom not applied to previous state
     glOrtho(leftAdjust*zoomF,rightAdjust*zoomF,bottom*zoomF,top*zoomF,-near,-far);
 }
+
+

@@ -39,6 +39,10 @@ void GLWidget::initializeGL(){
     needsReset = false;
     cullingOK = false;
     volumeOK = false;
+    drawsModel = true;
+    drawInters = false;
+    drawInterLine = false;
+    drawingPlane = false;
     w0 = this->width();
     h0 = this->height();
     cam.setAspect(w0,h0);
@@ -47,6 +51,7 @@ void GLWidget::initializeGL(){
     axisOfRotation.setZ(0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+    glFrontFace(GL_CW);
 
 }
 
@@ -92,13 +97,21 @@ void GLWidget::paintGL(){
         }
         /* Apply Current Position */
         mat.rotate(currQ);
-        m.translate(0,0); // applies current translation
+        m.translate(0,0); // Applies current translation
         /* Translate so rotation occurs about model center */
         glTranslatef(m.center().at(0), m.center().at(1), m.center().at(2));
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
-        m.drawMe();
-        m.drawIntersections();
+        if (drawsModel){
+            if (volumeOK)
+                drawVolume();
+            else
+                m.drawMe();
+        }
+        if (drawInters)
+            m.drawIntersections2();
+        if (drawInterLine)
+            m.drawIntersections();
         /* Revert to Original Matrix for Future Transformations */
         glPopMatrix();
         glPushMatrix();
@@ -106,6 +119,11 @@ void GLWidget::paintGL(){
         glMultMatrixf(mat.constData());
         glTranslatef(-m.center().at(0), -m.center().at(1), -m.center().at(2));
         drawAxes();
+        if (drawingPlane) {
+            p.drawMe();
+            std::cout << "drew p" << std::endl;
+
+        }
         glPopMatrix();
         prevPos[0] = xNow;
         prevPos[1] = yNow;
@@ -194,12 +212,12 @@ void GLWidget::grabObj(objLoad<HDS> objFile){
     cam.findModel(&m);
     cam.adjustAspect(this->width(), this->height());
     needsReset = true;
-
+    center = m.center();
     Vector vec(0.5,0.5,0.5);
     Point a(m.center().at(0), m.center().at(1), m.center().at(2));
     Plane plane_query(a,vec);
     m.seekIntersections(plane_query);
-    //m.seekIntersections2(plane_query);
+    m.seekIntersections2(plane_query);
 }
 
 void GLWidget::grabColor(double r, double g, double b)
@@ -218,12 +236,13 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
-    if (drawingPlane)
-        {
-            this->drawPlane(e->x(), e->y());
-        }
-    else if (e->button() == Qt::LeftButton && !translateOK)
-    {
+    if (drawingPlane){
+        click[0] = x;
+        click[1] = y;
+
+        std::cout << click[0] << ", " << click[1] << std::endl;
+
+    } else if(e->button() == Qt::LeftButton && !translateOK) {
         zoomOK = false;
         rotationOK = true;
     }
@@ -240,6 +259,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     this->x = e->x();
     this->y = e->y();
+
     rotationOK = false;
     mouseHeld = false;
 }
@@ -322,8 +342,8 @@ bool GLWidget::generateVolumeMesh()
     try {
         std::cout << "made domain correctly" << std::endl;
         c3t3 = CGAL::make_mesh_3<C3T3>(domain, criteria);
-        Vector vec(0.0,0.0,1.0);
-        Point a(0.2, 0.2, 0.2);
+        Vector vec(0.5,0.5,0.5);
+        Point a(m.center().at(0), m.center().at(1), m.center().at(2));
         Plane plane_query(a,vec);
         m.seekIntersections3(plane_query);
 
@@ -339,17 +359,44 @@ bool GLWidget::toggleDrawPlane()
     return drawingPlane;
 }
 
+bool GLWidget::setDrawIntersectionLine(bool setting)
+{
+    drawInterLine = setting;
+}
+
+bool GLWidget::setDrawIntersections(bool setting)
+{
+    drawInters = setting;
+}
+
+bool GLWidget::setDrawModel(bool setting)
+{
+    drawsModel = setting;
+}
+
 void GLWidget::drawPlane(float startX, float startY)
 {
-    glBegin(GL_TRIANGLES);
-    glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
-    glVertex3f(startX, startY, 0);
-    glVertex3f(startX, y, 0);
-    glVertex3f(x, startY, 0);
-    glVertex3f(x, startY, 0);
-    glVertex3f(startX, y, 0);
-    glVertex3f(x, y, 0);
-    glEnd();
+    if (click[0] != 0 || click[1] != 0) {
+        std::cout << "drawingplane";
+        startX = click[0]; startY = click[1];
+        //double near = cam.getNear();
+        glBegin(GL_TRIANGLES);
+        glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
+        glVertex3f(startX, startY,  m.center().at(2));
+        glVertex3f(startX, this->y, m.center().at(2));
+        glVertex3f(this->x, startY, m.center().at(2));
+        glVertex3f(this->x, startY, m.center().at(2));
+        glVertex3f(startX, this->y, m.center().at(2));
+        glVertex3f(this->x, this->y, m.center().at(2));
+        glEnd();
+    }
+}
+
+model GLWidget::constructPlaneModel()
+{
+    p = model(m.center(), m.radius());
+    std::cout << "made plane model" << std::endl;
+    return p;
 }
 
 

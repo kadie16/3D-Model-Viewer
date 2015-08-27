@@ -6,27 +6,23 @@ model::model()
 
 }
 
-model::model(float x, float y, float dx, float dy)
+model::model(std::vector<float> _center, float _radius)
 {
-   Polyhedron p;
-   Point p1(x,y,0);
-   Point p2(x+dx, y, 0);
-   Point p3(x+dx, y+dy, 0);
-   Point p4(x, y+dy, 0);
-   surface_poly.make_triangle(p1,p2,p3);
-   surface_poly.make_triangle(p2,p3,p4);
-   m_center.push_back(x+dx/2);
-   m_center.push_back(y+dy/2);
-   m_radius = sqrt(dx*dx + dy*dy);
-   maxCoords.push_back((x > x + dx)?x:x+dx);
-   maxCoords.push_back((y > y + dy)?y:y+dy);
-   minCoords.push_back((x < x + dx)?x:x+dx);
-   minCoords.push_back((y > y + dy)?y:y+dy);
+   Build_plane<HDS> builder(_center, _radius);
+   std::cout << "made builder" << std::endl;
+   surface_poly.delegate(builder);
+   std::cout << "delegated builder" << std::endl;
+   m_center = _center;
+   m_radius = _radius;
+   //maxCoords.push_back((x > x + dx)?x:x+dx);
+   //maxCoords.push_back((y > y + dy)?y:y+dy);
+   //minCoords.push_back((x < x + dx)?x:x+dx);
+   //minCoords.push_back((y > y + dy)?y:y+dy);
    red = 0.0f;
    green = 0.0f;
    blue = 0.75f;
    currTrans.assign(2,0);
-   surface_poly = computeNormals(surface_poly);
+   //surface_poly = computeNormals(surface_poly);
    isPlane = true;
    hasVol = false;
    volumeMode = false;
@@ -207,7 +203,7 @@ void model::drawIntersections()
         if(boost::get<Segment>(&(p->first))) {
             //drawTriangle((p->second));
             //std::cout << "Segment" << p->second->hx() << std::endl;
-                glLineWidth(4);
+                glLineWidth(2);
                 glBegin(GL_LINES);
                 glColor3f(1,0,0);
                 Point p1 = boost::get<Segment>(&(p->first))->point(0); //vertex(0);
@@ -270,17 +266,23 @@ Polyhedron model::volumePolyhedron()
 
 void model::drawMe() {
    if(volumeMode)
-       this->drawPoly(volume_poly);
+       this->drawVolume();
    else
        this->drawPoly(surface_poly);
+   std::cout << "exiting drawMe " << std::endl;
+
 }
 
 void model::drawPoly(Polyhedron poly) {
     glBegin(GL_TRIANGLES);
     glColor3f(red, green, blue);
+    int i =0;
     for (Polyhedron::Facet_const_iterator faceIter = poly.facets_begin(); faceIter != poly.facets_end(); ++faceIter) {
         drawTriangle(faceIter);
+        std::cout << "drew face"<< i++ << std::endl;
+
     }
+    std::cout << "done drawing faces" << std::endl;
     glEnd();
 }
 
@@ -362,21 +364,22 @@ void model::drawVolume()
     Tr t;
     t = c3t3.triangulation();
     glBegin(GL_TRIANGLES);
+    glColor3f(red,green,blue);
     for (Tr::Finite_cells_iterator fIt = t.finite_cells_begin(); fIt != t.finite_cells_end(); ++fIt) {
         p1 = fIt->vertex(0)->point();
         p2 = fIt->vertex(1)->point();
         p3 = fIt->vertex(2)->point();
         p4 = fIt->vertex(3)->point();
-        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p3,p2);
+        CGAL::Vector_3<Kernel> n = CGAL::normal(p1,p2,p3);
         glNormal3f(n.hx(), n.hy(), n.hz());
         drawTriangle(p1,p3,p2);
-        n = CGAL::normal(p1,p2,p4);
+        n = CGAL::normal(p1,p4,p2);
         glNormal3f(n.hx(), n.hy(), n.hz());
         drawTriangle(p1,p2,p4);
-        n = CGAL::normal(p1,p4,p3);
+        n = CGAL::normal(p1,p3,p4);
         glNormal3f(n.hx(), n.hy(), n.hz());
         drawTriangle(p1,p4,p3);
-        n = CGAL::normal(p2,p3,p4);
+        n = CGAL::normal(p2,p4,p3);
         glNormal3f(n.hx(), n.hy(), n.hz());
         drawTriangle(p2,p3,p4);
 

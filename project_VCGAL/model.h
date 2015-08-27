@@ -7,7 +7,7 @@ typedef Polyhedron::HalfedgeDS HDS;
 class model {
 public:
     model();
-    model(float x, float y, float dx, float dy);
+    model(std::vector<float> _center, float radius);
     model(objLoad<HDS> objFile);
     Polyhedron computeNormals(Polyhedron poly);
     Polyhedron poly();
@@ -122,5 +122,44 @@ public:
         builder.end_surface();
     }
 };
+
+// A modifier creating a triangle with the incremental builder.
+template <class HDS>
+class Build_plane : public CGAL::Modifier_base<HDS> {
+public:
+    std::vector<float> center;
+    float radius;
+    Build_plane(std::vector<float> _center, float _radius) {
+        center = _center;
+        radius = _radius;
+    }
+    void operator()( HDS& hds) {
+        // Postcondition: hds is a valid polyhedral surface.
+        CGAL::Polyhedron_incremental_builder_3<HDS> B( hds, true);
+        B.begin_surface( 0, 0, 0);
+        typedef typename HDS::Vertex   Vertex;
+        typedef typename Vertex::Point Point;
+        B.add_vertex( Point( center.at(0) - radius, center.at(1) - radius, center.at(2)));
+        B.add_vertex( Point( center.at(0) - radius, center.at(1) + radius, center.at(2)));
+        B.add_vertex( Point( center.at(0) + radius, center.at(1) - radius, center.at(2)));
+        B.add_vertex( Point( center.at(0) + radius, center.at(1) + radius, center.at(2)));
+
+        B.begin_facet();
+        B.add_vertex_to_facet( 0);
+        B.add_vertex_to_facet( 3);
+        B.add_vertex_to_facet( 1);
+        B.end_facet();
+
+        B.begin_facet();
+        B.add_vertex_to_facet( 0);
+        B.add_vertex_to_facet( 2);
+        B.add_vertex_to_facet( 3);
+        B.end_facet();
+        B.end_surface();
+        std::cout << "ended surface" << std::endl;
+
+    }
+};
+
 
 #endif // MODEL_H

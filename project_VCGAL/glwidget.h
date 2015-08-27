@@ -41,7 +41,11 @@ public:
     int giveFPS();
     bool generateVolumeMesh();
     bool toggleDrawPlane();
+    bool setDrawIntersectionLine(bool setting);
+    bool setDrawIntersections(bool setting);
+    bool setDrawModel(bool setting);
     void drawPlane(float startX, float startY);
+    model constructPlaneModel();
 
 private:
     QTime frameTimer;
@@ -66,6 +70,9 @@ private:
     bool cullingOK;
     bool translateOK;
     bool scaleOK;
+    bool drawInters;
+    bool drawInterLine;
+    bool drawsModel;
     /* Zoom */
     bool zoomOK;
     float zoomF;
@@ -85,11 +92,13 @@ private:
     /* Volume Mesh */
     Polyhedron mesh;
     Mesh_Polyhedron mesh_Poly;
+    float click[2];
     bool volumeOK;
     bool drawingPlane;
     C3T3 c3t3;
     Tr t;
     model m;
+    model p;
 signals:
     void Mouse_Pressed();
     void Mouse_Pos();
